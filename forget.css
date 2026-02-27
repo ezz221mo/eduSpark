@@ -1,0 +1,174 @@
+        :root {
+            --primary-green: #10b981;
+            --primary-dark: #059669;
+            --text-dark: #1f2937;
+            --text-gray: #6b7280;
+            --white: #ffffff;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            direction: ltr; /* English Direction */
+            padding: 20px;
+        }
+
+        /* Top Home Button */
+        .back-home {
+            position: absolute;
+            top: 20px;
+            left: 20px; /* Positioned left for English */
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 18px;
+            border-radius: 50px;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: 0.3s;
+            z-index: 100;
+        }
+
+        .back-home:hover {
+            background: var(--white);
+            transform: scale(1.05);
+            color: var(--primary-green);
+        }
+
+        .auth-card {
+            background: white;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.6s ease;
+            text-align: center;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background: #f0fdf4;
+            color: var(--primary-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            margin: 0 auto 25px;
+        }
+
+        .auth-header h2 {
+            font-size: 28px;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .auth-header p {
+            color: var(--text-gray);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: left; /* Left align for labels */
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-dark);
+        }
+
+        .form-group input {
+            padding: 15px 18px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: 0.3s;
+            width: 100%;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--gradient-1);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--text-gray);
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .back-link:hover {
+            color: var(--primary-green);
+        }
+
+        /* Success Message Styling */
+        #successState {
+            display: none;
+        }
+
+        .success-icon {
+            color: var(--primary-green);
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .auth-card { padding: 40px 20px; }
+            .auth-header h2 { font-size: 24px; }
+            .back-home { top: 10px; left: 10px; }
+        }

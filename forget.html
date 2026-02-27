@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password - EVOLVE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="forget.css">
+</head>
+<body>
+
+    <a href="index.html" class="back-home">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to Home</span>
+    </a>
+
+    <div class="auth-card">
+        <div id="formState">
+            <div class="icon-circle">
+                <i class="fas fa-lock-open"></i>
+            </div>
+            
+            <div class="auth-header">
+                <h2>Forgot Password?</h2>
+                <p>No worries! Enter your email address and we'll send you a link to reset your password.</p>
+            </div>
+
+            <form id="forgotPasswordForm">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="name@example.com" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Send Reset Link</button>
+            </form>
+
+            <a href="sing.html" class="back-link">
+                <i class="fas fa-chevron-left" style="font-size: 12px;"></i>
+                Back to Login
+            </a>
+        </div>
+
+        <div id="successState" style="display: none;">
+    <div class="icon-circle">
+        <i class="fas fa-envelope-open-text"></i>
+    </div>
+    <div class="auth-header">
+        <h2>Verify Code</h2>
+        <p id="feedbackText">Please enter the 6-digit code sent to your email.</p>
+    </div>
+
+        <button type="submit" class="btn-submit" id="verifyBtn">Verify & Continue</button>
+    </form>
+
+    <div style="margin-top: 20px;">
+        <button class="back-link" style="border: none; background: none; cursor: pointer;" onclick="location.reload()">
+            <i class="fas fa-redo"></i> Resend Email
+        </button>
+    </div>
+</div>
+    </div>
+    <script src="forget.js"></script>
+</body>
+</html>

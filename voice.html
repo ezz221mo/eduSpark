@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolve - Voice Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body dir="ltr">
+    <!-- Navbar -->
+   <nav>
+        <a href="#" class="logo"><span class="logo-box">E</span> EVOLVE</a>
+        
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="courses.html"><i class="fas fa-book"></i> Courses</a>
+            <a href="sparky.html"><i class="fas fa-robot"></i> AI Assistant</a>
+            <button class="voice-btn"><i class="fas fa-microphone"></i> Voice Assistant</button>
+            <a href="teachers.html">Teachers</a>
+            <a href="#" class="get-started">Get Started</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Header -->
+        <div class="voice-header">
+            <div class="ai-badge">AI VOICE ASSISTANT</div>
+            <h1>Talk to EVOLVE</h1>
+            <p>Ask anything in your own words</p>
+        </div>
+
+        <!-- Microphone -->
+        <div class="mic-container">
+            <button class="mic-button" id="micButton" onclick="toggleListening()">
+                <svg class="mic-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                    <line x1="12" y1="19" x2="12" y2="23"></line>
+                    <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+            </button>
+            
+            <div class="mic-status" id="micStatus">Tap and speak</div>
+            
+            <!-- Sound Wave -->
+            <div class="sound-wave" id="soundWave">
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+                <div class="wave-bar"></div>
+            </div>
+            
+            <!-- Loading Spinner -->
+            <div class="spinner" id="spinner"></div>
+        </div>
+
+        <!-- Transcript Box -->
+        <div class="transcript-box" id="transcriptBox">
+            <div class="transcript-label">You said:</div>
+            <div class="transcript-text" id="transcriptText"></div>
+        </div>
+
+        <!-- Suggestions -->
+        <div class="suggestions">
+            <h3>You can ask things like:</h3>
+            <div class="suggestion-cards">
+                <div class="suggestion-card" onclick="speakSuggestion('Explain this lesson again')">
+                    <p>"Explain this lesson again"</p>
+                </div>
+                <div class="suggestion-card" onclick="speakSuggestion('I didn\'t understand this part')">
+                    <p>"I didn't understand this part"</p>
+                </div>
+                <div class="suggestion-card" onclick="speakSuggestion('Can you give me an example?')">
+                    <p>"Can you give me an example?"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Note -->
+        <div class="footer-note">
+            You can repeat or stop anytime. Take your time!
+        </div>
+    </div>
+    
+<footer>
+    <div class="footer-container">
+        <div class="footer-column">
+            <div class="footer-logo">
+                <span class="footer-logo-icon">E</span> EVOLVE
+            </div>
+            <p class="footer-description">
+                Making learning magical for the next generation of creators, scientists, and leaders through the power of AI. 
+            </p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-column">
+            <h4>Platform</h4>
+            <ul>
+                <li><a href="#">Courses</a></li>
+                <li><a href="#">Teachers</a></li>
+                <li><a href="#">AI Assistant</a></li>
+                <li><a href="#">Learning Path</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#">Articles</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Success Stories</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h4>Support</h4>
+            <ul class="contact-info">
+                <li><i class="fas fa-envelope"></i> hello@eduspark.com</li>
+                <li><i class="fas fa-phone"></i> +1 (555) 000-1234</li>
+                <li><i class="fas fa-map-marker-alt"></i> Silicon Valley, CA</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 EduSpark Platform. All rights reserved.</p>
+        <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+        </div>
+    </div>
+</footer>
+
+
+
+
+
+    <script>
+        let isListening = false;
+        let recognition;
+        
+        // Check if browser supports Speech Recognition
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'ar-EG'; // Arabic Egypt
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onstart = function() {
+                console.log('Voice recognition started');
+            };
+
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('transcriptText').textContent = transcript;
+                document.getElementById('transcriptBox').classList.add('active');
+                
+                // Show processing
+                document.getElementById('micStatus').textContent = 'Processing...';
+                document.getElementById('spinner').classList.add('active');
+                
+                // Simulate AI response
+                setTimeout(() => {
+                    document.getElementById('spinner').classList.remove('active');
+                    document.getElementById('micStatus').textContent = 'Tap and speak';
+                    speakResponse(transcript);
+                }, 2000);
+            };
+
+            recognition.onerror = function(event) {
+                console.error('Recognition error:', event.error);
+                stopListening();
+                document.getElementById('micStatus').textContent = 'Error occurred. Try again';
+            };
+
+            recognition.onend = function() {
+                stopListening();
+            };
+        }
+
+        function toggleListening() {
+            if (isListening) {
+                stopListening();
+            } else {
+                startListening();
+            }
+        }
+
+        function startListening() {
+            if (!recognition) {
+                // Fallback if Speech Recognition is not supported
+                simulateListening();
+                return;
+            }
+
+            isListening = true;
+            document.getElementById('micButton').classList.add('active');
+            document.getElementById('micStatus').textContent = 'Listening...';
+            document.getElementById('soundWave').classList.add('active');
+            
+            try {
+                recognition.start();
+            } catch (e) {
+                console.error('Error starting recognition:', e);
+                stopListening();
+            }
+        }
+
+        function stopListening() {
+            isListening = false;
+            document.getElementById('micButton').classList.remove('active');
+            document.getElementById('micStatus').textContent = 'Tap and speak';
+            document.getElementById('soundWave').classList.remove('active');
+            
+            if (recognition) {
+                try {
+                    recognition.stop();
+                } catch (e) {
+                    console.error('Error stopping recognition:', e);
+                }
+            }
+        }
+
+        function simulateListening() {
+            // Fallback simulation for browsers without Speech Recognition
+            isListening = true;
+            document.getElementById('micButton').classList.add('active');
+            document.getElementById('micStatus').textContent = 'Listening...';
+            document.getElementById('soundWave').classList.add('active');
+            
+            setTimeout(() => {
+                const sampleText = 'شرح الدرس مرة أخرى من فضلك';
+                document.getElementById('transcriptText').textContent = sampleText;
+                document.getElementById('transcriptBox').classList.add('active');
+                document.getElementById('micStatus').textContent = 'Processing...';
+                document.getElementById('soundWave').classList.remove('active');
+                document.getElementById('spinner').classList.add('active');
+                
+                setTimeout(() => {
+                    stopListening();
+                    document.getElementById('spinner').classList.remove('active');
+                    speakResponse(sampleText);
+                }, 2000);
+            }, 3000);
+        }
+
+        function speakResponse(userInput) {
+            const responses = {
+                'explain': '🎓 بالطبع! سأشرح الدرس مرة أخرى بطريقة أبسط...',
+                'understand': '💡 لا مشكلة، دعني أوضح هذا الجزء بمثال عملي...',
+                'example': '📚 هذا مثال رائع: تخيل أن...',
+                'default': '✨ فهمت سؤالك! دعني أساعدك...'
+            };
+            
+            let response = responses.default;
+            const lowerInput = userInput.toLowerCase();
+            
+            for (let key in responses) {
+                if (lowerInput.includes(key) || lowerInput.includes(key)) {
+                    response = responses[key];
+                    break;
+                }
+            }
+            
+            // Display response
+            setTimeout(() => {
+                const responseDiv = document.createElement('div');
+                responseDiv.style.cssText = 'margin-top: 20px; padding: 20px; background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border-radius: 15px; font-size: 16px; color: #2e7d32;';
+                responseDiv.textContent = response;
+                document.getElementById('transcriptBox').appendChild(responseDiv);
+            }, 500);
+        }
+
+        function speakSuggestion(text) {
+            document.getElementById('transcriptText').textContent = text;
+            document.getElementById('transcriptBox').classList.add('active');
+            document.getElementById('micStatus').textContent = 'Processing...';
+            document.getElementById('spinner').classList.add('active');
+            
+            setTimeout(() => {
+                document.getElementById('spinner').classList.remove('active');
+                document.getElementById('micStatus').textContent = 'Tap and speak';
+                speakResponse(text);
+            }, 2000);
+        }
+    </script>
+    <script src="nav-handler.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

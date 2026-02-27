@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolve - AI Learning Assistant</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+   
+</head>
+<body dir="ltr">
+   
+    <nav>
+        <a href="#" class="logo"><span class="logo-box">E</span> EVOLVE</a>
+        
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="courses.html"><i class="fas fa-book"></i> Courses</a>
+            <a href="sparky.html"><i class="fas fa-robot"></i> AI Assistant</a>
+            <button class="voice-btn" href="voice.html"><i class="fas fa-microphone"></i> Voice Assistant</button>
+            <a href="#">Teachers</a>
+            <a href="#" class="get-started">Get Started</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- AI Header -->
+        <div class="ai-header">
+            <div class="ai-badge">AI LEARNING ASSISTANT</div>
+            <h1>?How can I help you learn today</h1>
+            <p>Sparky is here to help you understand complex topics, find the best courses, and stay on track with your goals.</p>
+        </div>
+
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="bot-avatar">✨</div>
+                <div class="bot-info">
+                    <div class="bot-name">Sparky AI</div>
+                    <div class="bot-status">
+                        <span class="status-indicator"></span>
+                        Always ready to help
+                    </div>
+                </div>
+                <button class="mode-toggle">🎙️ Kid-Safe Mode Active</button>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chatMessages">
+                <!-- Bot Welcome Message -->
+                <div class="message bot-message">
+                    <div class="message-content">
+                        Hi! I'm Sparky, your AI Learning Assistant. How can I help you today? I can explain a lesson, recommend a course, or help you build a custom learning path!
+                    </div>
+                    <div class="quick-actions">
+                        <button class="quick-action-btn" onclick="sendQuickAction('Explain Solar System')">
+                            💡 Explain Solar System
+                        </button>
+                        <button class="quick-action-btn" onclick="sendQuickAction('Recommend a coding course')">
+                            📚 Recommend a coding course
+                        </button>
+                        <button class="quick-action-btn" onclick="sendQuickAction('Create a math learning path')">
+                            🎯 Create a math learning path
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div class="typing-indicator" id="typingIndicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="chat-input-container">
+                <div class="input-wrapper">
+                    <input 
+                        type="text" 
+                        class="chat-input" 
+                        id="chatInput"
+                        placeholder="Ask me anything..."
+                        onkeypress="handleKeyPress(event)"
+                    >
+                    <button class="send-btn" onclick="sendMessage()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="input-disclaimer">
+                    Sparky can make mistakes. Parents are encouraged to supervise AI interactions.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+<footer>
+    <div class="footer-container">
+        <div class="footer-column">
+            <div class="footer-logo">
+                <span class="footer-logo-icon">E</span> EduSpark
+            </div>
+            <p class="footer-description">
+                Making learning magical for the next generation of creators, scientists, and leaders through the power of AI. 
+            </p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-column">
+            <h4>Platform</h4>
+            <ul>
+                <li><a href="#">Courses</a></li>
+                <li><a href="#">Teachers</a></li>
+                <li><a href="#">AI Assistant</a></li>
+                <li><a href="#">Learning Path</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#">Articles</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Success Stories</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h4>Support</h4>
+            <ul class="contact-info">
+                <li><i class="fas fa-envelope"></i> hello@eduspark.com</li>
+                <li><i class="fas fa-phone"></i> +1 (555) 000-1234</li>
+                <li><i class="fas fa-map-marker-alt"></i> Silicon Valley, CA</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 EduSpark Platform. All rights reserved.</p>
+        <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+        </div>
+    </div>
+</footer>
+
+    <script src="nav-handler.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

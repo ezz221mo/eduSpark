@@ -1,0 +1,194 @@
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --danger: #ff4757;
+    --text-dark: #2d3436;
+    --text-light: #636e72;
+    --white: #ffffff;
+    --bg-body: #f1f2f6;
+}
+
+body {
+    background-color: var(--bg-body);
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+}
+
+/* --- Navbar & Back Link --- */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background: var(--white);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.back-link {
+    background: #f1f2f6;
+    padding: 10px 20px;
+    border-radius: 50px;
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* --- Container & Title --- */
+.container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.page-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 40px;
+}
+
+/* --- Grid System (الكروت بجانب بعضها) --- */
+.cart-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* --- Course Card Design --- */
+.cart-item-card {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    border: 1px solid #eee;
+}
+
+.cart-item-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 30px rgba(99, 102, 241, 0.15);
+}
+
+/* --- Image & Remove Button --- */
+.item-img-wrapper {
+    position: relative;
+    height: 160px;
+}
+
+.item-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-item-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 71, 87, 0.9);
+    color: white;
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+    opacity: 0; /* تختفي وتظهر عند الهوفر */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-item-card:hover .remove-item-overlay {
+    opacity: 1;
+}
+
+.remove-item-overlay:hover {
+    background: var(--danger);
+    transform: rotate(90deg);
+}
+
+/* --- Card Content --- */
+.item-details {
+    padding: 20px;
+}
+
+.item-details h4 {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    height: 45px; /* لتوحيد الارتفاع */
+    overflow: hidden;
+}
+
+.item-details p {
+    color: var(--text-light);
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+}
+
+.price-tag {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+/* --- Summary Box --- */
+.cart-summary {
+    grid-column: 1 / -1; /* تأخذ العرض بالكامل تحت الكروت */
+    margin-top: 40px;
+    background: var(--white);
+    padding: 30px;
+    border-radius: 25px;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.03);
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: 18px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.checkout-btn:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+}
+
+/* --- Empty State --- */
+.empty-state {
+    display: block;
+    text-align: center;
+}
+
+.shop-now-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+}

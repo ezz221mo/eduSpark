@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolve - Meet Our Teachers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+   
+</head>
+<body dir="ltr">
+     <nav>
+        <a href="#" class="logo"><span class="logo-box">E</span> EVOLVE</a>
+        
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <div class="nav-links">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="voice.html"><i class="fas fa-microphone"></i> Voice</a>
+            <a href="courses.html"><i class="fas fa-book"></i> Courses</a>
+            <a href="sparky.html"><i class="fas fa-robot"></i> AI Assistant</a>
+             <button onclick="window.location.href='voice.html'" class="voice-btn"><i class="fas fa-microphone"></i> Voice Assistant</button>
+            <a href="teachers.html">Teachers</a>
+            <a href="sing.html" class="get-started">Get Started</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Meet Our World-Class Educators</h1>
+            <p>Selected from the top 1% of applicants, our teachers aren't just experts—they're mentors who care about your child's growth.</p>
+        </div>
+
+        <!-- Search and Filter -->
+        <div class="search-filter-section">
+            <div class="search-box">
+                <input type="text" placeholder="Search by name or subject..." id="searchInput" onkeyup="filterTeachers()">
+                <span class="search-icon">🔍</span>
+            </div>
+            <button class="filter-btn">
+                <span>⚙️</span>
+                Filter
+            </button>
+        </div>
+
+        <!-- Teachers Grid -->
+        <div class="teachers-grid" id="teachersGrid">
+            <!-- Teacher Card 1 -->
+            <div class="teacher-card" data-name="Dr. Sarah Miller" data-subject="Science Physics">
+                <div class="teacher-header">
+                    <img src="https://i.pravatar.cc/150?img=1" alt="Dr. Sarah Miller" class="teacher-avatar">
+                    <div class="teacher-basic-info">
+                        <div class="teacher-rating">
+                            <span class="rating-star">⭐</span>
+                            <span class="rating-number">4.9</span>
+                            <span class="students-count">• 1.2k students</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="teacher-name">Dr. Sarah Miller</h3>
+                <p class="teacher-specialty">Science & Physics</p>
+                <p class="teacher-bio">Ex-NASA engineer passionate about making space science accessible to young minds.</p>
+                
+                <div class="teacher-tags">
+                    <span class="tag">STEM</span>
+                    <span class="tag">Space</span>
+                    <span class="tag">Physics</span>
+                </div>
+                
+                <div class="teacher-stats">
+                    <span class="stat-item">📚 15 Courses</span>
+                    <span class="stat-item">👥 2,910</span>
+                </div>
+                
+                <div class="teacher-actions">
+                    <button class="btn-view-profile" onclick="viewProfile('Dr. Sarah Miller')">View Profile</button>
+                    <button class="btn-more">⋯</button>
+                </div>
+            </div>
+
+            <!-- Teacher Card 2 -->
+            <div class="teacher-card" data-name="Prof. Alex Chen" data-subject="Computer Science">
+                <div class="teacher-header">
+                    <img src="https://i.pravatar.cc/150?img=12" alt="Prof. Alex Chen" class="teacher-avatar">
+                    <div class="teacher-basic-info">
+                        <div class="teacher-rating">
+                            <span class="rating-star">⭐</span>
+                            <span class="rating-number">4.8</span>
+                            <span class="students-count">• 2.9k students</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="teacher-name">Prof. Alex Chen</h3>
+                <p class="teacher-specialty">Computer Science</p>
+                <p class="teacher-bio">Full-stack developer turned educator. Believes every child should know the language of computers.</p>
+                
+                <div class="teacher-tags">
+                    <span class="tag">Coding</span>
+                    <span class="tag">Robotics</span>
+                    <span class="tag">Logic</span>
+                </div>
+                
+                <div class="teacher-stats">
+                    <span class="stat-item">📚 15 Courses</span>
+                    <span class="stat-item">👥 4,870</span>
+                </div>
+                
+                <div class="teacher-actions">
+                    <button class="btn-view-profile" onclick="viewProfile('Prof. Alex Chen')">View Profile</button>
+                    <button class="btn-more">⋯</button>
+                </div>
+            </div>
+
+            <!-- Teacher Card 3 -->
+            <div class="teacher-card" data-name="Elena Rodriguez" data-subject="Art Creativity">
+                <span class="spark-badge">⚡</span>
+                <div class="teacher-header">
+                    <img src="https://i.pravatar.cc/150?img=5" alt="Elena Rodriguez" class="teacher-avatar">
+                    <div class="teacher-basic-info">
+                        <div class="teacher-rating">
+                            <span class="rating-star">⭐</span>
+                            <span class="rating-number">5</span>
+                            <span class="students-count">• 890 students</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="teacher-name">Elena Rodriguez</h3>
+                <p class="teacher-specialty">Art & Creativity</p>
+                <p class="teacher-bio">Award-winning illustrator who loves teaching kids how to express their emotions through art.</p>
+                
+                <div class="teacher-tags">
+                    <span class="tag">Drawing</span>
+                    <span class="tag">Design</span>
+                    <span class="tag">Color</span>
+                </div>
+                
+                <div class="teacher-stats">
+                    <span class="stat-item">📚 15 Courses</span>
+                    <span class="stat-item">👥 4,820</span>
+                </div>
+                
+                <div class="teacher-actions">
+                    <button class="btn-view-profile" onclick="viewProfile('Elena Rodriguez')">View Profile</button>
+                    <button class="btn-more">⋯</button>
+                </div>
+            </div>
+
+            <!-- Teacher Card 4 -->
+            <div class="teacher-card" data-name="Dr. James Wilson" data-subject="Mathematics">
+                <div class="teacher-header">
+                    <img src="https://i.pravatar.cc/150?img=13" alt="Dr. James Wilson" class="teacher-avatar">
+                    <div class="teacher-basic-info">
+                        <div class="teacher-rating">
+                            <span class="rating-star">⭐</span>
+                            <span class="rating-number">4.7</span>
+                            <span class="students-count">• 3.5k students</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="teacher-name">Dr. James Wilson</h3>
+                <p class="teacher-specialty">Mathematics</p>
+                <p class="teacher-bio">Makes math fun and easy to understand. Specializes in making complex concepts simple.</p>
+                
+                <div class="teacher-tags">
+                    <span class="tag">Algebra</span>
+                    <span class="tag">Geometry</span>
+                    <span class="tag">Calculus</span>
+                </div>
+                
+                <div class="teacher-stats">
+                    <span class="stat-item">📚 20 Courses</span>
+                    <span class="stat-item">👥 5,200</span>
+                </div>
+                
+                <div class="teacher-actions">
+                    <button class="btn-view-profile" onclick="viewProfile('Dr. James Wilson')">View Profile</button>
+                    <button class="btn-more">⋯</button>
+                </div>
+            </div>
+
+            <!-- Teacher Card 5 -->
+            <div class="teacher-card" data-name="Maria Garcia" data-subject="Languages">
+                <span class="spark-badge">⚡</span>
+                <div class="teacher-header">
+                    <img src="https://i.pravatar.cc/150?img=9" alt="Maria Garcia" class="teacher-avatar">
+                    <div class="teacher-basic-info">
+                        <div class="teacher-rating">
+                            <span class="rating-star">⭐</span>
+                            <span class="rating-number">4.9</span>
+                            <span class="students-count">• 2.1k students</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="teacher-name">Maria Garcia</h3>
+                <p class="teacher-specialty">Languages</p>
+                <p class="teacher-bio">Polyglot who speaks 6 languages. Makes learning languages fun through games and stories.</p>
+                
+                <div class="teacher-tags">
+                    <span class="tag">English</span>
+                    <span class="tag">Spanish</span>
+                    <span class="tag">French</span>
+                </div>
+                
+                <div class="teacher-stats">
+                    <span class="stat-item">📚 18 Courses</span>
+                    <span class="stat-item">👥 3,650</span>
+                </div>
+                
+                <div class="teacher-actions">
+                    <button class="btn-view-profile" onclick="viewProfile('Maria Garcia')">View Profile</button>
+                    <button class="btn-more">⋯</button>
+                </div>
+            </div>
+
+            <!-- Teacher Card 6 -->
+            <div class="teacher-card" data-name="Ahmed Hassan" data-subject="History">
+                <div class="teacher-header">
+                    <img src="https://i.pravatar.cc/150?img=14" alt="Ahmed Hassan" class="teacher-avatar">
+                    <div class="teacher-basic-info">
+                        <div class="teacher-rating">
+                            <span class="rating-star">⭐</span>
+                            <span class="rating-number">4.8</span>
+                            <span class="students-count">• 1.8k students</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="teacher-name">Ahmed Hassan</h3>
+                <p class="teacher-specialty">History & Culture</p>
+                <p class="teacher-bio">Brings history to life through storytelling and interactive lessons about world civilizations.</p>
+                
+                <div class="teacher-tags">
+                    <span class="tag">Ancient</span>
+                    <span class="tag">Modern</span>
+                    <span class="tag">Culture</span>
+                </div>
+                
+                <div class="teacher-stats">
+                    <span class="stat-item">📚 12 Courses</span>
+                    <span class="stat-item">👥 2,940</span>
+                </div>
+                
+                <div class="teacher-actions">
+                    <button class="btn-view-profile" onclick="viewProfile('Ahmed Hassan')">View Profile</button>
+                    <button class="btn-more">⋯</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+      
+    
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-column">
+            <div class="footer-logo">
+                <span class="footer-logo-icon">E</span> EVOLVE
+            </div>
+            <p class="footer-description">
+                Making learning magical for the next generation of creators, scientists, and leaders through the power of AI. 
+            </p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-column">
+            <h4>Platform</h4>
+            <ul>
+                <li><a href="#">Courses</a></li>
+                <li><a href="#">Teachers</a></li>
+                <li><a href="#">AI Assistant</a></li>
+                <li><a href="#">Learning Path</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#">Articles</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Success Stories</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-column">
+            <h4>Support</h4>
+            <ul class="contact-info">
+                <li><i class="fas fa-envelope"></i> hello@eduspark.com</li>
+                <li><i class="fas fa-phone"></i> +1 (555) 000-1234</li>
+                <li><i class="fas fa-map-marker-alt"></i> Silicon Valley, CA</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>© 2026 EduSpark Platform. All rights reserved.</p>
+        <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+        </div>
+    </div>
+</footer>
+
+    <script src="nav-handler.js"></script>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduSpark - Educational Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="student-style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <div class="logo">
+            <div class="logo-icon">E</div>
+            EduSpark
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="courses.html">📚 Courses</a></li>
+            <li><a href="#articles">📰 Articles</a></li>
+        </ul>
+        <button class="login-btn" onclick="window.location.href = 'sing.html'" >Login</button>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h1 class="greeting">
+                Hey, <span class="greeting-name">Alex! <span class="wave">👋</span></span>
+            </h1>
+            <p class="greeting-subtitle">Ready to learn something new today?</p>
+            
+            <div class="level-badge">
+                <div class="level-icon">🏆</div>
+                <div class="level-info">
+                    <h4>LEVEL 19</h4>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <span style="font-size: 0.9rem; color: var(--text-light);">2,450 XP</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Course -->
+        <div class="featured-course">
+            <span class="featured-badge">🚀 FEATURED</span>
+            <h2>Space Science: The Solar System</h2>
+            <p>You left off at Module 4: The Gas Giants</p>
+            <button class="continue-btn">
+                Continue Journey ▶
+            </button>
+        </div>
+
+        <!-- Sections Grid -->
+        <div class="sections-grid">
+            <!-- My Courses -->
+            <div class="courses-section">
+                <div class="section-header">
+                    <h3>My Courses</h3>
+                    <a href="#" class="view-all">View All →</a>
+                </div>
+                <div class="courses-grid">
+                    <div class="course-card">
+                        <div class="course-thumbnail">🔢</div>
+                        <div class="course-info">
+                            <h4 class="course-title">Math Adventures</h4>
+                            <p class="course-progress">Progress: 65%</p>
+                        </div>
+                    </div>
+                    <div class="course-card">
+                        <div class="course-thumbnail" style="background: linear-gradient(135deg, #FF9847, #FF6B35);">✍️</div>
+                        <div class="course-info">
+                            <h4 class="course-title">Creative Writing</h4>
+                            <p class="course-progress">Progress: 40%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Events -->
+            <div class="events-section">
+                <div class="section-header">
+                    <h3>Up Next</h3>
+                </div>
+                <div class="event-card">
+                    <p class="event-date">Tuesday, 11:00 AM</p>
+                    <h4 class="event-title">Live Class</h4>
+                    <p class="event-instructor">with Ms. Johnson</p>
+                </div>
+                <div class="event-card" style="border-left-color: var(--accent-orange);">
+                    <p class="event-date">Wednesday, 2:00 PM</p>
+                    <h4 class="event-title">Math Review</h4>
+                    <p class="event-instructor">with Mr. Davis</p>
+                </div>
+                <a href="#" class="view-calendar">View Calendar</a>
+            </div>
+        </div>
+
+        <!-- Awareness Articles Section -->
+        <div class="awareness-section" id="articles">
+            <div class="section-intro">
+                <h3>Awareness & Growth</h3>
+                <p>Discover valuable insights to help you thrive and succeed</p>
+            </div>
+
+            <div class="articles-grid">
+                <!-- Article 1 -->
+                <div class="article-card">
+                    <div style="position: relative; overflow: hidden; height: 200px;">
+                        <div class="article-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+                            🧠
+                        </div>
+                    </div>
+                    <span class="article-category">Mental Health</span>
+                    <div class="article-content">
+                        <h4 class="article-title">How to Manage Your Time Effectively as a Student</h4>
+                        <p class="article-excerpt">Learn proven time management techniques that will help you balance studying, hobbies, and personal life without burning out...</p>
+                        <div class="article-meta">
+                            <div class="article-author">
+                                <div class="author-avatar">D</div>
+                                <span>Dr. Sarah Miller</span>
+                            </div>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 2 -->
+                <div class="article-card">
+                    <div style="position: relative; overflow: hidden; height: 200px;">
+                        <div class="article-image" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+                            💡
+                        </div>
+                    </div>
+                    <span class="article-category" style="color: #f5576c;">Self Development</span>
+                    <div class="article-content">
+                        <h4 class="article-title">Smart Study Habits for Academic Success</h4>
+                        <p class="article-excerpt">Discover scientifically-proven study habits used by top performers and how you can implement them in your daily routine...</p>
+                        <div class="article-meta">
+                            <div class="article-author">
+                                <div class="author-avatar" style="background: linear-gradient(135deg, #f5576c, #f093fb);">M</div>
+                                <span>Mark Thompson</span>
+                            </div>
+                            <a href="#" class="read-more" style="color: #f5576c;">Read More →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 3 -->
+                <div class="article-card">
+                    <div style="position: relative; overflow: hidden; height: 200px;">
+                        <div class="article-image" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+                            🌟
+                        </div>
+                    </div>
+                    <span class="article-category" style="color: #00f2fe;">Life Skills</span>
+                    <div class="article-content">
+                        <h4 class="article-title">Building Self-Confidence: A Practical Guide</h4>
+                        <p class="article-excerpt">Actionable steps to boost your confidence and overcome anxiety and fear of failure in academic and social settings...</p>
+                        <div class="article-meta">
+                            <div class="article-author">
+                                <div class="author-avatar" style="background: linear-gradient(135deg, #00f2fe, #4facfe);">E</div>
+                                <span>Emma Wilson</span>
+                            </div>
+                            <a href="#" class="read-more" style="color: #00f2fe;">Read More →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 4 -->
+                <div class="article-card">
+                    <div style="position: relative; overflow: hidden; height: 200px;">
+                        <div class="article-image" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+                            🎯
+                        </div>
+                    </div>
+                    <span class="article-category" style="color: #fa709a;">Future Planning</span>
+                    <div class="article-content">
+                        <h4 class="article-title">Setting and Achieving Your Academic Goals</h4>
+                        <p class="article-excerpt">A clear methodology for defining short-term and long-term goals and achieving them step by step with confidence...</p>
+                        <div class="article-meta">
+                            <div class="article-author">
+                                <div class="author-avatar" style="background: linear-gradient(135deg, #fee140, #fa709a);">J</div>
+                                <span>James Parker</span>
+                            </div>
+                            <a href="#" class="read-more" style="color: #fa709a;">Read More →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 5 -->
+                <div class="article-card">
+                    <div style="position: relative; overflow: hidden; height: 200px;">
+                        <div class="article-image" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+                            🤝
+                        </div>
+                    </div>
+                    <span class="article-category" style="color: #30cfd0;">Social Skills</span>
+                    <div class="article-content">
+                        <h4 class="article-title">The Art of Effective Communication</h4>
+                        <p class="article-excerpt">Develop communication and active listening skills to build positive relationships with peers and teachers...</p>
+                        <div class="article-meta">
+                            <div class="article-author">
+                                <div class="author-avatar" style="background: linear-gradient(135deg, #330867, #30cfd0);">L</div>
+                                <span>Lisa Anderson</span>
+                            </div>
+                            <a href="#" class="read-more" style="color: #30cfd0;">Read More →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 6 -->
+                <div class="article-card">
+                    <div style="position: relative; overflow: hidden; height: 200px;">
+                        <div class="article-image" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); display: flex; align-items: center; justify-content: center; font-size: 4rem;">
+                            🧘
+                        </div>
+                    </div>
+                    <span class="article-category" style="color: #4CAF6E;">Health & Wellness</span>
+                    <div class="article-content">
+                        <h4 class="article-title">Balancing Studies and Mental Health</h4>
+                        <p class="article-excerpt">Practical tips for maintaining mental and physical health during exam periods and academic pressures...</p>
+                        <div class="article-meta">
+                            <div class="article-author">
+                                <div class="author-avatar">R</div>
+                                <span>Robert Chen</span>
+                            </div>
+                            <a href="#" class="read-more">Read More →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Discover More Section -->
+        <div class="discover-section">
+            <h3 style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.8rem; margin-bottom: 1rem;">Discover More</h3>
+            <p style="color: var(--text-light); margin-bottom: 1.5rem;">Explore hundreds of courses and educational articles across different fields</p>
+            <button class="discover-btn">Explore Now</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="logo" style="color: white; margin-bottom: 1rem;">
+                    <div class="logo-icon">E</div>
+                    EduSpark
+                </div>
+                <p style="color: rgba(255,255,255,0.7);">Making learning magical for students everywhere through the power of edtech</p>
+                <div class="social-links">
+                    <a href="#" class="social-icon">📘</a>
+                    <a href="#" class="social-icon">🐦</a>
+                    <a href="#" class="social-icon">📷</a>
+                    <a href="#" class="social-icon">💼</a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="#">Courses</a></li>
+                    <li><a href="#">Teachers</a></li>
+                    <li><a href="#">AI Assistant</a></li>
+                    <li><a href="#">Learning Path</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Success Stories</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">hello@eduspark.com</a></li>
+                    <li><a href="#">+1 (800) 555-1234</a></li>
+                    <li><a href="#">Silicon Valley, CA</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 EduSpark Platform. All rights reserved</p>
+            <p style="margin-top: 0.5rem;">
+                <a href="#" style="color: rgba(255,255,255,0.5); margin: 0 1rem;">Privacy Policy</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); margin: 0 1rem;">Terms of Service</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); margin: 0 1rem;">Cookie Policy</a>
+            </p>
+        </div>
+    </footer>
+    <script src="nav-handler.js"></script>
+    <script src="student.js"></script>
+</body>
+</html>

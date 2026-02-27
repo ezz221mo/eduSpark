@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Cart - Evolve</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo"><span class="logo-box">E</span> EVOLVE</a>
+        <a href="courses.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Courses
+        </a>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">Shopping Cart</h1>
+        
+        <div id="cart-items-container" class="cart-grid">
+            </div>
+
+        <div class="cart-summary" id="cart-summary">
+            <h3>Order Summary</h3>
+            <div class="summary-item"><span>Total items:</span> <span id="total-qty">0</span></div>
+            <div class="summary-item"><strong>Total Price:</strong> <strong id="total-price">0 EGP</strong></div>
+            <button class="checkout-btn">Proceed to Checkout <i class="fas fa-credit-card"></i></button>
+        </div>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('evolve_cart')) || [];
+        const container = document.getElementById('cart-items-container');
+        const summary = document.getElementById('cart-summary');
+
+        function displayCart() {
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart-msg">
+                        <i class="fas fa-shopping-basket"></i>
+                        <h2>Your cart is empty!</h2>
+                        <p>Start adding some amazing courses now.</p>
+                        <a href="courses.html" class="shop-now-btn">Explore Courses</a>
+                    </div>`;
+                summary.style.display = "none";
+                container.classList.add('empty-state');
+                return;
+            }
+
+            container.classList.remove('empty-state');
+            summary.style.display = "block";
+            
+            container.innerHTML = cart.map((item, index) => `
+                <div class="cart-item-card">
+                    <div class="item-img-wrapper">
+                        <img src="${item.image}" alt="">
+                        <button class="remove-item-overlay" onclick="removeFromCart(${index})" title="Remove Item">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="item-details">
+                        <h4>${item.title}</h4>
+                        <p><i class="fas fa-user-tie"></i> ${item.instructor}</p>
+                        <div class="price-tag">${item.price}</div>
+                    </div>
+                </div>
+            `).join('');
+            
+            updateSummary();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('evolve_cart', JSON.stringify(cart));
+            displayCart();
+        }
+
+        function updateSummary() {
+            const total = cart.reduce((sum, item) => {
+                const priceValue = parseInt(item.price.replace(/[^0-9]/g, ''));
+                return sum + priceValue;
+            }, 0);
+            document.getElementById('total-qty').innerText = cart.length;
+            document.getElementById('total-price').innerText = total + " EGP";
+        }
+
+        displayCart();
+    </script>
+</body>
+</html>
