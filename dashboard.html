@@ -1,80 +1,125 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <title>Evolve - Dashboard</title>
-</head>
-<body dir="ltr">
-    <!-- Navbar -->
-  <nav class="navbar">
-        <div class="navbar-brand">
-            <div class="logo">E</div>
-            <span class="brand-name">EVOLVE</span>
-        </div>
-        <ul class="navbar-menu">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="courses.html">Courses</a></li>
-            <li><a href="sparky.html">AI Assistant</a></li>
-            <li><a href="voice.html">Voice Assistant</a></li>
-            <li><a href="teachers.html">Teachers</a></li>
-            <li><a href="dashboard.html" style="color: #2e7d32; font-weight: 600;">Dashboards</a></li>
-        </ul>
-        <div class="navbar-actions">
-            <button class="btn-ask-sparky">
-                <span>🤖</span>
-                Ask Sparky
-            </button>
-        </div>
-    </nav>
+    <link rel="stylesheet" href="dashboard.css">
+    
 
-    <div class="dashboard-container">
-        <aside class="sidebar">
-            <div class="user-profile">
-                <div class="user-avatar">👤</div>
-                <div class="user-name" id="user-name-sidebar">Loading...</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <a href="index.html" class="logo-wrap">
+        <span class="logo-box">E</span> EVOLVE
+    </a>
+
+    <button class="menu-toggle" id="mobileMenuBtn" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <ul class="nav-links" id="navLinksDesktop">
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="courses.html"><i class="fas fa-book"></i> Courses</a></li>
+        <li><a href="sparky.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+        <li><a href="voice.html"><i class="fas fa-microphone"></i> Voice Assistant</a></li>
+        <li><a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+        <li><a href="dashboard.html" class="active"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+        <li>
+            <button class="nav-ask-sparky" onclick="window.location.href='sparky.html'">🤖 Ask Sparky</button>
+        </li>
+    </ul>
+</nav>
+
+<div class="mobile-nav-overlay" id="mobileOverlay"></div>
+
+<ul class="nav-links-mobile" id="navLinksMobile">
+    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+    <li><a href="courses.html"><i class="fas fa-book"></i> Courses</a></li>
+    <li><a href="sparky.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+    <li><a href="voice.html"><i class="fas fa-microphone"></i> Voice Assistant</a></li>
+    <li><a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+    <li><a href="dashboard.html" class="active"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+    <li><button class="mobile-sparky" onclick="window.location.href='sparky.html'">🤖 Ask Sparky</button></li>
+    <li><a href="sing.html" class="mobile-get-started">🚀 Get Started</a></li>
+</ul>
+
+<!-- DASHBOARD -->
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="user-profile">
+            <div class="user-avatar">🐱</div>
+            <div>
+                <div class="user-name" id="user-name-sidebar">mahmoud adel</div>
                 <div class="user-level" id="user-level">Level 1 Explorer</div>
                 <div class="user-xp" id="user-xp">0 / 1000 XP</div>
             </div>
-            
-            <ul class="sidebar-menu" id="main-nav-list">
-                <li>
-                    <a href="#" class="active">
-                        <span>📊</span>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>📚</span>
-                        <span>My Courses</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>🏆</span>
-                        <span>Achievements</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>🎯</span>
-                        <span>Learning Path</span>
-                    </a>
-                </li>
-                </ul>
-        </aside>
+        </div>
 
-        <main class="main-content">
+        <ul class="sidebar-menu" id="main-nav-list">
+            <li><a href="#" class="active" data-tab="dashboard"><span>📊</span><span>Dashboard</span></a></li>
+            <li><a href="#" data-tab="my-courses"><span>📚</span><span>My Courses</span></a></li>
+            <li><a href="#" data-tab="achievements"><span>🏆</span><span>Achievements</span></a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+
+        <!-- ══ TAB: DASHBOARD ══ -->
+        <div class="tab-panel active" id="tab-dashboard">
             <div class="welcome-section">
                 <div class="welcome-header">
                     <div class="welcome-text">
-                        <h1 id="user-name-welcome">Welcome back! 👋</h1>
+                        <h1 id="user-name-welcome">Welcome back, mahmoud! 👋</h1>
                         <p class="welcome-subtext">You're doing great. Keep going!</p>
                     </div>
                 </div>
-                
                 <div class="stats-row">
                     <div class="stat-card">
                         <div class="stat-icon">⏱️</div>
@@ -103,19 +148,14 @@
                             <span class="next-lesson-badge">🔔 Next Lesson</span>
                             <h3 class="lesson-title">Space Exploration: The Red Planet</h3>
                             <p class="lesson-subtitle">Lesson 4 of 12: Gravity and Rovers</p>
-                            
-                            <div class="lesson-progress">
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" id="main-progress-bar" style="width: 0%;"></div>
-                                    </div>
-                                    <span class="progress-percentage">45%</span>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 45%;"></div>
                                 </div>
+                                <span class="progress-percentage">45%</span>
                             </div>
-                            
                             <button class="btn-resume">
-                                <span>▶️</span>
-                                Resume Lesson
+                                <span>▶️</span> Resume Lesson
                             </button>
                         </div>
                     </div>
@@ -124,16 +164,14 @@
 
             <section class="suggestions-section">
                 <div class="suggestions-header">
-                    <h2 class="section-title" style="margin: 0;">✨ Sparky's Suggestions</h2>
+                    <h2 class="section-title" style="margin:0;">✨ Sparky's Suggestions</h2>
                 </div>
-                
                 <div class="suggestions-grid">
                     <div class="suggestion-card">
                         <h3 class="suggestion-title">Quick Challenge</h3>
                         <p class="suggestion-text">You're doing great with Science! Want to try a 5-minute quiz?</p>
                         <div class="suggestion-action">Let's do it! →</div>
                     </div>
-                    
                     <div class="suggestion-card">
                         <h3 class="suggestion-title">Review Topic</h3>
                         <p class="suggestion-text">Should we spend 10 minutes reviewing Multiplication?</p>
@@ -141,15 +179,431 @@
                     </div>
                 </div>
             </section>
-        </main>
-    </div>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+        </div>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-<script src="nav-handler.js"></script>
-<script src="evolve-web-app.js"></script>
-    <div class="spark-badge" onclick="openSparky()">⚡</div>
-    <script src="dashboard.js"></script>
+        <!-- ══ TAB: MY COURSES ══ -->
+        <div class="tab-panel" id="tab-my-courses">
+            <div class="courses-header">
+                <h2 class="section-title" style="margin:0;">📚 My Courses</h2>
+                <div class="courses-filter">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="in-progress">In Progress</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                    <button class="filter-btn" data-filter="not-started">Not Started</button>
+                </div>
+            </div>
+
+            <div class="courses-grid" id="courses-grid">
+
+                <!-- Course 1 -->
+                <div class="course-card" data-status="in-progress">
+                    <div class="course-thumbnail-placeholder" style="background: linear-gradient(135deg,#0d47a1,#1976d2);">🚀</div>
+                    <div class="course-body">
+                        <span class="course-category cat-science">Science</span>
+                        <div class="course-name">Space Exploration: The Red Planet</div>
+                        <div class="course-meta">
+                            <span>📖 12 Lessons</span>
+                            <span>⏱️ 4.5h total</span>
+                        </div>
+                        <div class="course-progress-wrap">
+                            <div class="course-progress-label"><span>Progress</span><span>45%</span></div>
+                            <div class="course-progress-bar"><div class="course-progress-fill" style="width:45%"></div></div>
+                        </div>
+                        <button class="btn-course resume">▶ Resume</button>
+                    </div>
+                </div>
+
+                <!-- Course 2 -->
+                <div class="course-card" data-status="in-progress">
+                    <div class="course-thumbnail-placeholder" style="background: linear-gradient(135deg,#e65100,#ff9800);">➕</div>
+                    <div class="course-body">
+                        <span class="course-category cat-math">Math</span>
+                        <div class="course-name">Advanced Multiplication & Division</div>
+                        <div class="course-meta">
+                            <span>📖 8 Lessons</span>
+                            <span>⏱️ 2h total</span>
+                        </div>
+                        <div class="course-progress-wrap">
+                            <div class="course-progress-label"><span>Progress</span><span>70%</span></div>
+                            <div class="course-progress-bar"><div class="course-progress-fill" style="width:70%"></div></div>
+                        </div>
+                        <button class="btn-course resume">▶ Resume</button>
+                    </div>
+                </div>
+
+                <!-- Course 3 -->
+                <div class="course-card" data-status="completed">
+                    <div class="completed-badge">✅ Done</div>
+                    <div class="course-thumbnail-placeholder" style="background: linear-gradient(135deg,#1b5e20,#43a047);">🌿</div>
+                    <div class="course-body">
+                        <span class="course-category cat-science">Science</span>
+                        <div class="course-name">Introduction to Plants & Ecosystems</div>
+                        <div class="course-meta">
+                            <span>📖 6 Lessons</span>
+                            <span>⏱️ 1.5h total</span>
+                        </div>
+                        <div class="course-progress-wrap">
+                            <div class="course-progress-label"><span>Completed!</span><span>100%</span></div>
+                            <div class="course-progress-bar"><div class="course-progress-fill completed" style="width:100%"></div></div>
+                        </div>
+                        <button class="btn-course review">🔁 Review Again</button>
+                    </div>
+                </div>
+
+                <!-- Course 4 -->
+                <div class="course-card" data-status="completed">
+                    <div class="completed-badge">✅ Done</div>
+                    <div class="course-thumbnail-placeholder" style="background: linear-gradient(135deg,#880e4f,#e91e63);">📖</div>
+                    <div class="course-body">
+                        <span class="course-category cat-language">Language</span>
+                        <div class="course-name">Reading Comprehension — Level 1</div>
+                        <div class="course-meta">
+                            <span>📖 10 Lessons</span>
+                            <span>⏱️ 3h total</span>
+                        </div>
+                        <div class="course-progress-wrap">
+                            <div class="course-progress-label"><span>Completed!</span><span>100%</span></div>
+                            <div class="course-progress-bar"><div class="course-progress-fill completed" style="width:100%"></div></div>
+                        </div>
+                        <button class="btn-course review">🔁 Review Again</button>
+                    </div>
+                </div>
+
+                <!-- Course 5 -->
+                <div class="course-card" data-status="not-started">
+                    <div class="course-thumbnail-placeholder" style="background: linear-gradient(135deg,#4a148c,#9c27b0);">🏛️</div>
+                    <div class="course-body">
+                        <span class="course-category cat-history">History</span>
+                        <div class="course-name">Ancient Civilizations: Egypt & Mesopotamia</div>
+                        <div class="course-meta">
+                            <span>📖 9 Lessons</span>
+                            <span>⏱️ 2.5h total</span>
+                        </div>
+                        <div class="course-progress-wrap">
+                            <div class="course-progress-label"><span>Not started yet</span><span>0%</span></div>
+                            <div class="course-progress-bar"><div class="course-progress-fill not-started" style="width:0%"></div></div>
+                        </div>
+                        <button class="btn-course start">🚀 Start Now</button>
+                    </div>
+                </div>
+
+                <!-- Course 6 -->
+                <div class="course-card" data-status="not-started">
+                    <div class="course-thumbnail-placeholder" style="background: linear-gradient(135deg,#1b5e20,#76c442);">🎨</div>
+                    <div class="course-body">
+                        <span class="course-category cat-art">Art</span>
+                        <div class="course-name">Creative Drawing for Kids</div>
+                        <div class="course-meta">
+                            <span>📖 7 Lessons</span>
+                            <span>⏱️ 2h total</span>
+                        </div>
+                        <div class="course-progress-wrap">
+                            <div class="course-progress-label"><span>Not started yet</span><span>0%</span></div>
+                            <div class="course-progress-bar"><div class="course-progress-fill not-started" style="width:0%"></div></div>
+                        </div>
+                        <button class="btn-course start">🚀 Start Now</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ══ TAB: ACHIEVEMENTS ══ -->
+        <div class="tab-panel" id="tab-achievements">
+
+            <!-- Summary Banner -->
+            <div class="achievements-top">
+                <div class="achievements-trophy-big">🏆</div>
+                <div class="achievements-summary">
+                    <h2>Great work, mahmoud!</h2>
+                    <p>You've earned 8 badges and completed 2 courses so far. Keep pushing!</p>
+                    <div class="xp-bar-wrap">
+                        <div class="xp-bar-label"><span>XP Progress to Level 2</span><span>480 / 1000</span></div>
+                        <div class="xp-bar"><div class="xp-bar-fill" style="width: 48%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Earned Badges -->
+            <div class="achievements-section-title">🎖️ Earned Badges</div>
+            <div class="badges-grid">
+
+                <div class="badge-card gold">
+                    <span class="badge-emoji">⭐</span>
+                    <div class="badge-name">First Star</div>
+                    <div class="badge-desc">Completed your very first lesson</div>
+                    <div class="badge-date">Earned: Jan 5, 2026</div>
+                </div>
+
+                <div class="badge-card green">
+                    <span class="badge-emoji">🌱</span>
+                    <div class="badge-name">Sprout</div>
+                    <div class="badge-desc">Finished 3 lessons in a row</div>
+                    <div class="badge-date">Earned: Jan 10, 2026</div>
+                </div>
+
+                <div class="badge-card blue">
+                    <span class="badge-emoji">🔥</span>
+                    <div class="badge-name">On Fire</div>
+                    <div class="badge-desc">7-day learning streak</div>
+                    <div class="badge-date">Earned: Jan 18, 2026</div>
+                </div>
+
+                <div class="badge-card silver">
+                    <span class="badge-emoji">📚</span>
+                    <div class="badge-name">Bookworm</div>
+                    <div class="badge-desc">Completed first full course</div>
+                    <div class="badge-date">Earned: Feb 2, 2026</div>
+                </div>
+
+                <div class="badge-card bronze">
+                    <span class="badge-emoji">🧪</span>
+                    <div class="badge-name">Science Whiz</div>
+                    <div class="badge-desc">Scored 90%+ on a Science quiz</div>
+                    <div class="badge-date">Earned: Feb 14, 2026</div>
+                </div>
+
+                <div class="badge-card purple">
+                    <span class="badge-emoji">🧠</span>
+                    <div class="badge-name">Brain Power</div>
+                    <div class="badge-desc">Answered 50 questions correctly</div>
+                    <div class="badge-date">Earned: Feb 20, 2026</div>
+                </div>
+
+                <div class="badge-card gold">
+                    <span class="badge-emoji">🚀</span>
+                    <div class="badge-name">Explorer</div>
+                    <div class="badge-desc">Enrolled in 4 different courses</div>
+                    <div class="badge-date">Earned: Mar 1, 2026</div>
+                </div>
+
+                <div class="badge-card green">
+                    <span class="badge-emoji">💬</span>
+                    <div class="badge-name">Sparky's Pal</div>
+                    <div class="badge-desc">Asked Sparky 10 questions</div>
+                    <div class="badge-date">Earned: Mar 2, 2026</div>
+                </div>
+
+            </div>
+
+            <!-- Locked Badges -->
+            <div class="achievements-section-title">🔒 Locked Badges</div>
+            <div class="badges-grid">
+
+                <div class="badge-card gold locked">
+                    <i class="fas fa-lock lock-icon"></i>
+                    <span class="badge-emoji">🌟</span>
+                    <div class="badge-name">Superstar</div>
+                    <div class="badge-desc">Complete 5 courses to unlock</div>
+                </div>
+
+                <div class="badge-card blue locked">
+                    <i class="fas fa-lock lock-icon"></i>
+                    <span class="badge-emoji">⚡</span>
+                    <div class="badge-name">Speed Learner</div>
+                    <div class="badge-desc">Finish a course in under 2 days</div>
+                </div>
+
+                <div class="badge-card purple locked">
+                    <i class="fas fa-lock lock-icon"></i>
+                    <span class="badge-emoji">🏅</span>
+                    <div class="badge-name">Math Champion</div>
+                    <div class="badge-desc">Score 100% on 3 Math quizzes</div>
+                </div>
+
+                <div class="badge-card silver locked">
+                    <i class="fas fa-lock lock-icon"></i>
+                    <span class="badge-emoji">🌍</span>
+                    <div class="badge-name">World Scholar</div>
+                    <div class="badge-desc">Complete a History course</div>
+                </div>
+
+            </div>
+
+            <!-- Milestones -->
+            <div class="achievements-section-title" style="margin-top:10px;">📍 Milestones</div>
+            <div class="milestones-list">
+
+                <div class="milestone-item">
+                    <div class="milestone-icon done">✅</div>
+                    <div class="milestone-info">
+                        <div class="milestone-title">First Lesson Completed</div>
+                        <div class="milestone-desc">You started your learning journey!</div>
+                    </div>
+                    <span class="milestone-status done">Done</span>
+                </div>
+
+                <div class="milestone-item">
+                    <div class="milestone-icon done">✅</div>
+                    <div class="milestone-info">
+                        <div class="milestone-title">First Course Finished</div>
+                        <div class="milestone-desc">Completed "Introduction to Plants & Ecosystems"</div>
+                    </div>
+                    <span class="milestone-status done">Done</span>
+                </div>
+
+                <div class="milestone-item">
+                    <div class="milestone-icon done">✅</div>
+                    <div class="milestone-info">
+                        <div class="milestone-title">7-Day Streak</div>
+                        <div class="milestone-desc">Logged in and learned for 7 days in a row</div>
+                    </div>
+                    <span class="milestone-status done">Done</span>
+                </div>
+
+                <div class="milestone-item">
+                    <div class="milestone-icon pending">⏳</div>
+                    <div class="milestone-info">
+                        <div class="milestone-title">Complete 3 Courses</div>
+                        <div class="milestone-desc">You've finished 2 out of 3 required courses</div>
+                    </div>
+                    <span class="milestone-status progress">2 / 3</span>
+                </div>
+
+                <div class="milestone-item">
+                    <div class="milestone-icon pending">⏳</div>
+                    <div class="milestone-info">
+                        <div class="milestone-title">Reach Level 2</div>
+                        <div class="milestone-desc">Earn 1000 XP to level up — you're almost there!</div>
+                    </div>
+                    <span class="milestone-status progress">480 XP</span>
+                </div>
+
+                <div class="milestone-item">
+                    <div class="milestone-icon pending">🔒</div>
+                    <div class="milestone-info">
+                        <div class="milestone-title">30-Day Streak</div>
+                        <div class="milestone-desc">Keep learning every day for 30 consecutive days</div>
+                    </div>
+                    <span class="milestone-status pending">Locked</span>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<!-- Spark Badge -->
+<div class="spark-badge" onclick="window.location.href='sparky.html'">🤖</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-column">
+            <div class="footer-logo"><span class="footer-logo-icon">E</span> EVOLVE</div>
+            <p class="footer-description">Making learning magical for the next generation of creators, scientists, and leaders through the power of AI.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+        <div class="footer-column">
+            <h4>Platform</h4>
+            <ul>
+                <li><a href="#">Courses</a></li>
+                <li><a href="#">Teachers</a></li>
+                <li><a href="#">AI Assistant</a></li>
+                <li><a href="#">Learning Path</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#">Articles</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Success Stories</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Support</h4>
+            <ul class="contact-info">
+                <li><i class="fas fa-envelope"></i> hello@eduspark.com</li>
+                <li><i class="fas fa-phone"></i> +1 (555) 000-1234</li>
+                <li><i class="fas fa-map-marker-alt"></i> Silicon Valley, CA</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2026 EduSpark Platform. All rights reserved.</p>
+        <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // ══ MOBILE MENU ══
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinksMobile = document.getElementById('navLinksMobile');
+    const mobileOverlay  = document.getElementById('mobileOverlay');
+    const menuIcon = mobileMenuBtn.querySelector('i');
+
+    function openMenu() {
+        navLinksMobile.classList.add('open');
+        mobileOverlay.classList.add('open');
+        menuIcon.classList.replace('fa-bars','fa-times');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+        navLinksMobile.classList.remove('open');
+        mobileOverlay.classList.remove('open');
+        menuIcon.classList.replace('fa-times','fa-bars');
+        document.body.style.overflow = '';
+    }
+    mobileMenuBtn.addEventListener('click', () => navLinksMobile.classList.contains('open') ? closeMenu() : openMenu());
+    mobileOverlay.addEventListener('click', closeMenu);
+    document.querySelectorAll('#navLinksMobile a, #navLinksMobile button').forEach(el => el.addEventListener('click', closeMenu));
+
+    // ══ TAB SWITCHING ══
+    const sidebarLinks = document.querySelectorAll('.sidebar-menu a[data-tab]');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetTab = this.dataset.tab;
+
+            // Update sidebar active state
+            sidebarLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+
+            // Show correct tab
+            tabPanels.forEach(panel => panel.classList.remove('active'));
+            document.getElementById('tab-' + targetTab).classList.add('active');
+
+            // Scroll to top of content
+            document.querySelector('.main-content').scrollTop = 0;
+        });
+    });
+
+    // ══ COURSES FILTER ══
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const courseCards = document.querySelectorAll('.course-card');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            const filter = this.dataset.filter;
+
+            courseCards.forEach(card => {
+                if (filter === 'all' || card.dataset.status === filter) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeIn 0.3s ease';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

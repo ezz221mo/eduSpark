@@ -3,30 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduSpark – Prof. Alex Chen | Expert Educator</title>
+    <title>Evolve – Prof. Alex Chen | Expert Educator</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="profile_teacher.css">
+    
+
+
+
+
+
 </head>
 <body>
 
-<nav>
-    <a href="index.html" class="logo">
-        <div class="logo-icon">✦</div>
-        EduSpark
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar">
+    <a href="index.html" class="logo-wrap">
+        <span class="logo-box">E</span> EVOLVE
     </a>
-    <div class="nav-links">
-        <a href="index.html" class="nav-tab">Home</a>
-        <a href="courses.html" class="nav-tab">Courses</a>
-        <a href="sparky.html" class="nav-tab">AI <span class="nav-badge">New</span></a>
-        <a href="voice.html" class="nav-tab">Voice</a>
-        <a href="profile_teacher.html" class="nav-tab active">View Profile</a>
-    </div>
-    
-    <div class="nav-right">
-        <button class="btn-schedule" id="headerSchedule">📅 Schedule</button>
-    </div>
+
+    <button class="menu-toggle" id="mobileMenuBtn" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <ul class="nav-links">
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="courses.html"><i class="fas fa-book"></i> Courses</a></li>
+        <li><a href="sparky.html"><i class="fas fa-robot"></i> AI Assistant <span class="nav-badge">New</span></a></li>
+        <li><a href="voice.html"><i class="fas fa-microphone"></i> Voice Assistant</a></li>
+        <li><a href="teachers.html" class="active"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+        <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+        <li>
+            <button class="nav-ask-sparky" onclick="window.location.href='sparky.html'">
+                🤖 Ask Sparky
+            </button>
+        </li>
+    </ul>
+
+    <button class="nav-schedule" id="headerSchedule" style="margin-left:12px;">📅 Schedule</button>
 </nav>
 
+<!-- Mobile overlay -->
+<div class="mobile-nav-overlay" id="mobileOverlay"></div>
+
+<!-- Mobile menu -->
+<ul class="nav-links-mobile" id="navLinksMobile">
+    <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+    <li><a href="courses.html"><i class="fas fa-book"></i> Courses</a></li>
+    <li><a href="sparky.html"><i class="fas fa-robot"></i> AI Assistant</a></li>
+    <li><a href="voice.html"><i class="fas fa-microphone"></i> Voice Assistant</a></li>
+    <li><a href="teachers.html" class="active"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+    <li><a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a></li>
+    <li><button class="mobile-sparky" onclick="window.location.href='sparky.html'">🤖 Ask Sparky</button></li>
+    <li><button class="mobile-schedule" id="mobileScheduleBtn">📅 Schedule</button></li>
+</ul>
+
+<!-- ══ MAIN LAYOUT ══ -->
 <div class="container">
 
     <aside class="sidebar">
@@ -37,7 +69,7 @@
             </div>
             <h1 class="profile-name">Prof. Alex Chen</h1>
             <div class="profile-role">Computer Science Expert</div>
-            
+
             <div class="stats">
                 <div>
                     <span class="stat-num">2.5K</span>
@@ -52,7 +84,7 @@
                     <span class="stat-label">Courses</span>
                 </div>
             </div>
-            
+
             <button class="btn-book" id="bookClassBtn">📅 Book a Class</button>
             <button class="btn-msg" id="messageBtn">✉️ Message</button>
         </div>
@@ -75,12 +107,13 @@
 
     <main class="main">
 
+        <!-- About -->
         <section class="card">
             <h2>About Me</h2>
             <p>Hello! I'm Alex, a former full-stack developer turned educator. I believe that coding is the new literacy and every child should understand the logic behind the technology they use every day.</p>
             <br>
-            <p>My teaching style is project-based and interactive. We won't just memorize syntax, we'll build games, websites, and solve real-world problems. I have over 10 years of experience in the tech industry working for companies like Google.</p>
-            
+            <p>My teaching style is project-based and interactive. We won't just memorize syntax — we'll build games, websites, and solve real-world problems. I have over 10 years of experience in the tech industry working for companies like Google.</p>
+
             <div class="cert-section">
                 <div class="cert-title">Certifications & Education</div>
                 <div class="cert-item">
@@ -100,6 +133,7 @@
             </div>
         </section>
 
+        <!-- Courses -->
         <section class="card">
             <div class="card-header">
                 <h2>My Courses</h2>
@@ -107,8 +141,8 @@
             </div>
             <div class="courses-grid">
                 <div class="course-card">
-                    <div class="course-img">
-                        🐍 <span class="badge">Beginner</span>
+                    <div class="course-img" style="background: linear-gradient(135deg,#1a2e1a,#2d5a27);">
+                        🐍 <span class="course-badge">Beginner</span>
                     </div>
                     <div class="course-body">
                         <div class="course-title">Introduction to Python for Kids</div>
@@ -123,8 +157,8 @@
                     </div>
                 </div>
                 <div class="course-card">
-                    <div class="course-img" style="background: linear-gradient(135deg, #1a1a2e, #16213e);">
-                        💻 <span class="badge">Beginner</span>
+                    <div class="course-img" style="background: linear-gradient(135deg,#1a1a2e,#16213e);">
+                        💻 <span class="course-badge">Beginner</span>
                     </div>
                     <div class="course-body">
                         <div class="course-title">Web Development Basics for Kids</div>
@@ -141,16 +175,37 @@
             </div>
         </section>
 
+        <!-- Reviews -->
         <section class="card" id="reviewsSection">
             <div class="card-header">
                 <h2>Student Reviews</h2>
                 <button class="view-all" id="writeReviewBtn">+ Write a Review</button>
             </div>
 
+            <!-- Write Review Form -->
+            <div class="review-form" id="reviewForm">
+                <p style="font-size:13px;font-weight:600;color:var(--text-main);margin-bottom:10px;">Share your experience with Prof. Alex Chen</p>
+                <div style="display:flex;gap:8px;margin-bottom:12px;">
+                    <span style="font-size:13px;color:var(--text-muted);">Rating:</span>
+                    <div id="starRating" style="display:flex;gap:4px;cursor:pointer;">
+                        <span class="star-btn" data-v="1" style="font-size:18px;color:#d1d5db;">★</span>
+                        <span class="star-btn" data-v="2" style="font-size:18px;color:#d1d5db;">★</span>
+                        <span class="star-btn" data-v="3" style="font-size:18px;color:#d1d5db;">★</span>
+                        <span class="star-btn" data-v="4" style="font-size:18px;color:#d1d5db;">★</span>
+                        <span class="star-btn" data-v="5" style="font-size:18px;color:#d1d5db;">★</span>
+                    </div>
+                </div>
+                <textarea id="reviewText" placeholder="Write your review here..."></textarea>
+                <div class="review-form-footer">
+                    <button class="btn-cancel" id="cancelReview">Cancel</button>
+                    <button class="btn-submit" id="submitReview">Submit Review</button>
+                </div>
+            </div>
+
             <div id="reviewsContainer">
                 <div class="review-item">
                     <div class="review-header">
-                        <div class="r-avatar" style="background: linear-gradient(135deg, #f59e0b, #ef4444);">E</div>
+                        <div class="r-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">E</div>
                         <div>
                             <div class="r-name">Emily R.</div>
                             <div class="stars" style="font-size:12px;">★★★★★</div>
@@ -162,7 +217,7 @@
 
                 <div class="review-item">
                     <div class="review-header">
-                        <div class="r-avatar" style="background: linear-gradient(135deg, #8b5cf6, #3b82f6);">M</div>
+                        <div class="r-avatar" style="background:linear-gradient(135deg,#8b5cf6,#3b82f6);">M</div>
                         <div>
                             <div class="r-name">Michael T.</div>
                             <div class="stars" style="font-size:12px;">★★★★★</div>
@@ -177,78 +232,152 @@
     </main>
 </div>
 
+<!-- ══ FOOTER ══ -->
 <footer>
-  <div class="footer-grid">
-
-    <div>
-      <div class="footer-logo">
-        <div class="footer-logo-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    <div class="footer-container">
+        <div class="footer-col">
+            <div class="footer-logo-row">
+                <span class="footer-logo-box">E</span> EVOLVE
+            </div>
+            <p class="footer-description">Making learning magical for the next generation of creators, scientists, and leaders through the power of AI.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
         </div>
-        <span class="footer-logo-text">EduSpark</span>
-      </div>
-      <p class="footer-desc">Making learning magical for the next generation of creators, scientists, and leaders through the power of AI.</p>
+        <div class="footer-col">
+            <h4>Platform</h4>
+            <ul>
+                <li><a href="#">Courses</a></li>
+                <li><a href="#">Teachers</a></li>
+                <li><a href="#">AI Assistant</a></li>
+                <li><a href="#">Learning Path</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="#">Articles</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Success Stories</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Support</h4>
+            <ul class="contact-info">
+                <li><i class="fas fa-envelope"></i> hello@eduspark.com</li>
+                <li><i class="fas fa-phone"></i> +1 (555) 000-1234</li>
+                <li><i class="fas fa-map-marker-alt"></i> Silicon Valley, CA</li>
+            </ul>
+        </div>
     </div>
-
-    <div>
-      <div class="footer-heading">Platform</div>
-      <a class="footer-link">Courses</a>
-      <a class="footer-link">Teachers</a>
-      <a class="footer-link">AI Assistant</a>
-      <a class="footer-link">Learning Path</a>
+    <div class="footer-bottom">
+        <p>© 2026 Evolve Platform. All rights reserved.</p>
+        <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+        </div>
     </div>
-
-    <div>
-      <div class="footer-heading">Company</div>
-      <a class="footer-link">Articles</a>
-      <a class="footer-link">About Us</a>
-      <a class="footer-link">Success Stories</a>
-      <a class="footer-link">Contact</a>
-    </div>
-
-    <div>
-      <div class="footer-heading">Support</div>
-      <div class="footer-contact">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        hello@eduspark.com
-      </div>
-      <div class="footer-contact">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.07 1.18 2 2 0 012.06 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
-        +1 (555) 000-1234
-      </div>
-      <div class="footer-contact">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        Silicon Valley, CA
-      </div>
-    </div>
-
-  </div>
-
-  <div class="footer-bottom">
-    <span>© 2024 EduSpark. All rights reserved.</span>
-    <div class="footer-socials">
-      <div class="social-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-      </div>
-      <div class="social-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
-      </div>
-      <div class="social-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-      </div>
-      <div class="social-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-      </div>
-    </div>
-    <div style="display:flex;gap:16px;">
-      <a class="footer-link" style="display:inline;margin:0;">Privacy Policy</a>
-      <a class="footer-link" style="display:inline;margin:0;">Terms of Service</a>
-      <a class="footer-link" style="display:inline;margin:0;">Cookie Policy</a>
-    </div>
-  </div>
 </footer>
 
-<script src="profile_teacher.js"></script>
+<script>
+    // ══ MOBILE MENU ══
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinksMobile = document.getElementById('navLinksMobile');
+    const mobileOverlay  = document.getElementById('mobileOverlay');
+    const menuIcon = mobileMenuBtn.querySelector('i');
+
+    function openMenu() {
+        navLinksMobile.classList.add('open');
+        mobileOverlay.classList.add('open');
+        menuIcon.classList.replace('fa-bars','fa-times');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+        navLinksMobile.classList.remove('open');
+        mobileOverlay.classList.remove('open');
+        menuIcon.classList.replace('fa-times','fa-bars');
+        document.body.style.overflow = '';
+    }
+    mobileMenuBtn.addEventListener('click', () => navLinksMobile.classList.contains('open') ? closeMenu() : openMenu());
+    mobileOverlay.addEventListener('click', closeMenu);
+    document.querySelectorAll('#navLinksMobile a, #navLinksMobile button').forEach(el => el.addEventListener('click', closeMenu));
+
+    // ══ WRITE REVIEW ══
+    const writeReviewBtn = document.getElementById('writeReviewBtn');
+    const reviewForm     = document.getElementById('reviewForm');
+    const cancelReview   = document.getElementById('cancelReview');
+    const submitReview   = document.getElementById('submitReview');
+    const reviewText     = document.getElementById('reviewText');
+    const reviewsContainer = document.getElementById('reviewsContainer');
+
+    let selectedStars = 0;
+    const starBtns = document.querySelectorAll('.star-btn');
+
+    starBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            selectedStars = parseInt(this.dataset.v);
+            starBtns.forEach(s => {
+                s.style.color = parseInt(s.dataset.v) <= selectedStars ? '#f59e0b' : '#d1d5db';
+            });
+        });
+    });
+
+    writeReviewBtn.addEventListener('click', () => {
+        reviewForm.classList.toggle('open');
+        writeReviewBtn.textContent = reviewForm.classList.contains('open') ? '✕ Close' : '+ Write a Review';
+    });
+
+    cancelReview.addEventListener('click', () => {
+        reviewForm.classList.remove('open');
+        writeReviewBtn.textContent = '+ Write a Review';
+        reviewText.value = '';
+        selectedStars = 0;
+        starBtns.forEach(s => s.style.color = '#d1d5db');
+    });
+
+    submitReview.addEventListener('click', () => {
+        const text = reviewText.value.trim();
+        if (!text) { reviewText.style.borderColor = '#ef4444'; return; }
+        reviewText.style.borderColor = '';
+
+        const stars = selectedStars > 0 ? '★'.repeat(selectedStars) + '☆'.repeat(5 - selectedStars) : '★★★★★';
+        const avatarColors = [
+            'linear-gradient(135deg,#89b084,#4caf50)',
+            'linear-gradient(135deg,#f59e0b,#ef4444)',
+            'linear-gradient(135deg,#8b5cf6,#3b82f6)',
+            'linear-gradient(135deg,#06b6d4,#0ea5e9)',
+        ];
+        const color = avatarColors[Math.floor(Math.random() * avatarColors.length)];
+        const initials = 'Y'; // "You"
+
+        const newReview = document.createElement('div');
+        newReview.className = 'review-item';
+        newReview.style.animation = 'fadeUp 0.3s ease';
+        newReview.innerHTML = `
+            <div class="review-header">
+                <div class="r-avatar" style="background:${color};">${initials}</div>
+                <div>
+                    <div class="r-name">You</div>
+                    <div class="stars" style="font-size:12px;color:#f59e0b;">${stars}</div>
+                </div>
+                <div class="r-time">Just now</div>
+            </div>
+            <div class="r-text">"${text}"</div>
+        `;
+        reviewsContainer.prepend(newReview);
+
+        reviewText.value = '';
+        selectedStars = 0;
+        starBtns.forEach(s => s.style.color = '#d1d5db');
+        reviewForm.classList.remove('open');
+        writeReviewBtn.textContent = '+ Write a Review';
+    });
+</script>
 
 </body>
 </html>

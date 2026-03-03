@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduSpark – Checkout</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --primary-green: #89b084;
+  --primary-green-dark: #6e9b73;
+  --bg-main: #f9f8f3;
+  --bg-card: #ffffff;
+  --bg-soft: #eef3ee;
+  --text-main: #333333;
+  --text-muted: #6b7280;
+  --text-invert: #ffffff;
+  --border-color: #e5e7eb;
+  --shadow-soft: 0 10px 30px rgba(0,0,0,0.08);
+  --radius: 20px;
+  --radius-sm: 12px;
+}
+[data-theme="dark"] {
+  --primary-green: #8fd3a5;
+  --primary-green-dark: #5fa37a;
+  --bg-main: #0f172a;
+  --bg-card: #111827;
+  --bg-soft: #1f2933;
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+  --text-invert: #020617;
+  --border-color: #1f2937;
+  --shadow-soft: 0 20px 50px rgba(0,0,0,0.6);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg-main);color:var(--text-main);min-height:100vh;line-height:1.6;transition:background .3s,color .3s;}
+
+/* NAV */
+nav{display:flex;justify-content:space-between;align-items:center;padding:12px 5%;background:var(--bg-card);position:sticky;top:0;z-index:1000;border-bottom:1px solid var(--border-color);box-shadow:0 2px 12px rgba(0,0,0,0.04);transition:background .3s;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-box{background:var(--primary-green);color:#fff;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;}
+.logo-text{font-size:20px;font-weight:700;color:var(--text-main);}
+.nav-links{display:flex;gap:6px;align-items:center;list-style:none;}
+.nav-links a{text-decoration:none;color:var(--text-muted);font-size:14px;font-weight:500;padding:8px 14px;border-radius:var(--radius-sm);transition:all .2s;}
+.nav-links a:hover{color:var(--primary-green);background:var(--bg-soft);}
+.nav-right{display:flex;align-items:center;gap:8px;}
+.role-tag{font-size:12px;padding:4px 10px;border-radius:20px;border:1px solid var(--border-color);color:var(--text-muted);cursor:pointer;transition:all .2s;}
+.role-tag:hover{border-color:var(--primary-green);color:var(--primary-green);}
+.btn-login{background:var(--primary-green);color:#fff;border:none;padding:9px 22px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all .3s;}
+.btn-login:hover{background:var(--primary-green-dark);transform:translateY(-2px);}
+.theme-btn{background:var(--bg-soft);border:1px solid var(--border-color);color:var(--text-muted);width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.theme-btn:hover{background:var(--border-color);}
+.menu-toggle{display:none;background:none;border:1px solid var(--border-color);color:var(--text-muted);padding:8px 12px;border-radius:var(--radius-sm);cursor:pointer;font-size:18px;}
+
+/* MAIN */
+main{max-width:1000px;margin:0 auto;padding:40px 5% 60px;}
+
+.breadcrumb{font-size:13px;color:var(--primary-green);margin-bottom:16px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:500;transition:opacity .2s;}
+.breadcrumb:hover{opacity:.75;}
+
+main h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:32px;color:var(--text-main);}
+
+.checkout-grid{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;}
+
+/* CARD */
+.card{background:var(--bg-card);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow-soft);border:1px solid var(--border-color);animation:fadeInUp .45s ease both;}
+.card:nth-child(2){animation-delay:.1s;}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+.card h2{font-size:16px;font-weight:600;margin-bottom:22px;color:var(--text-main);}
+
+.card-icons{display:flex;gap:8px;margin-bottom:22px;}
+.card-badge{width:46px;height:30px;border:1.5px solid var(--border-color);border-radius:8px;display:grid;place-items:center;font-size:10px;font-weight:700;background:var(--bg-soft);color:#1434CB;}
+.card-badge.mc{color:#EB001B;}
+
+/* FORM */
+.form-group{margin-bottom:18px;}
+label{display:block;font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:7px;text-transform:uppercase;letter-spacing:.05em;}
+input[type="text"]{width:100%;padding:13px 16px;border:1.5px solid var(--border-color);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:14px;color:var(--text-main);background:var(--bg-main);outline:none;transition:border-color .2s,box-shadow .2s;}
+input[type="text"]:focus{border-color:var(--primary-green);box-shadow:0 0 0 3px rgba(137,176,132,.15);}
+input::placeholder{color:var(--border-color);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+.secure-note{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);margin:16px 0 22px;background:var(--bg-soft);padding:10px 14px;border-radius:var(--radius-sm);}
+.secure-note i{color:var(--primary-green);}
+
+.btn-complete{width:100%;background:var(--primary-green);color:#fff;border:none;padding:16px;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .3s;letter-spacing:.01em;position:relative;overflow:hidden;}
+.btn-complete:hover{background:var(--primary-green-dark);transform:translateY(-3px);box-shadow:0 10px 25px rgba(137,176,132,.35);}
+.btn-complete:active{transform:scale(.99);}
+
+/* ORDER SUMMARY */
+.order-item{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px;}
+.order-thumb{width:64px;height:64px;border-radius:var(--radius-sm);flex-shrink:0;background:linear-gradient(135deg,#1a1a2e,#2d4a7a);display:grid;place-items:center;color:var(--primary-green);font-size:10px;font-weight:700;text-align:center;padding:8px;line-height:1.3;}
+.order-info h3{font-size:14px;font-weight:600;line-height:1.4;margin-bottom:4px;color:var(--text-main);}
+.order-info p{font-size:12px;color:var(--text-muted);}
+
+.divider{border:none;border-top:1px solid var(--border-color);margin:16px 0;}
+
+.price-row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:10px;color:var(--text-muted);}
+.price-row.discount{color:var(--primary-green);font-weight:500;}
+.price-row.total{font-weight:700;font-size:16px;color:var(--text-main);margin-bottom:0;}
+
+/* TRUST BADGES */
+.trust-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
+.trust-badge{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted);background:var(--bg-soft);padding:6px 12px;border-radius:20px;}
+.trust-badge i{color:var(--primary-green);font-size:12px;}
+
+/* FOOTER */
+footer{background:var(--bg-card);border-top:1px solid var(--border-color);padding:50px 5% 25px;margin-top:20px;}
+.footer-grid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:35px;}
+.footer-brand p{font-size:14px;color:var(--text-muted);line-height:1.7;margin-top:12px;max-width:240px;}
+.footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.footer-col h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;color:var(--text-main);}
+.footer-col ul{list-style:none;}
+.footer-col ul li{margin-bottom:10px;}
+.footer-col ul li a{font-size:14px;color:var(--text-muted);text-decoration:none;transition:color .2s;}
+.footer-col ul li a:hover{color:var(--primary-green);}
+.footer-bottom{max-width:1000px;margin:0 auto;padding-top:20px;border-top:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text-muted);flex-wrap:wrap;gap:12px;}
+.footer-legal{display:flex;gap:18px;flex-wrap:wrap;}
+.footer-legal a{color:var(--text-muted);text-decoration:none;transition:color .2s;}
+.footer-legal a:hover{color:var(--primary-green);}
+
+/* RIPPLE */
+button{position:relative;overflow:hidden;}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);transform:scale(0);animation:ripple-anim .55s ease-out forwards;pointer-events:none;}
+@keyframes ripple-anim{to{transform:scale(4);opacity:0;}}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .checkout-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:768px){
+  nav{padding:12px 4%;}
+  .nav-links,.nav-right .role-tag{display:none;}
+  .menu-toggle{display:block;}
+  main{padding:28px 4% 50px;}
+  footer{padding:35px 4% 20px;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;}
+}
+@media(max-width:480px){
+  .footer-grid{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .card{padding:22px;}
+  main h1{font-size:1.4rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-box"><i class="fas fa-book-open"></i></div>
+    <span class="logo-text">EVOLVE</span>
+  </a>
+  <button class="menu-toggle" id="menuToggle">&#9776;</button>
+  <ul class="nav-links" id="mainNav">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Courses</a></li>
+    <li><a href="#">AI</a></li>
+    <li><a href="#">Voice</a></li>
+  </ul>
+ 
+    <button class="theme-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main>
+  <div class="breadcrumb"><i class="fas fa-arrow-left"></i> Back to Course</div>
+  <h1>Checkout</h1>
+
+  <div class="checkout-grid">
+
+    <!-- Payment Form -->
+    <div class="card">
+      <h2>Payment Method</h2>
+      <div class="card-icons">
+        <div class="card-badge">VISA</div>
+        <div class="card-badge mc">MC</div>
+      </div>
+
+      <div class="form-group">
+        <label>Name on Card</label>
+        <input type="text" placeholder="John Doe">
+      </div>
+      <div class="form-group">
+        <label>Card Number</label>
+        <input type="text" placeholder="0000 - 0000 - 0000 - 0000" maxlength="19">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Expiry Date</label>
+          <input type="text" placeholder="MM / YY">
+        </div>
+        <div class="form-group">
+          <label>CVC / CVV</label>
+          <input type="text" placeholder="123" maxlength="3">
+        </div>
+      </div>
+
+      <div class="secure-note">
+        <i class="fas fa-lock"></i>
+        Your payment information is encrypted and secure.
+      </div>
+
+      <button class="btn-complete">Complete Purchase — $49.99</button>
+
+      <div class="trust-badges">
+        <div class="trust-badge"><i class="fas fa-shield-halved"></i> SSL Secured</div>
+        <div class="trust-badge"><i class="fas fa-rotate-left"></i> 30-Day Refund</div>
+        <div class="trust-badge"><i class="fas fa-infinity"></i> Lifetime Access</div>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="card">
+      <h2>Order Summary</h2>
+
+      <div class="order-item">
+        <div class="order-thumb"><i class="fas fa-rocket" style="font-size:22px;"></i></div>
+        <div class="order-info">
+          <h3>Space Science: The Solar System</h3>
+          <p>Full Course Access</p>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="price-row">
+        <span>Original Price</span>
+        <span style="text-decoration:line-through;">$89.99</span>
+      </div>
+      <div class="price-row discount">
+        <span><i class="fas fa-tag"></i> Discount</span>
+        <span>-$40.00</span>
+      </div>
+      <hr class="divider">
+      <div class="price-row total">
+        <span>Total</span>
+        <span>$49.99</span>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="logo-box"><i class="fas fa-book-open"></i></div>
+        <span class="logo-text">EduSpark</span>
+      </div>
+      <p>Making learning magical for the next generation of creators, scientists, and leaders through the power of AI.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <ul>
+        <li><a href="#">Courses</a></li>
+        <li><a href="#">Teachers</a></li>
+        <li><a href="#">AI Assistant</a></li>
+        <li><a href="#">Learning Path</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">Articles</a></li>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Success Stories</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">hello@eduspark.com</a></li>
+        <li><a href="#">+1 (555) 000-1234</a></li>
+        <li><a href="#">Silicon Valley, CA</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 EduSpark Platform. All rights reserved.</span>
+    <div class="footer-legal">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Theme
+const themeBtn = document.getElementById('themeToggle');
+themeBtn.addEventListener('click', () => {
+  const dark = document.body.getAttribute('data-theme') === 'dark';
+  document.body.setAttribute('data-theme', dark ? '' : 'dark');
+  themeBtn.innerHTML = dark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+});
+
+// Mobile menu
+document.getElementById('menuToggle').addEventListener('click', () => {
+  document.getElementById('mainNav').classList.toggle('open');
+});
+
+// Ripple
+document.querySelectorAll('button').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    const r = document.createElement('span');
+    r.className = 'ripple';
+    const rect = this.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
+    this.appendChild(r);
+    setTimeout(() => r.remove(), 600);
+  });
+});
+
+// Card number formatting
+document.querySelector('input[placeholder*="0000"]').addEventListener('input', function() {
+  let v = this.value.replace(/\D/g,'').substring(0,16);
+  this.value = v.replace(/(.{4})/g,'$1 - ').trim().replace(/ - $/,'');
+});
+</script>
+</body>
+</html>
