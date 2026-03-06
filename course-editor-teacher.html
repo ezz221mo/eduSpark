@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVOLVE – Edit Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+/* ══════════════ TOKENS ══════════════ */
+:root{
+  --primary:#89b084;--primary-dark:#6e9b73;--primary-light:#eef3ee;
+  --primary-glow:rgba(137,176,132,0.25);
+  --bg:#f9f8f3;--surface:#fff;--soft:#eef3ee;
+  --text:#2d3436;--muted:#6b7280;--border:#e5e7eb;
+  --shadow:0 4px 20px rgba(0,0,0,.07);--shadow-lg:0 12px 40px rgba(0,0,0,.12);
+  --accent:#d4a373;--radius:14px;--ease:cubic-bezier(.4,0,.2,1);
+  --sidebar-w:240px;--topbar-h:66px;
+}
+[data-theme="dark"]{
+  --bg:#0f172a;--surface:#111827;--soft:#1e2d3d;
+  --text:#e5e7eb;--muted:#9ca3af;--border:#1f2937;
+  --shadow:0 4px 20px rgba(0,0,0,.35);--shadow-lg:0 16px 48px rgba(0,0,0,.55);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);
+     display:flex;min-height:100vh;overflow-x:hidden;line-height:1.6}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* ══════════════ SIDEBAR ══════════════ */
+.sidebar{
+  width:var(--sidebar-w);min-height:100vh;background:var(--surface);
+  border-right:1px solid var(--border);display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;z-index:300;
+  transition:transform .3s var(--ease);overflow-y:auto;overflow-x:hidden;
+}
+.sidebar::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--primary),var(--accent),var(--primary));
+  background-size:200%;animation:shimmer 3s infinite;
+}
+.sidebar-logo{display:flex;align-items:center;gap:12px;padding:22px 20px 20px;border-bottom:1px solid var(--border);text-decoration:none;flex-shrink:0}
+.logo-box{width:38px;height:38px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;box-shadow:0 4px 14px var(--primary-glow);flex-shrink:0;transition:transform .3s}
+.sidebar-logo:hover .logo-box{transform:rotate(-8deg) scale(1.08)}
+.logo-name{font-size:20px;font-weight:900;color:var(--text);letter-spacing:-.6px;white-space:nowrap}
+.logo-name span{color:var(--primary)}
+.sidebar-section{padding:16px 12px 4px}
+.sidebar-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);padding:0 10px;margin-bottom:6px}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:11px;color:var(--muted);font-size:13.5px;font-weight:500;text-decoration:none;margin-bottom:2px;transition:all .2s;position:relative;cursor:pointer;background:none;border:none;width:100%;text-align:left;font-family:inherit}
+.nav-item:hover{background:var(--soft);color:var(--primary);transform:translateX(4px)}
+.nav-item.active{background:var(--primary-light);color:var(--primary);font-weight:700}
+.nav-item.active::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;border-radius:0 3px 3px 0;background:var(--primary)}
+.nav-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--primary);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px}
+.sidebar-profile{margin-top:auto;padding:14px 12px;border-top:1px solid var(--border);flex-shrink:0}
+.profile-card{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:12px;background:var(--soft);text-decoration:none;transition:all .25s;border:1px solid transparent}
+.profile-card:hover{background:var(--primary-light);border-color:var(--primary)}
+.p-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:13px;flex-shrink:0}
+.p-name{font-size:13px;font-weight:700;color:var(--text)}
+.p-role{font-size:11px;color:var(--muted)}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:299;backdrop-filter:blur(4px)}
+.sidebar-overlay.open{display:block}
+
+/* ══════════════ TOPBAR ══════════════ */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;min-width:0}
+.topbar{
+  background:var(--surface);border-bottom:1px solid var(--border);
+  height:var(--topbar-h);display:flex;align-items:center;
+  justify-content:space-between;padding:0 28px;
+  position:sticky;top:0;z-index:100;gap:14px;
+}
+.topbar-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;border-radius:8px;flex-shrink:0}
+.hamburger:hover{background:var(--soft)}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--muted);min-width:0;overflow:hidden}
+.breadcrumb a{color:var(--muted);text-decoration:none;transition:color .2s;white-space:nowrap;flex-shrink:0}
+.breadcrumb a:hover{color:var(--primary)}
+.breadcrumb-sep{color:var(--border);font-size:16px;flex-shrink:0}
+.breadcrumb-current{color:var(--text);font-weight:800;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.icon-btn{width:38px;height:38px;border-radius:10px;background:var(--soft);border:1px solid var(--border);color:var(--muted);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;position:relative;flex-shrink:0}
+.icon-btn:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary);transform:translateY(-1px)}
+.notif-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;background:#ef4444;border-radius:50%;border:1.5px solid var(--surface)}
+
+.back-btn{display:flex;align-items:center;gap:6px;padding:8px 16px;background:var(--soft);color:var(--text);border-radius:25px;font-size:13px;font-weight:700;border:1px solid var(--border);cursor:pointer;font-family:inherit;transition:all .2s;text-decoration:none;white-space:nowrap;flex-shrink:0}
+.back-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light)}
+
+.save-btn{display:flex;align-items:center;gap:7px;padding:9px 20px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border-radius:25px;font-size:13px;font-weight:700;border:none;cursor:pointer;box-shadow:0 4px 16px var(--primary-glow);transition:all .25s;font-family:inherit;white-space:nowrap;flex-shrink:0}
+.save-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--primary-glow)}
+
+/* ══════════════ CONTENT ══════════════ */
+.content{padding:28px 32px;flex:1;display:flex;flex-direction:column;gap:22px;animation:fadeUp .5s var(--ease)}
+
+/* ── Stats Strip ── */
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.strip-stat{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);padding:18px 20px;display:flex;align-items:center;gap:14px;transition:all .3s var(--ease)}
+.strip-stat:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.strip-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.strip-val{font-size:24px;font-weight:900;line-height:1}
+.strip-lbl{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+
+/* ── Course Hero ── */
+.course-hero{border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow)}
+.hero-banner{
+  height:160px;display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;transition:background .3s;cursor:pointer;
+}
+.hero-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.04),rgba(0,0,0,.32))}
+.hero-emoji{position:relative;z-index:1;font-size:70px;line-height:1;user-select:none}
+.hero-edit-overlay{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  gap:8px;opacity:0;background:rgba(0,0,0,.38);transition:opacity .25s;z-index:2;
+}
+.hero-banner:hover .hero-edit-overlay{opacity:1}
+.hero-edit-btn{
+  background:rgba(255,255,255,.18);backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:25px;
+  padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;
+  display:flex;align-items:center;gap:6px;font-family:inherit;
+}
+
+.hero-body{background:var(--surface);padding:24px}
+.hero-fields{display:flex;flex-direction:column;gap:16px}
+.hero-meta-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:14px}
+
+.field-group{display:flex;flex-direction:column;gap:6px}
+.field-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+.field-input,
+.field-select,
+.field-textarea{
+  width:100%;padding:10px 14px;background:var(--soft);
+  border:1.5px solid var(--border);border-radius:11px;
+  color:var(--text);font-size:14px;font-family:inherit;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.field-input:focus,.field-select:focus,.field-textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
+.field-select{cursor:pointer}
+.field-textarea{resize:vertical;min-height:76px}
+
+/* Emoji & color pickers */
+.picker-section{padding-top:4px}
+.emoji-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.emoji-opt{width:40px;height:40px;border-radius:10px;background:var(--soft);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:19px;cursor:pointer;transition:all .2s;flex-shrink:0}
+.emoji-opt:hover,.emoji-opt.sel{border-color:var(--primary);background:var(--primary-light);transform:scale(1.12)}
+.color-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.color-sw{width:34px;height:34px;border-radius:9px;cursor:pointer;border:2.5px solid transparent;transition:all .2s;flex-shrink:0}
+.color-sw:hover{transform:scale(1.15)}
+.color-sw.sel{border-color:var(--text);box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--text);transform:scale(1.15)}
+
+/* ── Section Card ── */
+.section-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden}
+.section-header{
+  padding:18px 22px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.sec-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
+.sec-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.sec-title{font-size:15px;font-weight:900}
+.sec-count{background:var(--soft);color:var(--muted);font-size:11px;font-weight:700;padding:2px 9px;border-radius:20px;border:1px solid var(--border);white-space:nowrap}
+
+.add-btn{
+  display:flex;align-items:center;gap:6px;padding:9px 18px;
+  border-radius:25px;font-size:13px;font-weight:700;
+  cursor:pointer;border:none;font-family:inherit;transition:all .25s;
+  white-space:nowrap;flex-shrink:0;
+}
+.add-btn:hover{transform:translateY(-2px)}
+.add-btn.green{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;box-shadow:0 4px 14px var(--primary-glow)}
+.add-btn.purple{background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;box-shadow:0 4px 14px rgba(99,102,241,.3)}
+.add-btn.amber{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;box-shadow:0 4px 14px rgba(245,158,11,.3)}
+
+/* ── Items List ── */
+.items-list{padding:4px 0}
+.item-row{
+  display:flex;align-items:center;gap:10px;
+  padding:13px 22px;border-bottom:1px solid var(--border);
+  transition:background .2s;animation:fadeUp .3s var(--ease) backwards;
+}
+.item-row:last-child{border-bottom:none}
+.item-row:hover{background:var(--soft)}
+.item-row.dragging{opacity:.45;background:var(--primary-light)}
+.item-row.drag-over{background:var(--primary-light);border-bottom:2px solid var(--primary)}
+.drag-handle{color:var(--muted);cursor:grab;font-size:18px;flex-shrink:0;transition:color .2s;user-select:none}
+.drag-handle:hover{color:var(--primary)}
+.drag-handle:active{cursor:grabbing}
+.item-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.item-badge{padding:3px 10px;border-radius:20px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;flex-shrink:0;white-space:nowrap}
+.badge-lec{background:#eef3ee;color:var(--primary-dark)}
+.badge-quiz{background:#EEF2FF;color:#4f46e5}
+.badge-assign{background:#FEF3C7;color:#B45309}
+.item-info{flex:1;min-width:0}
+.item-title{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-meta{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-status{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;flex-shrink:0;white-space:nowrap}
+.s-done{background:#d1fae5;color:#059669}
+.s-next{background:#FEF3C7;color:#B45309}
+.s-todo{background:var(--soft);color:var(--muted);border:1px solid var(--border)}
+.item-actions{display:flex;gap:6px;flex-shrink:0}
+.ia-btn{width:30px;height:30px;border-radius:8px;background:var(--soft);border:1px solid var(--border);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s}
+.ia-btn:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary)}
+.ia-btn.del:hover{background:#FEE2E2;color:#DC2626;border-color:#FECACA}
+
+/* Empty state */
+.empty-items{padding:40px 22px;text-align:center;color:var(--muted)}
+.ei-icon{font-size:40px;opacity:.3;margin-bottom:10px}
+.ei-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+.ei-sub{font-size:12px}
+
+/* ══════════════ MODAL ══════════════ */
+.modal-overlay{
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);
+  z-index:500;backdrop-filter:blur(6px);
+  align-items:center;justify-content:center;padding:16px;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--surface);border-radius:20px;border:1px solid var(--border);
+  box-shadow:0 30px 80px rgba(0,0,0,.3);max-width:500px;width:100%;
+  animation:scaleIn .3s var(--ease);max-height:90vh;overflow-y:auto;
+}
+.modal-header{padding:22px 22px 0;display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.modal-title{font-size:17px;font-weight:900}
+.modal-close{width:34px;height:34px;border-radius:50%;background:var(--soft);border:1px solid var(--border);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--muted);flex-shrink:0}
+.modal-close:hover{background:#fee2e2;color:#dc2626;transform:rotate(90deg)}
+.modal-body{padding:16px 22px 22px}
+.mf{margin-bottom:14px}
+.ml{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:block}
+.mi,.ms,.mt{
+  width:100%;padding:10px 14px;background:var(--soft);
+  border:1.5px solid var(--border);border-radius:11px;
+  color:var(--text);font-size:14px;font-family:inherit;outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.mi:focus,.ms:focus,.mt:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
+.ms{cursor:pointer}
+.mt{resize:vertical;min-height:80px}
+.m2col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;padding-top:12px}
+.btn-cancel{padding:10px 20px;background:var(--soft);border:1px solid var(--border);border-radius:25px;cursor:pointer;font-size:13px;font-weight:700;color:var(--muted);font-family:inherit;transition:all .2s}
+.btn-cancel:hover{background:var(--border)}
+.btn-submit{padding:10px 22px;border-radius:25px;cursor:pointer;font-size:13px;font-weight:700;border:none;transition:all .25s;font-family:inherit;color:#fff}
+.btn-submit.green{background:linear-gradient(135deg,var(--primary),var(--primary-dark));box-shadow:0 4px 14px var(--primary-glow)}
+.btn-submit.purple{background:linear-gradient(135deg,#6366f1,#4f46e5);box-shadow:0 4px 14px rgba(99,102,241,.3)}
+.btn-submit.amber{background:linear-gradient(135deg,#f59e0b,#d97706);box-shadow:0 4px 14px rgba(245,158,11,.3)}
+.btn-submit:hover{transform:translateY(-2px)}
+
+/* Type tabs */
+.type-tabs{display:flex;gap:6px;margin-bottom:18px;background:var(--soft);padding:5px;border-radius:14px;border:1px solid var(--border)}
+.type-tab{flex:1;padding:8px 4px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .2s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px}
+.type-tab.act-lec{background:var(--primary);color:#fff;box-shadow:0 3px 10px var(--primary-glow)}
+.type-tab.act-quiz{background:#6366f1;color:#fff;box-shadow:0 3px 10px rgba(99,102,241,.3)}
+.type-tab.act-assign{background:#f59e0b;color:#fff;box-shadow:0 3px 10px rgba(245,158,11,.3)}
+
+/* Quiz options */
+.quiz-opts{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.quiz-opt-row{display:flex;align-items:center;gap:8px}
+.qoi{flex:1;padding:8px 12px;background:var(--soft);border:1.5px solid var(--border);border-radius:9px;color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border-color .2s}
+.qoi:focus{border-color:var(--primary)}
+.cr{width:16px;height:16px;accent-color:var(--primary);cursor:pointer;flex-shrink:0}
+.add-opt-btn{background:none;border:none;color:var(--primary);font-size:13px;font-weight:700;cursor:pointer;padding:4px 0;font-family:inherit;display:flex;align-items:center;gap:5px;margin-top:4px}
+.rm-opt{width:26px;height:26px;border-radius:50%;background:none;border:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;flex-shrink:0}
+.rm-opt:hover{background:#FEE2E2;color:#DC2626}
+
+/* ══════════════ FOOTER ══════════════ */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:52px 32px 28px;margin-top:auto}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.3fr;gap:40px;margin-bottom:36px}
+.f-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px;text-decoration:none}
+.f-logo-box{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;flex-shrink:0;transition:transform .3s}
+.f-logo:hover .f-logo-box{transform:rotate(-8deg) scale(1.08)}
+.f-logo-name{font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.5px}
+.f-logo-name span{color:var(--primary)}
+.f-desc{font-size:13px;line-height:1.75;color:var(--muted);margin-bottom:20px}
+.socials{display:flex;gap:10px}
+.socials a{width:32px;height:32px;background:var(--soft);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);text-decoration:none;font-size:12px;border:1px solid var(--border);transition:all .25s}
+.socials a:hover{background:var(--primary);color:#fff;border-color:var(--primary);transform:translateY(-3px);box-shadow:0 6px 16px var(--primary-glow)}
+.footer-col h4{font-size:14px;font-weight:800;color:var(--text);margin-bottom:16px}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:10px}
+.footer-col ul li a{text-decoration:none;color:var(--muted);font-size:13px;transition:color .2s;cursor:pointer}
+.footer-col ul li a:hover{color:var(--primary)}
+.ci-item{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--muted);margin-bottom:10px}
+.ci-item i{color:var(--primary);width:14px;flex-shrink:0}
+.footer-bottom{padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:13px;flex-wrap:wrap;gap:12px}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{text-decoration:none;color:var(--muted);font-size:13px;transition:color .2s;cursor:pointer}
+.footer-links a:hover{color:var(--primary)}
+
+/* ══════════════ TOAST ══════════════ */
+.toast-container{position:fixed;bottom:20px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;max-width:calc(100vw - 32px)}
+.toast{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;animation:slideIn .4s;border-left:4px solid var(--primary);max-width:320px}
+.toast.success{border-left-color:#10b981}
+.toast.error{border-left-color:#ef4444}
+
+/* ══════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+══════════════════════════════════════ */
+
+/* ─── Tablet ≤ 1024 ─── */
+@media(max-width:1024px){
+  :root{--sidebar-w:0px}
+  .sidebar{transform:translateX(-100%);width:260px;box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .hamburger{display:flex}
+  .topbar{padding:0 18px}
+  /* stats: 2×2 grid */
+  .stats-strip{grid-template-columns:1fr 1fr;gap:12px}
+  /* hero meta: 2 cols */
+  .hero-meta-row{grid-template-columns:1fr 1fr}
+  .hero-meta-row .field-group:first-child{grid-column:span 2}
+  /* footer */
+  .footer-top{grid-template-columns:1fr 1fr;gap:28px}
+}
+
+/* ─── Small Tablet ≤ 768 ─── */
+@media(max-width:768px){
+  :root{--topbar-h:62px}
+  .content{padding:18px 16px;gap:16px}
+  .topbar{padding:0 14px}
+  /* hide back text, keep icon */
+  .back-btn .back-label{display:none}
+  .back-btn{padding:8px 12px}
+  /* hero */
+  .hero-banner{height:130px}
+  .hero-emoji{font-size:56px !important}
+  .hero-body{padding:18px 16px}
+  /* hero meta: single column */
+  .hero-meta-row{grid-template-columns:1fr}
+  .hero-meta-row .field-group:first-child{grid-column:unset}
+  /* items */
+  .item-row{padding:12px 16px;gap:8px}
+  .item-actions{opacity:1}
+  .drag-handle{display:none}
+  .item-badge{display:none}
+  /* modal grid cols → stack */
+  .m2col{grid-template-columns:1fr;gap:0}
+  /* footer */
+  footer{padding:36px 18px 22px}
+  .footer-top{grid-template-columns:1fr;gap:22px}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .footer-links{justify-content:center}
+}
+
+/* ─── Mobile ≤ 540 ─── */
+@media(max-width:540px){
+  :root{--topbar-h:58px}
+  .topbar{padding:0 12px;gap:6px}
+  .content{padding:12px;gap:12px}
+  /* breadcrumb: hide link, show only page name */
+  .breadcrumb a,.breadcrumb-sep{display:none}
+  .breadcrumb-current{font-size:15px;font-weight:900}
+  /* topbar: compact save btn, hide back btn */
+  .back-btn{display:none}
+  .save-btn{padding:9px 14px}
+  .save-btn .save-label{display:none}
+  /* hero */
+  .hero-banner{height:110px}
+  .hero-emoji{font-size:46px !important}
+  .hero-edit-overlay{opacity:1;background:rgba(0,0,0,.22)}
+  .hero-body{padding:14px 12px}
+  .hero-fields{gap:12px}
+  .field-input,.field-select,.field-textarea{font-size:15px;padding:10px 12px}
+  /* emoji picker */
+  .emoji-grid{gap:6px}
+  .emoji-opt{width:38px;height:38px;font-size:18px}
+  /* stats: 2 cols compact */
+  .stats-strip{grid-template-columns:1fr 1fr;gap:8px}
+  .strip-stat{padding:12px 14px;gap:10px}
+  .strip-icon{width:34px;height:34px;font-size:16px;border-radius:9px}
+  .strip-val{font-size:20px}
+  .strip-lbl{font-size:10px}
+  /* section header */
+  .section-header{padding:12px 14px}
+  .sec-title{font-size:14px}
+  .add-btn{padding:8px 14px;font-size:12px}
+  .add-btn .add-label{display:none}
+  /* items */
+  .item-row{padding:10px 12px;gap:7px}
+  .item-num{width:22px;height:22px;font-size:10px}
+  .item-title{font-size:13px}
+  .item-meta{font-size:10px}
+  .item-status{font-size:10px;padding:2px 7px}
+  .ia-btn{width:28px;height:28px;font-size:12px}
+  /* modal */
+  .modal-overlay{padding:8px}
+  .modal{border-radius:16px;max-height:94vh}
+  .modal-header{padding:16px 16px 0}
+  .modal-title{font-size:15px}
+  .modal-body{padding:14px 16px 18px}
+  .mi,.ms,.mt{font-size:14px;padding:10px 12px}
+  .type-tab{padding:8px 4px;font-size:11px}
+  .type-tab .tab-label{display:none}
+  /* footer */
+  footer{padding:28px 12px 18px}
+}
+
+/* ─── Tiny ≤ 380 ─── */
+@media(max-width:380px){
+  :root{--topbar-h:54px}
+  .content{padding:10px;gap:10px}
+  .topbar{padding:0 10px;gap:4px}
+  .icon-btn{width:34px;height:34px;font-size:13px}
+  /* hero */
+  .hero-banner{height:90px}
+  .hero-emoji{font-size:38px !important}
+  /* stats: still 2 cols but tighter */
+  .stats-strip{grid-template-columns:1fr 1fr;gap:7px}
+  .strip-stat{padding:10px 10px;gap:8px}
+  .strip-icon{width:30px;height:30px;font-size:14px}
+  .strip-val{font-size:18px}
+  /* items tighter */
+  .item-row{padding:9px 10px;gap:6px}
+  .ia-btn{width:26px;height:26px;font-size:11px}
+  /* modal edge to edge */
+  .modal-overlay{padding:4px}
+  .modal{border-radius:14px}
+  .modal-header{padding:14px 14px 0}
+  .modal-body{padding:12px 14px 16px}
+  /* footer minimal */
+  .footer-links{flex-direction:column;align-items:center;gap:8px}
+  .socials{gap:8px}
+}
+
+/* scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+</style>
+</head>
+<body>
+<div class="toast-container" id="toastC"></div>
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <div class="logo-box">E</div>
+    <span class="logo-name">EVO<span>LVE</span></span>
+  </a>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Main</div>
+    <button class="nav-item" onclick="location.href='teacher_dashboard.html'"><span class="nav-icon">🏠</span>Dashboard</button>
+    <button class="nav-item active"><span class="nav-icon">📚</span>Courses</button>
+    <button class="nav-item" onclick="location.href='students.html'"><span class="nav-icon">👥</span>Students</button>
+    <button class="nav-item" onclick="location.href='schedule.html'"><span class="nav-icon">📅</span>Schedule</button>
+    <button class="nav-item" onclick="location.href='sparky.html'"><span class="nav-icon">🤖</span>AI Assistant</button>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools</div>
+    <button class="nav-item" onclick="location.href='messages.html'"><span class="nav-icon">💬</span>Messages<span class="nav-badge">5</span></button>
+    <button class="nav-item" onclick="location.href='library.html'"><span class="nav-icon">📖</span>Library</button>
+    <button class="nav-item" onclick="location.href='settings.html'"><span class="nav-icon">⚙️</span>Settings</button>
+  </div>
+  <div class="sidebar-profile">
+    <a href="profile_teacher.html" class="profile-card">
+      <div class="p-avatar">MA</div>
+      <div><div class="p-name">Mr. Anderson</div><div class="p-role">Teacher</div></div>
+    </a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" id="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
+      <nav class="breadcrumb">
+        <a href="courses.html">📚 Courses</a>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current" id="bcTitle">Solar System & Space</span>
+      </nav>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="icon-btn" onclick="location.href='messages.html'" title="Messages">🔔<span class="notif-dot"></span></button>
+      <a class="back-btn" href="courses.html">‹ <span class="back-label">Back</span></a>
+      <button class="save-btn" onclick="saveCourse()"><span>💾</span><span class="save-label"> Save Changes</span></button>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- Stats Strip -->
+    <div class="stats-strip">
+      <div class="strip-stat">
+        <div class="strip-icon" style="background:#eef3ee">📖</div>
+        <div><div class="strip-val" id="statLectures">0</div><div class="strip-lbl">Lectures</div></div>
+      </div>
+      <div class="strip-stat">
+        <div class="strip-icon" style="background:#EEF2FF">🧠</div>
+        <div><div class="strip-val" id="statQuizzes">0</div><div class="strip-lbl">Quizzes</div></div>
+      </div>
+      <div class="strip-stat">
+        <div class="strip-icon" style="background:#FEF3C7">📝</div>
+        <div><div class="strip-val" id="statAssignments">0</div><div class="strip-lbl">Assignments</div></div>
+      </div>
+      <div class="strip-stat">
+        <div class="strip-icon" style="background:#f0fdf4">👥</div>
+        <div><div class="strip-val" id="statStudents">32</div><div class="strip-lbl">Students</div></div>
+      </div>
+    </div>
+
+    <!-- Course Hero -->
+    <div class="course-hero">
+      <div class="hero-banner" id="heroBanner" style="background:#1e293b" onclick="togglePicker()">
+        <span class="hero-emoji" id="heroEmoji">🌌</span>
+        <div class="hero-edit-overlay">
+          <button class="hero-edit-btn">✏️ Change Cover</button>
+        </div>
+      </div>
+      <div class="hero-body">
+        <div class="hero-fields">
+          <div class="hero-meta-row">
+            <div class="field-group">
+              <label class="field-label">Course Title</label>
+              <input class="field-input" id="courseTitle" value="Solar System & Space" oninput="updateBreadcrumb()">
+            </div>
+            <div class="field-group">
+              <label class="field-label">Subject</label>
+              <select class="field-select" id="courseSubject">
+                <option value="science" selected>🔬 Science</option>
+                <option value="math">📐 Mathematics</option>
+                <option value="english">✍️ English</option>
+                <option value="art">🎨 Art</option>
+                <option value="history">📜 History</option>
+              </select>
+            </div>
+            <div class="field-group">
+              <label class="field-label">Class / Grade</label>
+              <select class="field-select" id="courseGrade">
+                <option>Grade 7A</option><option>Grade 7B</option>
+                <option selected>Grade 8A</option><option>Grade 8B</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Course Description</label>
+            <textarea class="field-textarea" id="courseDesc">An exciting journey through our solar system and beyond. Students will explore planets, stars, and the wonders of space exploration.</textarea>
+          </div>
+          <!-- Picker (toggle) -->
+          <div id="pickerWrap" style="display:none" class="picker-section">
+            <label class="field-label">Cover Emoji</label>
+            <div class="emoji-grid" id="emojiGrid"></div>
+            <label class="field-label" style="margin-top:14px">Banner Color</label>
+            <div class="color-grid" id="colorGrid"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LECTURES -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="sec-left">
+          <div class="sec-icon" style="background:#eef3ee">📖</div>
+          <span class="sec-title">Lectures</span>
+          <span class="sec-count" id="lecCount">0</span>
+        </div>
+        <button class="add-btn green" onclick="openAdd('lecture')"><span>＋</span><span class="add-label"> Add Lecture</span></button>
+      </div>
+      <div id="lecList"></div>
+    </div>
+
+    <!-- QUIZZES -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="sec-left">
+          <div class="sec-icon" style="background:#EEF2FF">🧠</div>
+          <span class="sec-title">Quizzes</span>
+          <span class="sec-count" id="quizCount">0</span>
+        </div>
+        <button class="add-btn purple" onclick="openAdd('quiz')"><span>＋</span><span class="add-label"> Add Quiz</span></button>
+      </div>
+      <div id="quizList"></div>
+    </div>
+
+    <!-- ASSIGNMENTS -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="sec-left">
+          <div class="sec-icon" style="background:#FEF3C7">📝</div>
+          <span class="sec-title">Assignments</span>
+          <span class="sec-count" id="assignCount">0</span>
+        </div>
+        <button class="add-btn amber" onclick="openAdd('assignment')"><span>＋</span><span class="add-label"> Add Assignment</span></button>
+      </div>
+      <div id="assignList"></div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <a href="teacher_dashboard.html" class="f-logo">
+          <div class="f-logo-box">E</div>
+          <span class="f-logo-name">EVO<span>LVE</span></span>
+        </a>
+        <p class="f-desc">Making learning magical for the next generation of creators, scientists, and leaders.</p>
+        <div class="socials">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Platform</h4><ul>
+        <li><a onclick="location.href='courses.html'">Courses</a></li>
+        <li><a onclick="location.href='students.html'">Students</a></li>
+        <li><a onclick="location.href='sparky.html'">AI Assistant</a></li>
+        <li><a onclick="location.href='schedule.html'">Schedule</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Company</h4><ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Success Stories</a></li>
+        <li><a onclick="location.href='messages.html'">Contact</a></li>
+      </ul></div>
+      <div class="footer-col"><h4>Support</h4>
+        <div class="ci-item"><i class="fas fa-envelope"></i> hello@evolve.com</div>
+        <div class="ci-item"><i class="fas fa-phone"></i> +1 (555) 000-1234</div>
+        <div class="ci-item"><i class="fas fa-map-marker-alt"></i> Silicon Valley, CA</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 EVOLVE. All rights reserved.</p>
+      <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Cookies</a></div>
+    </div>
+  </footer>
+</div><!-- /main -->
+
+<!-- ADD MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="addModalTitle">Add Lecture</span>
+      <button class="modal-close" onclick="closeModal('addModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="type-tabs">
+        <button class="type-tab act-lec" id="tabLec" onclick="switchType('lecture')">📖 <span class="tab-label">Lecture</span></button>
+        <button class="type-tab" id="tabQuiz" onclick="switchType('quiz')">🧠 <span class="tab-label">Quiz</span></button>
+        <button class="type-tab" id="tabAssign" onclick="switchType('assignment')">📝 <span class="tab-label">Assignment</span></button>
+      </div>
+
+      <!-- Lecture fields -->
+      <div id="fLec">
+        <div class="mf"><label class="ml">Lecture Title</label><input class="mi" id="lTitle" placeholder="e.g. Introduction to the Solar System"></div>
+        <div class="mf"><label class="ml">Duration (minutes)</label><input class="mi" id="lDur" type="number" value="45" min="5"></div>
+        <div class="mf"><label class="ml">Video URL (optional)</label><input class="mi" id="lVideo" placeholder="https://youtube.com/..."></div>
+        <div class="mf"><label class="ml">Notes / Description</label><textarea class="mt" id="lNotes" placeholder="What will students learn?"></textarea></div>
+      </div>
+
+      <!-- Quiz fields -->
+      <div id="fQuiz" style="display:none">
+        <div class="mf"><label class="ml">Quiz Title</label><input class="mi" id="qTitle" placeholder="e.g. Planets Quick Check"></div>
+        <div class="m2col">
+          <div class="mf"><label class="ml">Time Limit (min)</label><input class="mi" id="qTime" type="number" value="20" min="1"></div>
+          <div class="mf"><label class="ml">Pass Score (%)</label><input class="mi" id="qPass" type="number" value="70" min="1" max="100"></div>
+        </div>
+        <div class="mf"><label class="ml">Due Date</label><input class="mi" id="qDue" type="date"></div>
+        <div class="mf">
+          <label class="ml">Question (optional)</label>
+          <input class="mi" id="qQ" placeholder="e.g. How many planets are in our solar system?" style="margin-bottom:10px">
+          <div class="quiz-opts" id="quizOpts">
+            <div class="quiz-opt-row"><input type="radio" name="qc" class="cr" value="0"><input class="qoi" placeholder="Option A" value="8"><button class="rm-opt" onclick="rmOpt(this)">✕</button></div>
+            <div class="quiz-opt-row"><input type="radio" name="qc" class="cr" value="1"><input class="qoi" placeholder="Option B" value="9"><button class="rm-opt" onclick="rmOpt(this)">✕</button></div>
+            <div class="quiz-opt-row"><input type="radio" name="qc" class="cr" value="2"><input class="qoi" placeholder="Option C" value="7"><button class="rm-opt" onclick="rmOpt(this)">✕</button></div>
+          </div>
+          <button class="add-opt-btn" onclick="addOpt()">＋ Add Option</button>
+        </div>
+      </div>
+
+      <!-- Assignment fields -->
+      <div id="fAssign" style="display:none">
+        <div class="mf"><label class="ml">Assignment Title</label><input class="mi" id="aTitle" placeholder="e.g. Solar System Essay"></div>
+        <div class="m2col">
+          <div class="mf"><label class="ml">Due Date</label><input class="mi" id="aDue" type="date"></div>
+          <div class="mf"><label class="ml">Max Points</label><input class="mi" id="aPoints" type="number" value="100" min="1"></div>
+        </div>
+        <div class="mf"><label class="ml">Type</label>
+          <select class="ms" id="aType">
+            <option>Written Essay</option><option>Project / Presentation</option>
+            <option>Research Report</option><option>Lab Report</option>
+            <option>Creative Work</option><option>Other</option>
+          </select>
+        </div>
+        <div class="mf"><label class="ml">Instructions</label><textarea class="mt" id="aInstr" placeholder="Describe the requirements..."></textarea></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal('addModal')">Cancel</button>
+        <button class="btn-submit green" id="addSubmitBtn" onclick="submitItem()">Add Lecture</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="editModalTitle">Edit</span>
+      <button class="modal-close" onclick="closeModal('editModal')">✕</button>
+    </div>
+    <div class="modal-body" id="editModalBody"></div>
+  </div>
+</div>
+
+<script>
+/* ══ CONFIG ══ */
+const EMOJIS=['🌌','🔬','📐','✍️','🎨','🫀','📏','🌍','⚡','🧬','🎭','🏛️','🌿','🔭','🎵','💡'];
+const COLORS=['#1e293b','#1d4ed8','#7c3aed','#be185d','#065f46','#92400e','#0369a1','#b45309','#4d7c0f','#6d28d9','#0e7490','#9f1239'];
+
+let curType='lecture', editId=null, nid=1;
+const data={lectures:[],quizzes:[],assignments:[]};
+
+/* ── Seed data ── */
+data.lectures=[
+  {id:nid++,title:'Introduction to the Solar System',dur:45,video:'',notes:'Overview of all planets and their basic properties.',status:'done'},
+  {id:nid++,title:'Planets & Their Properties',dur:50,video:'',notes:'Deep dive into each planet\'s size, atmosphere and moons.',status:'done'},
+  {id:nid++,title:'The Sun & Its Layers',dur:40,video:'',notes:'Core, radiative zone, convective zone, photosphere, corona.',status:'done'},
+  {id:nid++,title:'Asteroids & Comets',dur:45,video:'',notes:'Differences between asteroids, comets and meteoroids.',status:'done'},
+  {id:nid++,title:'Space Exploration History',dur:55,video:'',notes:'From Sputnik to Apollo to modern missions.',status:'next'},
+  {id:nid++,title:'Final Project',dur:90,video:'',notes:'Students present their chosen celestial body research.',status:'todo'},
+];
+data.quizzes=[
+  {id:nid++,title:'Planets Quick Check',time:15,pass:70,due:'2025-03-15',question:'How many planets?',status:'done'},
+  {id:nid++,title:'Solar System Mid-Term',time:30,pass:75,due:'2025-04-01',question:'Largest planet?',status:'next'},
+];
+data.assignments=[
+  {id:nid++,title:'Solar System Essay',due:'2025-03-20',points:100,type:'Written Essay',instructions:'Write a 500-word essay about your favourite planet.',status:'next'},
+  {id:nid++,title:'Scale Model Project',due:'2025-04-10',points:150,type:'Project / Presentation',instructions:'Build a scale model of the solar system.',status:'todo'},
+];
+
+/* ══ RENDER ══ */
+function renderAll(){renderLec();renderQuiz();renderAssign();updateStats()}
+
+function empty(icon,title,sub){return`<div class="empty-items"><div class="ei-icon">${icon}</div><div class="ei-title">${title}</div><div class="ei-sub">${sub}</div></div>`}
+
+function statusCls(s){return s==='done'?'s-done':s==='next'?'s-next':'s-todo'}
+function statusLabel(s,type){
+  if(type==='lec') return s==='done'?'Done ✓':s==='next'?'Next Up':'To Do';
+  if(type==='quiz') return s==='done'?'Closed':s==='next'?'Active':'Upcoming';
+  return s==='done'?'Closed':s==='next'?'Active':'Upcoming';
+}
+
+function makeRow(item,type,idx,bgNum,fgNum,badgeCls,badgeLabel){
+  const sc=statusCls(item.status);
+  const sl=statusLabel(item.status,type);
+  let meta='';
+  if(type==='lec') meta=`⏱ ${item.dur} min${item.video?' · 🎬':'' }`;
+  else if(type==='quiz') meta=`⏱ ${item.time} min · 📅 ${item.due} · Pass: ${item.pass}%`;
+  else meta=`📅 ${item.due} · 🏆 ${item.points} pts · ${item.type}`;
+  return`<div class="item-row" style="animation-delay:${idx*.04}s"
+    draggable="true"
+    ondragstart="dStart(event,'${type}',${item.id})"
+    ondragover="dOver(event)"
+    ondrop="dDrop(event,'${type}',${item.id})"
+    ondragleave="dLeave(event)">
+    <span class="drag-handle" title="Reorder">⠿</span>
+    <div class="item-num" style="background:${bgNum};color:${fgNum}">${idx+1}</div>
+    <span class="item-badge ${badgeCls}">${badgeLabel}</span>
+    <div class="item-info">
+      <div class="item-title">${item.title}</div>
+      <div class="item-meta">${meta}</div>
+    </div>
+    <span class="item-status ${sc}">${sl}</span>
+    <div class="item-actions">
+      <button class="ia-btn" onclick="editItem('${type}',${item.id})" title="Edit">✏️</button>
+      <button class="ia-btn" onclick="cycleStatus('${type}',${item.id})" title="Toggle status">🔄</button>
+      <button class="ia-btn del" onclick="delItem('${type}',${item.id})" title="Delete">🗑️</button>
+    </div>
+  </div>`;
+}
+
+function renderLec(){
+  const el=document.getElementById('lecList');
+  document.getElementById('lecCount').textContent=data.lectures.length;
+  if(!data.lectures.length){el.innerHTML=empty('📖','No lectures yet','Add your first lecture to get started');return}
+  el.innerHTML='<div class="items-list">'+data.lectures.map((l,i)=>makeRow(l,'lec',i,'#eef3ee','var(--primary-dark)','badge-lec','Lecture')).join('')+'</div>';
+}
+function renderQuiz(){
+  const el=document.getElementById('quizList');
+  document.getElementById('quizCount').textContent=data.quizzes.length;
+  if(!data.quizzes.length){el.innerHTML=empty('🧠','No quizzes yet','Add a quiz to test your students');return}
+  el.innerHTML='<div class="items-list">'+data.quizzes.map((q,i)=>makeRow(q,'quiz',i,'#EEF2FF','#4f46e5','badge-quiz','Quiz')).join('')+'</div>';
+}
+function renderAssign(){
+  const el=document.getElementById('assignList');
+  document.getElementById('assignCount').textContent=data.assignments.length;
+  if(!data.assignments.length){el.innerHTML=empty('📝','No assignments yet','Add an assignment for students to submit');return}
+  el.innerHTML='<div class="items-list">'+data.assignments.map((a,i)=>makeRow(a,'assignment',i,'#FEF3C7','#B45309','badge-assign','Assignment')).join('')+'</div>';
+}
+function updateStats(){
+  document.getElementById('statLectures').textContent=data.lectures.length;
+  document.getElementById('statQuizzes').textContent=data.quizzes.length;
+  document.getElementById('statAssignments').textContent=data.assignments.length;
+}
+
+/* ══ ADD MODAL ══ */
+function openAdd(type){
+  editId=null;
+  switchType(type);
+  const d=new Date();d.setDate(d.getDate()+7);
+  const ds=d.toISOString().split('T')[0];
+  const qd=document.getElementById('qDue');if(qd)qd.value=ds;
+  const ad=document.getElementById('aDue');if(ad)ad.value=ds;
+  openModal('addModal');
+}
+
+function switchType(type){
+  curType=type;
+  ['lec','quiz','assign'].forEach(t=>{
+    const f=document.getElementById('f'+t.charAt(0).toUpperCase()+t.slice(1));
+    if(f)f.style.display='none';
+    const tab=document.getElementById('tab'+t.charAt(0).toUpperCase()+t.slice(1));
+    if(tab)tab.className='type-tab';
+  });
+  // Map names
+  const fId=type==='lecture'?'fLec':type==='quiz'?'fQuiz':'fAssign';
+  const tabId=type==='lecture'?'tabLec':type==='quiz'?'tabQuiz':'tabAssign';
+  const actCls=type==='lecture'?'act-lec':type==='quiz'?'act-quiz':'act-assign';
+  document.getElementById(fId).style.display='block';
+  document.getElementById(tabId).className='type-tab '+actCls;
+  const lbl=type.charAt(0).toUpperCase()+type.slice(1);
+  document.getElementById('addModalTitle').textContent=(editId?'Edit ':'Add ')+lbl;
+  const btn=document.getElementById('addSubmitBtn');
+  btn.textContent=(editId?'Save ':'Add ')+lbl;
+  btn.className='btn-submit '+(type==='lecture'?'green':type==='quiz'?'purple':'amber');
+}
+
+function submitItem(){
+  if(curType==='lecture'){
+    const t=document.getElementById('lTitle').value.trim();
+    if(!t){toast('⚠️ Enter a lecture title','error');return}
+    data.lectures.push({id:nid++,title:t,dur:parseInt(document.getElementById('lDur').value)||45,video:document.getElementById('lVideo').value,notes:document.getElementById('lNotes').value,status:'todo'});
+    document.getElementById('lTitle').value='';document.getElementById('lNotes').value='';document.getElementById('lVideo').value='';
+  } else if(curType==='quiz'){
+    const t=document.getElementById('qTitle').value.trim();
+    if(!t){toast('⚠️ Enter a quiz title','error');return}
+    data.quizzes.push({id:nid++,title:t,time:parseInt(document.getElementById('qTime').value)||20,pass:parseInt(document.getElementById('qPass').value)||70,due:document.getElementById('qDue').value,question:document.getElementById('qQ').value,status:'todo'});
+    document.getElementById('qTitle').value='';document.getElementById('qQ').value='';
+  } else {
+    const t=document.getElementById('aTitle').value.trim();
+    if(!t){toast('⚠️ Enter an assignment title','error');return}
+    data.assignments.push({id:nid++,title:t,due:document.getElementById('aDue').value,points:parseInt(document.getElementById('aPoints').value)||100,type:document.getElementById('aType').value,instructions:document.getElementById('aInstr').value,status:'todo'});
+    document.getElementById('aTitle').value='';document.getElementById('aInstr').value='';
+  }
+  closeModal('addModal');renderAll();
+  toast('✅ '+curType.charAt(0).toUpperCase()+curType.slice(1)+' added!','success');
+}
+
+/* ══ EDIT ══ */
+function editItem(type,id){
+  editId=id;
+  const key=type==='lec'?'lectures':type==='quiz'?'quizzes':'assignments';
+  const item=data[key].find(x=>x.id===id);
+  let f='';
+  const statusOpts=(cur,opts)=>opts.map(([v,l])=>`<option value="${v}"${cur===v?' selected':''}>${l}</option>`).join('');
+
+  if(type==='lec'){
+    f=`<div class="mf"><label class="ml">Title</label><input class="mi" id="ei_t" value="${item.title}"></div>
+       <div class="mf"><label class="ml">Duration (min)</label><input class="mi" id="ei_dur" type="number" value="${item.dur}"></div>
+       <div class="mf"><label class="ml">Video URL</label><input class="mi" id="ei_vid" value="${item.video||''}"></div>
+       <div class="mf"><label class="ml">Notes</label><textarea class="mt" id="ei_notes">${item.notes||''}</textarea></div>
+       <div class="mf"><label class="ml">Status</label><select class="ms" id="ei_st">${statusOpts(item.status,[['todo','To Do'],['next','Next Up'],['done','Done']])}</select></div>`;
+  } else if(type==='quiz'){
+    f=`<div class="mf"><label class="ml">Title</label><input class="mi" id="ei_t" value="${item.title}"></div>
+       <div class="m2col">
+         <div class="mf"><label class="ml">Time (min)</label><input class="mi" id="ei_time" type="number" value="${item.time}"></div>
+         <div class="mf"><label class="ml">Pass (%)</label><input class="mi" id="ei_pass" type="number" value="${item.pass}"></div>
+       </div>
+       <div class="mf"><label class="ml">Due Date</label><input class="mi" id="ei_due" type="date" value="${item.due}"></div>
+       <div class="mf"><label class="ml">Status</label><select class="ms" id="ei_st">${statusOpts(item.status,[['todo','Upcoming'],['next','Active'],['done','Closed']])}</select></div>`;
+  } else {
+    f=`<div class="mf"><label class="ml">Title</label><input class="mi" id="ei_t" value="${item.title}"></div>
+       <div class="m2col">
+         <div class="mf"><label class="ml">Due Date</label><input class="mi" id="ei_due" type="date" value="${item.due}"></div>
+         <div class="mf"><label class="ml">Max Points</label><input class="mi" id="ei_pts" type="number" value="${item.points}"></div>
+       </div>
+       <div class="mf"><label class="ml">Type</label><select class="ms" id="ei_type"><option${item.type==='Written Essay'?' selected':''}>Written Essay</option><option${item.type==='Project / Presentation'?' selected':''}>Project / Presentation</option><option${item.type==='Research Report'?' selected':''}>Research Report</option><option${item.type==='Lab Report'?' selected':''}>Lab Report</option><option${item.type==='Creative Work'?' selected':''}>Creative Work</option></select></div>
+       <div class="mf"><label class="ml">Instructions</label><textarea class="mt" id="ei_instr">${item.instructions||''}</textarea></div>
+       <div class="mf"><label class="ml">Status</label><select class="ms" id="ei_st">${statusOpts(item.status,[['todo','Upcoming'],['next','Active'],['done','Closed']])}</select></div>`;
+  }
+  const typeLabel=type==='lec'?'Lecture':type==='quiz'?'Quiz':'Assignment';
+  document.getElementById('editModalTitle').textContent='✏️ Edit '+typeLabel;
+  document.getElementById('editModalBody').innerHTML=f+`
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('editModal')">Cancel</button>
+      <button class="btn-submit green" onclick="saveEdit('${type}',${id})">Save Changes</button>
+    </div>`;
+  openModal('editModal');
+}
+
+function saveEdit(type,id){
+  const t=document.getElementById('ei_t').value.trim();
+  if(!t){toast('⚠️ Title cannot be empty','error');return}
+  const st=document.getElementById('ei_st').value;
+  if(type==='lec'){
+    const l=data.lectures.find(x=>x.id===id);
+    l.title=t;l.dur=parseInt(document.getElementById('ei_dur').value)||45;
+    l.video=document.getElementById('ei_vid').value;l.notes=document.getElementById('ei_notes').value;l.status=st;
+  } else if(type==='quiz'){
+    const q=data.quizzes.find(x=>x.id===id);
+    q.title=t;q.time=parseInt(document.getElementById('ei_time').value)||20;
+    q.pass=parseInt(document.getElementById('ei_pass').value)||70;q.due=document.getElementById('ei_due').value;q.status=st;
+  } else {
+    const a=data.assignments.find(x=>x.id===id);
+    a.title=t;a.due=document.getElementById('ei_due').value;
+    a.points=parseInt(document.getElementById('ei_pts').value)||100;
+    a.type=document.getElementById('ei_type').value;a.instructions=document.getElementById('ei_instr').value;a.status=st;
+  }
+  closeModal('editModal');renderAll();toast('✅ Changes saved!','success');
+}
+
+/* ══ DELETE / STATUS ══ */
+function delItem(type,id){
+  const key=type==='lec'?'lectures':type==='quiz'?'quizzes':'assignments';
+  const item=data[key].find(x=>x.id===id);
+  if(!confirm('Delete "'+item.title+'"?'))return;
+  data[key]=data[key].filter(x=>x.id!==id);
+  renderAll();toast('🗑️ Deleted','info');
+}
+function cycleStatus(type,id){
+  const key=type==='lec'?'lectures':type==='quiz'?'quizzes':'assignments';
+  const item=data[key].find(x=>x.id===id);
+  const c=['todo','next','done'];
+  item.status=c[(c.indexOf(item.status)+1)%3];
+  renderAll();toast('🔄 Status updated!','success');
+}
+
+/* ══ DRAG & DROP ══ */
+let dragId=null,dragType=null;
+function dStart(e,type,id){dragId=id;dragType=type;e.currentTarget.classList.add('dragging')}
+function dOver(e){e.preventDefault();e.currentTarget.classList.add('drag-over')}
+function dLeave(e){e.currentTarget.classList.remove('drag-over')}
+function dDrop(e,type,tid){
+  e.preventDefault();e.currentTarget.classList.remove('drag-over');
+  if(dragType!==type||dragId===tid)return;
+  const key=type==='lec'?'lectures':type==='quiz'?'quizzes':'assignments';
+  const arr=data[key];
+  const fi=arr.findIndex(x=>x.id===dragId),ti=arr.findIndex(x=>x.id===tid);
+  if(fi<0||ti<0)return;
+  const[m]=arr.splice(fi,1);arr.splice(ti,0,m);
+  document.querySelectorAll('.dragging').forEach(el=>el.classList.remove('dragging'));
+  renderAll();toast('↕️ Reordered!','info');
+}
+
+/* ══ EMOJI / COLOR PICKERS ══ */
+function togglePicker(){
+  const w=document.getElementById('pickerWrap');
+  w.style.display=w.style.display==='none'?'block':'none';
+}
+function buildPickers(){
+  const curEmoji=document.getElementById('heroEmoji').textContent;
+  document.getElementById('emojiGrid').innerHTML=EMOJIS.map(e=>`<div class="emoji-opt${e===curEmoji?' sel':''}" onclick="setEmoji('${e}')">${e}</div>`).join('');
+  const curColor=document.getElementById('heroBanner').style.background;
+  document.getElementById('colorGrid').innerHTML=COLORS.map(c=>`<div class="color-sw${c===curColor?' sel':''}" style="background:${c}" onclick="setColor('${c}')"></div>`).join('');
+}
+function setEmoji(e){
+  document.getElementById('heroEmoji').textContent=e;
+  document.querySelectorAll('.emoji-opt').forEach(el=>el.classList.toggle('sel',el.textContent===e));
+}
+function setColor(c){
+  document.getElementById('heroBanner').style.background=c;
+  document.querySelectorAll('.color-sw').forEach(el=>el.classList.toggle('sel',el.style.background===c));
+}
+
+/* ══ QUIZ OPTIONS ══ */
+function addOpt(){
+  const w=document.getElementById('quizOpts');
+  const i=w.children.length;
+  const r=document.createElement('div');r.className='quiz-opt-row';
+  r.innerHTML=`<input type="radio" name="qc" class="cr" value="${i}"><input class="qoi" placeholder="Option ${String.fromCharCode(65+i)}"><button class="rm-opt" onclick="rmOpt(this)">✕</button>`;
+  w.appendChild(r);
+}
+function rmOpt(btn){
+  const w=document.getElementById('quizOpts');
+  if(w.children.length<=2){toast('⚠️ Min 2 options required','error');return}
+  btn.parentElement.remove();
+}
+
+/* ══ SAVE COURSE ══ */
+function saveCourse(){
+  const title=document.getElementById('courseTitle').value.trim();
+  if(!title){toast('⚠️ Course title cannot be empty','error');return}
+  const btn=document.querySelector('.save-btn');
+  btn.innerHTML='✅ Saved!';btn.style.background='linear-gradient(135deg,#10b981,#059669)';
+  setTimeout(()=>{btn.innerHTML='<span>💾</span><span class="save-label"> Save Changes</span>';btn.style.background=''},2000);
+  toast('✅ "'+title+'" saved!','success');
+}
+function updateBreadcrumb(){
+  document.getElementById('bcTitle').textContent=document.getElementById('courseTitle').value||'Untitled Course';
+}
+
+/* ══ SIDEBAR / THEME / MODAL ══ */
+function toggleSidebar(){['sidebar','overlay','hamburger'].forEach(id=>document.getElementById(id).classList.toggle('open'))}
+function closeSidebar(){['sidebar','overlay','hamburger'].forEach(id=>document.getElementById(id).classList.remove('open'))}
+window.addEventListener('resize',()=>{if(window.innerWidth>1024)closeSidebar()})
+function toggleTheme(){const d=document.body.getAttribute('data-theme')==='dark';document.body.setAttribute('data-theme',d?'':'dark');document.getElementById('themeBtn').textContent=d?'🌙':'☀️'}
+function openModal(id){const el=document.getElementById(id);el.classList.add('open');el.onclick=e=>{if(e.target===el)closeModal(id)}}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'))})
+function toast(msg,type='info'){const c=document.getElementById('toastC');const t=document.createElement('div');t.className='toast '+(type||'');t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(100%)';t.style.transition='all .4s';setTimeout(()=>t.remove(),400)},3000)}
+
+/* ══ INIT ══ */
+buildPickers();
+renderAll();
+</script>
+</body>
+</html>

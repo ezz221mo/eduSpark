@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVOLVE – Students</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --primary:#89b084;--primary-dark:#6e9b73;--primary-light:#eef3ee;
+  --primary-glow:rgba(137,176,132,0.25);
+  --bg:#f9f8f3;--surface:#fff;--soft:#eef3ee;
+  --text:#2d3436;--muted:#6b7280;--border:#e5e7eb;
+  --shadow:0 4px 20px rgba(0,0,0,.07);--shadow-lg:0 12px 40px rgba(0,0,0,.12);
+  --accent:#d4a373;--radius:14px;--ease:cubic-bezier(.4,0,.2,1);
+  --sidebar-w:240px;--topbar-h:66px;
+}
+[data-theme="dark"]{--bg:#0f172a;--surface:#111827;--soft:#1e2d3d;--text:#e5e7eb;--muted:#9ca3af;--border:#1f2937;--shadow:0 4px 20px rgba(0,0,0,.3);--shadow-lg:0 12px 40px rgba(0,0,0,.5)}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;overflow-x:hidden}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:300;transition:transform .3s var(--ease);overflow-y:auto;overflow-x:hidden}
+.sidebar::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent),var(--primary));background-size:200%;animation:shimmer 3s infinite}
+.sidebar-logo{display:flex;align-items:center;gap:12px;padding:22px 20px 20px;border-bottom:1px solid var(--border);text-decoration:none;flex-shrink:0}
+.logo-box{width:38px;height:38px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff;box-shadow:0 4px 14px var(--primary-glow);flex-shrink:0;transition:transform .3s}
+.sidebar-logo:hover .logo-box{transform:rotate(-8deg) scale(1.08)}
+.logo-name{font-size:20px;font-weight:900;color:var(--text);letter-spacing:-.6px;white-space:nowrap}
+.logo-name span{color:var(--primary)}
+.sidebar-section{padding:16px 12px 4px}
+.sidebar-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted);padding:0 10px;margin-bottom:6px}
+.nav-item{display:flex;align-items:center;gap:11px;padding:10px 14px;border-radius:11px;color:var(--muted);font-size:13.5px;font-weight:500;text-decoration:none;margin-bottom:2px;transition:all .2s;position:relative;cursor:pointer;background:none;border:none;width:100%;text-align:left;font-family:inherit}
+.nav-item:hover{background:var(--soft);color:var(--primary);transform:translateX(4px)}
+.nav-item.active{background:var(--primary-light);color:var(--primary);font-weight:700}
+.nav-item.active::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;border-radius:0 3px 3px 0;background:var(--primary)}
+.nav-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.nav-badge{margin-left:auto;background:var(--primary);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px}
+.sidebar-profile{margin-top:auto;padding:14px 12px;border-top:1px solid var(--border);flex-shrink:0}
+.profile-card{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:12px;background:var(--soft);text-decoration:none;transition:all .25s;border:1px solid transparent}
+.profile-card:hover{background:var(--primary-light);border-color:var(--primary)}
+.p-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:13px;flex-shrink:0}
+.p-name{font-size:13px;font-weight:700;color:var(--text)}.p-role{font-size:11px;color:var(--muted)}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:299;backdrop-filter:blur(4px)}
+.sidebar-overlay.open{display:block}
+
+/* ── TOPBAR ── */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;min-width:0}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);height:var(--topbar-h);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:100;gap:12px}
+.topbar-left{display:flex;align-items:center;gap:10px;min-width:0}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px;border-radius:8px;flex-shrink:0}
+.hamburger:hover{background:var(--soft)}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.page-title{font-size:17px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.icon-btn{width:38px;height:38px;border-radius:10px;background:var(--soft);border:1px solid var(--border);color:var(--muted);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;position:relative;flex-shrink:0}
+.icon-btn:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary);transform:translateY(-1px)}
+.notif-dot{position:absolute;top:7px;right:7px;width:7px;height:7px;background:#ef4444;border-radius:50%;border:1.5px solid var(--surface)}
+.create-btn{display:flex;align-items:center;gap:7px;padding:9px 18px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border-radius:25px;font-size:13px;font-weight:700;border:none;cursor:pointer;box-shadow:0 4px 16px var(--primary-glow);transition:all .25s;white-space:nowrap;flex-shrink:0;font-family:inherit}
+.create-btn:hover{transform:translateY(-2px)}
+.btn-label{display:inline}
+
+/* ── CONTENT ── */
+.content{padding:24px 28px;flex:1;animation:fadeUp .5s var(--ease)}
+.top-bar{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:20px}
+.top-bar-left h1{font-size:22px;font-weight:900}
+.student-count-label{font-size:13px;color:var(--muted);font-weight:600;margin-top:3px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.search-wrap{position:relative;flex:1;min-width:190px;max-width:280px}
+.search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none}
+.search-input{width:100%;padding:9px 14px 9px 34px;border-radius:25px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13px;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s}
+.search-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
+.filter-row{display:flex;gap:8px}
+.filter-select{padding:9px 14px;border-radius:25px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13px;font-family:inherit;outline:none;cursor:pointer;min-width:130px;transition:border-color .2s}
+.filter-select:focus{border-color:var(--primary)}
+.view-toggle{display:flex;background:var(--soft);border-radius:25px;border:1px solid var(--border);overflow:hidden;flex-shrink:0}
+.view-btn{padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .2s;font-family:inherit;white-space:nowrap}
+.view-btn.active{background:var(--primary);color:#fff}
+
+/* ── TABLE ── */
+.table-wrap{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;min-width:640px}
+thead th{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);padding:12px 18px;text-align:left;background:var(--soft);border-bottom:1px solid var(--border);cursor:pointer;user-select:none;transition:color .2s;white-space:nowrap}
+thead th:hover{color:var(--primary)}
+tbody td{padding:13px 18px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr{transition:background .2s;cursor:pointer}
+tbody tr:hover{background:var(--primary-light)}
+.student-cell{display:flex;align-items:center;gap:10px}
+.stu-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#fff;flex-shrink:0}
+.stu-name{font-size:13px;font-weight:700}
+.stu-id{font-size:11px;color:var(--muted)}
+.grade-pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+.grade-a{background:#d1fae5;color:#059669}
+.grade-b{background:var(--primary-light);color:var(--primary-dark)}
+.grade-c{background:#FEF3C7;color:#B45309}
+.grade-d{background:#FEE2E2;color:#DC2626}
+.progress-mini{width:70px;height:6px;background:var(--soft);border-radius:3px;overflow:hidden;flex-shrink:0}
+.progress-mini-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-dark));border-radius:3px;transition:width .8s var(--ease)}
+.risk-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.action-btns{display:flex;gap:6px}
+.act-btn{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--soft);color:var(--muted);transition:all .2s;font-family:inherit;white-space:nowrap}
+.act-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* ── CARDS ── */
+.students-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.student-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);padding:20px 16px;text-align:center;transition:all .3s var(--ease);cursor:pointer;animation:scaleIn .4s var(--ease) backwards}
+.student-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);border-color:var(--primary)}
+.sc-avatar{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:#fff;margin:0 auto 10px;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+.sc-name{font-size:14px;font-weight:800;margin-bottom:2px;line-height:1.2}
+.sc-class{font-size:11px;color:var(--muted);margin-bottom:8px}
+.sc-risk-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;margin-bottom:12px}
+.sc-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px}
+.sc-stat{background:var(--soft);border-radius:8px;padding:8px 6px;border:1px solid var(--border)}
+.sc-stat-val{font-size:15px;font-weight:900}
+.sc-stat-lbl{font-size:10px;color:var(--muted);font-weight:600;margin-top:1px}
+.sc-actions{display:flex;gap:6px}
+.sc-btn{flex:1;padding:7px 4px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--soft);color:var(--text);transition:all .2s;font-family:inherit}
+.sc-btn:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+.sc-btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* ── MOBILE LIST ── */
+.student-list-mobile{display:none;flex-direction:column;gap:10px}
+.slm-item{background:var(--surface);border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow);padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s var(--ease)}
+.slm-item:hover{border-color:var(--primary);background:var(--primary-light);transform:translateX(3px)}
+.slm-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:#fff;flex-shrink:0}
+.slm-info{flex:1;min-width:0}
+.slm-name{font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.slm-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.slm-right{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.slm-grade{font-size:16px;font-weight:900}
+.slm-risk{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap}
+
+/* ── EMPTY ── */
+.empty-state{text-align:center;padding:56px 20px;color:var(--muted)}
+.empty-icon{font-size:48px;opacity:.35;margin-bottom:14px}
+.empty-title{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.empty-sub{font-size:13px}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:20px;border:1px solid var(--border);box-shadow:0 30px 80px rgba(0,0,0,.3);max-width:500px;width:100%;animation:scaleIn .3s var(--ease);max-height:90vh;overflow-y:auto}
+.modal-header{padding:22px 22px 0;display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-size:17px;font-weight:900}
+.modal-close{width:34px;height:34px;border-radius:50%;background:var(--soft);border:1px solid var(--border);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--muted);flex-shrink:0}
+.modal-close:hover{background:#fee2e2;color:#dc2626;transform:rotate(90deg)}
+.modal-body{padding:18px 22px 22px}
+.modal-field{margin-bottom:14px}
+.modal-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:block}
+.modal-input,.modal-select{width:100%;padding:10px 14px;background:var(--soft);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:border-color .2s,box-shadow .2s}
+.modal-input:focus,.modal-select:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow)}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;padding-top:10px}
+.btn-cancel{padding:10px 20px;background:var(--soft);border:1px solid var(--border);border-radius:25px;cursor:pointer;font-size:13px;font-weight:700;color:var(--muted);font-family:inherit}
+.btn-cancel:hover{background:var(--border)}
+.btn-submit{padding:10px 22px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border-radius:25px;cursor:pointer;font-size:13px;font-weight:700;border:none;box-shadow:0 4px 16px var(--primary-glow);transition:all .25s;font-family:inherit}
+.btn-submit:hover{transform:translateY(-2px)}
+.profile-section{display:flex;align-items:center;gap:14px;background:var(--soft);border-radius:14px;padding:16px;margin-bottom:16px;border:1px solid var(--border)}
+.profile-av{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;color:#fff;flex-shrink:0}
+.stats-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:16px}
+.stat-mini{background:var(--soft);border-radius:10px;padding:12px 8px;border:1px solid var(--border);text-align:center}
+.stat-mini-val{font-size:18px;font-weight:900}
+.stat-mini-lbl{font-size:10px;color:var(--muted);font-weight:600;margin-top:2px}
+.activity-list{display:flex;flex-direction:column;gap:8px;max-height:150px;overflow-y:auto}
+.activity-item{display:flex;align-items:flex-start;gap:8px;padding:9px 12px;background:var(--soft);border-radius:10px;border:1px solid var(--border);font-size:12.5px;line-height:1.5}
+
+/* ── TOAST ── */
+.toast-container{position:fixed;bottom:18px;right:14px;z-index:9999;display:flex;flex-direction:column;gap:8px;max-width:calc(100vw - 28px)}
+.toast{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;animation:slideIn .4s;border-left:4px solid var(--primary);max-width:320px}
+.toast.success{border-left-color:#10b981}
+.toast.error{border-left-color:#ef4444}
+
+/* ════════════════════════
+   RESPONSIVE BREAKPOINTS
+════════════════════════ */
+
+/* Tablet ≤ 1024 */
+@media(max-width:1024px){
+  :root{--sidebar-w:0px}
+  .sidebar{transform:translateX(-100%);width:260px;box-shadow:var(--shadow-lg)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .hamburger{display:flex}
+  .topbar{padding:0 16px}
+}
+
+/* Small tablet ≤ 768 */
+@media(max-width:768px){
+  .content{padding:16px}
+  .top-bar{flex-direction:column;align-items:stretch}
+  .controls{flex-direction:column;align-items:stretch;gap:8px}
+  .search-wrap{min-width:0;max-width:100%}
+  .filter-row{display:flex;gap:8px}
+  .filter-select{flex:1;min-width:0}
+  .view-toggle{align-self:flex-start}
+  /* hide progress col to save space */
+  .col-progress{display:none}
+  table{min-width:520px}
+  .students-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+}
+
+/* Mobile ≤ 540 */
+@media(max-width:540px){
+  :root{--topbar-h:58px}
+  .page-title{font-size:15px}
+  .content{padding:12px}
+  /* Hide text from create btn */
+  .btn-label{display:none}
+  .create-btn{padding:9px 12px}
+  /* Hide desktop views, show mobile list */
+  #tableView,#cardsView{display:none !important}
+  .student-list-mobile{display:flex}
+  .view-toggle{display:none}
+  .top-bar-left h1{font-size:18px}
+  .filter-row{flex-direction:column}
+  .filter-select{width:100%}
+}
+
+/* Tiny ≤ 360 */
+@media(max-width:360px){
+  .content{padding:10px}
+  .topbar{padding:0 10px;gap:6px}
+  .icon-btn{width:34px;height:34px;font-size:13px}
+  .slm-av{width:38px;height:38px;font-size:12px}
+  .slm-name{font-size:13px}
+  .modal{border-radius:16px}
+  .modal-header{padding:16px 16px 0}
+  .modal-body{padding:14px 16px 18px}
+  .stats-grid-3{grid-template-columns:1fr 1fr;gap:7px}
+  .stat-mini:last-child{grid-column:span 2}
+}
+
+/* ── FOOTER ── */
+footer{background:var(--surface);color:var(--muted);border-top:1px solid var(--border);padding:52px 32px 28px;margin-top:auto}
+.footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.3fr;gap:40px;margin-bottom:36px}
+.f-logo{display:flex;align-items:center;gap:10px;margin-bottom:14px;text-decoration:none}
+.f-logo-box{width:34px;height:34px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;flex-shrink:0;transition:transform .3s}
+.f-logo:hover .f-logo-box{transform:rotate(-8deg) scale(1.08)}
+.f-logo-name{font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.5px}
+.f-logo-name span{color:var(--primary)}
+.f-desc{font-size:13px;line-height:1.75;color:var(--muted);max-width:260px;margin-bottom:20px}
+.socials{display:flex;gap:10px}
+.socials a{width:32px;height:32px;background:var(--soft);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);text-decoration:none;font-size:12px;border:1px solid var(--border);transition:all .25s var(--ease)}
+.socials a:hover{background:var(--primary);color:#fff;border-color:var(--primary);transform:translateY(-3px);box-shadow:0 6px 16px var(--primary-glow)}
+.footer-col h4{font-size:14px;font-weight:800;color:var(--text);margin-bottom:16px}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:10px}
+.footer-col ul li a{text-decoration:none;color:var(--muted);font-size:13px;transition:color .2s;cursor:pointer}
+.footer-col ul li a:hover{color:var(--primary)}
+.ci-item{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--muted);margin-bottom:10px}
+.ci-item i{color:var(--primary);width:14px;flex-shrink:0}
+.footer-bottom{padding-top:22px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:13px;flex-wrap:wrap;gap:12px}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{text-decoration:none;color:var(--muted);font-size:13px;transition:color .2s;cursor:pointer}
+.footer-links a:hover{color:var(--primary)}
+
+/* Footer responsive */
+@media(max-width:900px){.footer-top{grid-template-columns:1fr 1fr;gap:28px}}
+@media(max-width:540px){.footer-top{grid-template-columns:1fr;gap:24px}footer{padding:36px 16px 22px}.footer-bottom{flex-direction:column;text-align:center}.footer-links{justify-content:center}}
+@media(max-width:360px){.footer-links{flex-direction:column;align-items:center;gap:8px}}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+</style>
+</head>
+<body>
+
+<div class="toast-container" id="toastC"></div>
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <div class="logo-box">E</div>
+    <span class="logo-name">EVO<span>LVE</span></span>
+  </a>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Main</div>
+    <button class="nav-item" onclick="location.href='teacher_dashboard.html'"><span class="nav-icon">🏠</span>Dashboard</button>
+    <button class="nav-item" onclick="location.href='courses.html'"><span class="nav-icon">📚</span>Courses</button>
+    <button class="nav-item active"><span class="nav-icon">👥</span>Students</button>
+    <button class="nav-item" onclick="location.href='schedule.html'"><span class="nav-icon">📅</span>Schedule</button>
+    <button class="nav-item" onclick="location.href='sparky.html'"><span class="nav-icon">🤖</span>AI Assistant</button>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Tools</div>
+    <button class="nav-item" onclick="location.href='messages.html'"><span class="nav-icon">💬</span>Messages<span class="nav-badge">5</span></button>
+    <button class="nav-item" onclick="location.href='library.html'"><span class="nav-icon">📖</span>Library</button>
+    <button class="nav-item" onclick="location.href='settings.html'"><span class="nav-icon">⚙️</span>Settings</button>
+  </div>
+  <div class="sidebar-profile">
+    <a href="profile_teacher.html" class="profile-card">
+      <div class="p-avatar">MA</div>
+      <div><div class="p-name">Mr. Anderson</div><div class="p-role">Teacher</div></div>
+    </a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" id="hamburger" onclick="toggleSidebar()">
+        <span></span><span></span><span></span>
+      </button>
+      <span class="page-title">👥 Students</span>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="icon-btn" onclick="location.href='messages.html'" title="Messages">🔔<span class="notif-dot"></span></button>
+      <button class="icon-btn" onclick="location.href='schedule.html'" title="Schedule">📅</button>
+      <button class="create-btn" onclick="openModal('addStudentModal')">
+        <span>＋</span><span class="btn-label"> Add Student</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- Top bar -->
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <h1>All Students</h1>
+        <div class="student-count-label" id="studentCount">Loading...</div>
+      </div>
+      <div class="controls">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input class="search-input" placeholder="Search name or class..." oninput="filterStudents(this.value)">
+        </div>
+        <div class="filter-row">
+          <select class="filter-select" onchange="filterByClass(this.value)">
+            <option value="all">All Classes</option>
+            <option value="7A">Grade 7A</option>
+            <option value="7B">Grade 7B</option>
+            <option value="8A">Grade 8A</option>
+            <option value="8B">Grade 8B</option>
+          </select>
+          <select class="filter-select" onchange="filterByRisk(this.value)">
+            <option value="all">All Status</option>
+            <option value="high">High Risk</option>
+            <option value="medium">Medium</option>
+            <option value="low">On Track</option>
+          </select>
+        </div>
+        <div class="view-toggle">
+          <button class="view-btn active" onclick="setView('table',this)">☰ Table</button>
+          <button class="view-btn" onclick="setView('cards',this)">⊞ Cards</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE VIEW (desktop/tablet) -->
+    <div id="tableView">
+      <div class="table-wrap">
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th onclick="sortBy('name')">Student <span id="s_name">↕</span></th>
+                <th onclick="sortBy('class')">Class <span id="s_class">↕</span></th>
+                <th onclick="sortBy('gradeNum')">Grade <span id="s_gradeNum">↕</span></th>
+                <th class="col-progress">Progress</th>
+                <th onclick="sortBy('attendance')">Attend. <span id="s_attendance">↕</span></th>
+                <th onclick="sortBy('risk')">Risk <span id="s_risk">↕</span></th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARDS VIEW -->
+    <div id="cardsView" style="display:none">
+      <div class="students-grid" id="studentsGrid"></div>
+    </div>
+
+    <!-- MOBILE LIST (auto on ≤540px) -->
+    <div class="student-list-mobile" id="mobileList"></div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <a href="teacher_dashboard.html" class="f-logo">
+          <div class="f-logo-box">E</div>
+          <span class="f-logo-name">EVO<span>LVE</span></span>
+        </a>
+        <p class="f-desc">Making learning magical for the next generation of creators, scientists, and leaders through the power of AI.</p>
+        <div class="socials">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a onclick="location.href='courses.html'">Courses</a></li>
+          <li><a onclick="location.href='students.html'">Students</a></li>
+          <li><a onclick="location.href='sparky.html'">AI Assistant</a></li>
+          <li><a onclick="location.href='schedule.html'">Schedule</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Success Stories</a></li>
+          <li><a onclick="location.href='messages.html'">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <div class="ci-item"><i class="fas fa-envelope"></i> hello@evolve.com</div>
+        <div class="ci-item"><i class="fas fa-phone"></i> +1 (555) 000-1234</div>
+        <div class="ci-item"><i class="fas fa-map-marker-alt"></i> Silicon Valley, CA</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 EVOLVE. All rights reserved.</p>
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">👤 Student Profile</span>
+      <button class="modal-close" onclick="closeModal('profileModal')">✕</button>
+    </div>
+    <div class="modal-body" id="profileBody"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="addStudentModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">➕ Add Student</span>
+      <button class="modal-close" onclick="closeModal('addStudentModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="modal-field"><label class="modal-label">First Name</label><input class="modal-input" id="sFirst" placeholder="John"></div>
+        <div class="modal-field"><label class="modal-label">Last Name</label><input class="modal-input" id="sLast" placeholder="Doe"></div>
+      </div>
+      <div class="modal-field"><label class="modal-label">Email</label><input class="modal-input" id="sEmail" type="email" placeholder="student@school.edu"></div>
+      <div class="modal-field"><label class="modal-label">Class</label>
+        <select class="modal-select" id="sClass">
+          <option>Grade 7A</option><option>Grade 7B</option><option>Grade 8A</option><option>Grade 8B</option>
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeModal('addStudentModal')">Cancel</button>
+        <button class="btn-submit" onclick="addStudent()">Add Student</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const STUDENTS=[
+  {id:1,name:'Alice Cooper',class:'8A',grade:'A',gradeNum:92,progress:88,attendance:96,risk:'low',color:'#89b084',assignments:18,late:0,activity:['Submitted Solar System Essay','Scored 94% on Science Quiz','Attended all classes this week']},
+  {id:2,name:'Bob Smith',class:'7B',grade:'B',gradeNum:81,progress:75,attendance:90,risk:'low',color:'#6366f1',assignments:16,late:1,activity:['Submitted Math Worksheet #4','Missed Thursday class','Scored 78% on Algebra Test']},
+  {id:3,name:'Charlie Brown',class:'8A',grade:'C',gradeNum:71,progress:60,attendance:72,risk:'medium',color:'#f59e0b',assignments:14,late:3,activity:['Late: Science Project','Missed 4 days this month','Grade dropped 8%']},
+  {id:4,name:'Diana Prince',class:'7A',grade:'A',gradeNum:97,progress:95,attendance:100,risk:'low',color:'#ec4899',assignments:19,late:0,activity:['Perfect attendance this month','Top scorer in English','Submitted all assignments early']},
+  {id:5,name:'Ethan Hunt',class:'8B',grade:'B',gradeNum:84,progress:70,attendance:88,risk:'low',color:'#14b8a6',assignments:17,late:1,activity:['Good improvement this week','Submitted Art project','Scored 82% on Biology quiz']},
+  {id:6,name:'Fiona Green',class:'7A',grade:'C',gradeNum:68,progress:55,attendance:80,risk:'medium',color:'#8b5cf6',assignments:13,late:2,activity:['Grade slip in Math','Parent contacted','Needs extra support']},
+  {id:7,name:'John Doe',class:'8A',grade:'D',gradeNum:58,progress:35,attendance:65,risk:'high',color:'#EF4444',assignments:10,late:5,activity:['Missed 3 assignments','Grade critically low','Absent 4 days this week']},
+  {id:8,name:'Sarah Smith',class:'7B',grade:'C',gradeNum:70,progress:50,attendance:82,risk:'medium',color:'#F5A623',assignments:14,late:2,activity:['Grade dropped 12%','Submitted late essay','Needs attention']},
+  {id:9,name:'Mike Ross',class:'8B',grade:'B',gradeNum:83,progress:68,attendance:72,risk:'low',color:'#059669',assignments:15,late:1,activity:['Absent 4 days','Good performance overall','Parents notified']},
+  {id:10,name:'Laura Miles',class:'7A',grade:'A',gradeNum:95,progress:92,attendance:98,risk:'low',color:'#06b6d4',assignments:19,late:0,activity:['Excellent performance','Top of class in English','Volunteered for debate team']},
+  {id:11,name:'Omar Hassan',class:'8B',grade:'B',gradeNum:79,progress:72,attendance:86,risk:'low',color:'#d97706',assignments:16,late:1,activity:['Consistent progress','Needs help with fractions','Submitted project on time']},
+  {id:12,name:'Priya Patel',class:'7B',grade:'A',gradeNum:91,progress:87,attendance:94,risk:'low',color:'#7c3aed',assignments:18,late:0,activity:['Strong in all subjects','Asked for extra reading material','Perfect quiz scores']},
+];
+
+let filtered=[...STUDENTS],searchQ='',classQ='all',riskQ='all',sortKey='name',sortDir=1;
+
+// Helpers
+const riskColor=r=>r==='high'?'#ef4444':r==='medium'?'#f59e0b':'#10b981';
+const riskLabel=r=>r==='high'?'High Risk':r==='medium'?'Medium':'On Track';
+const riskBg=r=>r==='high'?'#FEE2E2':r==='medium'?'#FEF3C7':'#d1fae5';
+const riskTxt=r=>r==='high'?'#DC2626':r==='medium'?'#D97706':'#059669';
+const gradeColor=n=>n>=90?'#10b981':n>=70?'var(--primary)':'#ef4444';
+const attendColor=a=>a<80?'#ef4444':a<90?'#d97706':'#10b981';
+const initials=name=>name.split(' ').map(w=>w[0]).join('');
+
+function emptyHTML(){
+  return`<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">No students found</div><div class="empty-sub">Try adjusting your search or filters</div></div>`;
+}
+
+function render(){
+  document.getElementById('studentCount').textContent=filtered.length+' student'+(filtered.length!==1?'s':'');
+  renderTable(); renderCards(); renderMobile();
+}
+
+function renderTable(){
+  const tbody=document.getElementById('studentTableBody');
+  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="7">${emptyHTML()}</td></tr>`;return}
+  tbody.innerHTML=filtered.map((s,i)=>`
+    <tr onclick="openProfile(${s.id})" style="animation:fadeUp .3s ${i*.03}s backwards">
+      <td><div class="student-cell">
+        <div class="stu-av" style="background:${s.color}">${initials(s.name)}</div>
+        <div><div class="stu-name">${s.name}</div><div class="stu-id">#STU-00${s.id}</div></div>
+      </div></td>
+      <td style="font-weight:700">Gr.${s.class}</td>
+      <td><span class="grade-pill grade-${s.grade.toLowerCase()}">${s.grade} (${s.gradeNum}%)</span></td>
+      <td class="col-progress">
+        <div style="display:flex;align-items:center;gap:7px">
+          <div class="progress-mini"><div class="progress-mini-fill" style="width:0" data-w="${s.progress}%"></div></div>
+          <span style="font-size:11px;font-weight:600;color:var(--muted)">${s.progress}%</span>
+        </div>
+      </td>
+      <td style="font-weight:700;color:${attendColor(s.attendance)}">${s.attendance}%</td>
+      <td><div style="display:flex;align-items:center;gap:5px">
+        <div class="risk-dot" style="background:${riskColor(s.risk)}"></div>
+        <span style="font-size:12px;font-weight:600;color:${riskColor(s.risk)}">${riskLabel(s.risk)}</span>
+      </div></td>
+      <td><div class="action-btns">
+        <button class="act-btn" onclick="event.stopPropagation();location.href='messages.html?to=${encodeURIComponent(s.name)}'">💬</button>
+        <button class="act-btn" onclick="event.stopPropagation();openProfile(${s.id})">View</button>
+      </div></td>
+    </tr>`).join('');
+  setTimeout(()=>document.querySelectorAll('.progress-mini-fill').forEach(b=>{b.style.transition='width .7s var(--ease)';b.style.width=b.dataset.w}),80);
+}
+
+function renderCards(){
+  const grid=document.getElementById('studentsGrid');
+  if(!filtered.length){grid.innerHTML=`<div style="grid-column:1/-1">${emptyHTML()}</div>`;return}
+  grid.innerHTML=filtered.map((s,i)=>`
+    <div class="student-card" style="animation-delay:${i*.05}s" onclick="openProfile(${s.id})">
+      <div class="sc-avatar" style="background:${s.color}">${initials(s.name)}</div>
+      <div class="sc-name">${s.name}</div>
+      <div class="sc-class">Grade ${s.class}</div>
+      <div class="sc-risk-badge" style="background:${riskBg(s.risk)};color:${riskTxt(s.risk)}">${s.risk==='high'?'⚠️':s.risk==='medium'?'⚡':'✅'} ${riskLabel(s.risk)}</div>
+      <div class="sc-stats">
+        <div class="sc-stat"><div class="sc-stat-val" style="color:${gradeColor(s.gradeNum)}">${s.gradeNum}%</div><div class="sc-stat-lbl">Grade</div></div>
+        <div class="sc-stat"><div class="sc-stat-val" style="color:${attendColor(s.attendance)}">${s.attendance}%</div><div class="sc-stat-lbl">Attend.</div></div>
+      </div>
+      <div class="sc-actions">
+        <button class="sc-btn" onclick="event.stopPropagation();location.href='messages.html?to=${encodeURIComponent(s.name)}'">💬</button>
+        <button class="sc-btn primary" onclick="event.stopPropagation();openProfile(${s.id})">View →</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderMobile(){
+  const list=document.getElementById('mobileList');
+  if(!filtered.length){list.innerHTML=emptyHTML();return}
+  list.innerHTML=filtered.map((s,i)=>`
+    <div class="slm-item" style="animation:fadeUp .3s ${i*.04}s backwards" onclick="openProfile(${s.id})">
+      <div class="slm-av" style="background:${s.color}">${initials(s.name)}</div>
+      <div class="slm-info">
+        <div class="slm-name">${s.name}</div>
+        <div class="slm-meta">Gr.${s.class} · Attend. <strong style="color:${attendColor(s.attendance)}">${s.attendance}%</strong></div>
+      </div>
+      <div class="slm-right">
+        <div class="slm-grade" style="color:${gradeColor(s.gradeNum)}">${s.gradeNum}%</div>
+        <div class="slm-risk" style="background:${riskBg(s.risk)};color:${riskTxt(s.risk)}">${riskLabel(s.risk)}</div>
+      </div>
+    </div>`).join('');
+}
+
+// Filters
+function filterStudents(q){searchQ=q;applyFilters()}
+function filterByClass(c){classQ=c;applyFilters()}
+function filterByRisk(r){riskQ=r;applyFilters()}
+function applyFilters(){
+  filtered=STUDENTS.filter(s=>{
+    const mQ=!searchQ||s.name.toLowerCase().includes(searchQ.toLowerCase())||s.class.toLowerCase().includes(searchQ.toLowerCase());
+    const mC=classQ==='all'||s.class===classQ;
+    const mR=riskQ==='all'||s.risk===riskQ;
+    return mQ&&mC&&mR;
+  });
+  sortFiltered(); render();
+}
+
+// Sort
+function sortBy(key){
+  if(sortKey===key)sortDir*=-1;else{sortKey=key;sortDir=1}
+  document.querySelectorAll('thead th span[id^="s_"]').forEach(s=>s.textContent='↕');
+  const el=document.getElementById('s_'+key);
+  if(el)el.textContent=sortDir===1?'↑':'↓';
+  sortFiltered();renderTable();
+}
+function sortFiltered(){
+  filtered.sort((a,b)=>{
+    const av=a[sortKey]??'',bv=b[sortKey]??'';
+    return typeof av==='number'?(av-bv)*sortDir:av.toString().localeCompare(bv.toString())*sortDir;
+  });
+}
+
+// View
+function setView(v,btn){
+  document.querySelectorAll('.view-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tableView').style.display=v==='table'?'block':'none';
+  document.getElementById('cardsView').style.display=v==='cards'?'block':'none';
+}
+
+// Profile
+function openProfile(id){
+  const s=STUDENTS.find(x=>x.id===id);if(!s)return;
+  document.getElementById('profileBody').innerHTML=`
+    <div class="profile-section">
+      <div class="profile-av" style="background:${s.color}">${initials(s.name)}</div>
+      <div style="min-width:0">
+        <div style="font-size:17px;font-weight:900;line-height:1.2">${s.name}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:3px">Grade ${s.class} · #STU-00${s.id}</div>
+        <div style="margin-top:8px"><span style="background:${riskBg(s.risk)};color:${riskTxt(s.risk)};padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700">${s.risk==='high'?'⚠️ High Risk':s.risk==='medium'?'⚡ Medium Risk':'✅ On Track'}</span></div>
+      </div>
+    </div>
+    <div class="stats-grid-3">
+      <div class="stat-mini"><div class="stat-mini-val" style="color:${gradeColor(s.gradeNum)}">${s.gradeNum}%</div><div class="stat-mini-lbl">Grade (${s.grade})</div></div>
+      <div class="stat-mini"><div class="stat-mini-val" style="color:${attendColor(s.attendance)}">${s.attendance}%</div><div class="stat-mini-lbl">Attendance</div></div>
+      <div class="stat-mini"><div class="stat-mini-val">${s.assignments}</div><div class="stat-mini-lbl">Assignments</div></div>
+    </div>
+    <div style="font-size:13px;font-weight:800;margin-bottom:10px">📋 Recent Activity</div>
+    <div class="activity-list">
+      ${s.activity.map(a=>`<div class="activity-item"><span style="flex-shrink:0">•</span><span>${a}</span></div>`).join('')}
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn-submit" style="flex:1;min-width:130px" onclick="closeModal('profileModal');location.href='messages.html?to=${encodeURIComponent(s.name)}'">💬 Message</button>
+      <button class="btn-cancel" onclick="closeModal('profileModal')">Close</button>
+    </div>`;
+  openModal('profileModal');
+}
+
+// Add student
+function addStudent(){
+  const f=document.getElementById('sFirst').value.trim();
+  const l=document.getElementById('sLast').value.trim();
+  if(!f||!l){toast('⚠️ Please enter full name','error');return}
+  closeModal('addStudentModal');
+  ['sFirst','sLast','sEmail'].forEach(id=>document.getElementById(id).value='');
+  toast('✅ '+f+' '+l+' added!','success');
+}
+
+// Sidebar / theme
+function toggleSidebar(){['sidebar','overlay','hamburger'].forEach(id=>document.getElementById(id).classList.toggle('open'))}
+function closeSidebar(){['sidebar','overlay','hamburger'].forEach(id=>document.getElementById(id).classList.remove('open'))}
+window.addEventListener('resize',()=>{if(window.innerWidth>1024)closeSidebar()})
+function toggleTheme(){const d=document.body.getAttribute('data-theme')==='dark';document.body.setAttribute('data-theme',d?'':'dark');document.getElementById('themeBtn').textContent=d?'🌙':'☀️'}
+
+// Modal
+function openModal(id){const el=document.getElementById(id);el.classList.add('open');el.onclick=e=>{if(e.target===el)closeModal(id)}}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'))})
+
+// Toast
+function toast(msg,type='info'){const c=document.getElementById('toastC');const t=document.createElement('div');t.className='toast '+(type||'');t.textContent=msg;c.appendChild(t);setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(100%)';t.style.transition='all .4s';setTimeout(()=>t.remove(),400)},3000)}
+
+// Init
+render();
+const params=new URLSearchParams(location.search);
+const slug=params.get('student');
+if(slug){const m=STUDENTS.find(s=>s.name.toLowerCase().replace(/\s+/g,'-')===slug);if(m)setTimeout(()=>openProfile(m.id),400)}
+</script>
+</body>
+</html>

@@ -1,0 +1,1836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>EVOLVE – Photosynthesis Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --primary:#89b084; --primary-dark:#6e9b73; --primary-light:#eef3ee;
+  --primary-glow:rgba(137,176,132,.25);
+  --bg:#f9f8f3; --surface:#fff; --soft:#eef3ee;
+  --text:#2d3436; --muted:#6b7280; --border:#e5e7eb;
+  --danger:#ef4444; --warning:#f5a623; --accent:#d4a373;
+  --shadow:0 2px 12px rgba(0,0,0,.07); --shadow-lg:0 10px 36px rgba(0,0,0,.12);
+  --radius:14px; --ease:cubic-bezier(.4,0,.2,1);
+  --sidebar-w:280px; --topbar-h:64px;
+}
+[data-theme="dark"] {
+  --bg:#0f172a; --surface:#111827; --soft:#1e2d3d;
+  --text:#e5e7eb; --muted:#9ca3af; --border:#1f2937;
+  --shadow:0 2px 12px rgba(0,0,0,.4); --shadow-lg:0 10px 36px rgba(0,0,0,.6);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);
+  display:flex;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shimmer{0%,100%{opacity:1}50%{opacity:.55}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 var(--primary-glow)}50%{box-shadow:0 0 0 8px transparent}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(-80px) rotate(720deg);opacity:0}}
+
+/* ═══════════ LEFT CURRICULUM SIDEBAR ═══════════ */
+.curriculum-sidebar {
+  width:var(--sidebar-w); min-height:100vh;
+  background:var(--surface); border-right:1px solid var(--border);
+  display:flex; flex-direction:column;
+  position:fixed; top:0; left:0; z-index:300;
+  transition:transform .32s var(--ease);
+  overflow:hidden;
+}
+.curriculum-sidebar::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg,var(--primary),var(--accent),var(--primary));
+  background-size:200%; animation:shimmer 3s infinite;
+}
+.cs-logo {
+  display:flex; align-items:center; gap:10px;
+  padding:18px 18px 16px; border-bottom:1px solid var(--border);
+  text-decoration:none; flex-shrink:0;
+}
+.logo-box {
+  width:34px; height:34px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  border-radius:9px; display:flex; align-items:center; justify-content:center;
+  font-weight:900; color:#fff; font-size:15px;
+  box-shadow:0 3px 10px var(--primary-glow); flex-shrink:0;
+  transition:transform .3s;
+}
+.cs-logo:hover .logo-box{transform:rotate(-8deg) scale(1.08);}
+.logo-name{font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.5px;}
+.logo-name span{color:var(--primary);}
+.cs-back {
+  display:flex; align-items:center; gap:8px;
+  padding:12px 18px; font-size:12.5px; font-weight:700;
+  color:var(--muted); text-decoration:none; border-bottom:1px solid var(--border);
+  transition:all .2s; flex-shrink:0;
+}
+.cs-back:hover{color:var(--primary);background:var(--soft);}
+.cs-course-info {
+  padding:16px 18px; border-bottom:1px solid var(--border); flex-shrink:0;
+}
+.cs-course-tag {
+  font-size:10px; font-weight:800; text-transform:uppercase;
+  letter-spacing:.8px; color:var(--primary);
+  background:var(--primary-light); padding:3px 9px;
+  border-radius:20px; display:inline-block; margin-bottom:7px;
+}
+.cs-course-title{font-size:14px;font-weight:900;line-height:1.3;margin-bottom:10px;}
+.cs-progress-wrap{margin-bottom:4px;}
+.cs-progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px;font-weight:600;}
+.cs-progress-bar{height:6px;background:var(--soft);border-radius:10px;overflow:hidden;border:1px solid var(--border);}
+.cs-progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-dark));border-radius:10px;transition:width .8s var(--ease);}
+
+/* Curriculum list */
+.curriculum-list{flex:1;overflow-y:auto;padding:8px 0;}
+.curriculum-list::-webkit-scrollbar{width:4px;}
+.curriculum-list::-webkit-scrollbar-track{background:transparent;}
+.curriculum-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+.section-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 18px 6px; cursor:pointer; user-select:none;
+  transition:background .15s;
+}
+.section-header:hover{background:var(--soft);}
+.section-title{font-size:12px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.5px;}
+.section-meta{font-size:10.5px;color:var(--muted);font-weight:600;}
+.section-chevron{font-size:11px;color:var(--muted);transition:transform .25s;}
+.section-header.collapsed .section-chevron{transform:rotate(-90deg);}
+.section-items{overflow:hidden;transition:max-height .35s var(--ease);}
+.section-items.collapsed{max-height:0!important;}
+
+.lecture-item {
+  display:flex; align-items:center; gap:10px;
+  padding:8px 18px 8px 24px;
+  cursor:pointer; transition:all .18s; position:relative;
+  text-decoration:none; color:inherit;
+}
+.lecture-item:hover{background:var(--soft);}
+.lecture-item.active{background:var(--primary-light);}
+.lecture-item.active::before{
+  content:''; position:absolute; left:0; top:15%; bottom:15%;
+  width:3px; border-radius:0 3px 3px 0; background:var(--primary);
+}
+.lec-icon {
+  width:30px; height:30px; border-radius:8px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:13px;
+}
+.lec-icon.video{background:#dbeafe;color:#2563eb;}
+.lec-icon.quiz{background:#fef3c7;color:#d97706;}
+.lec-icon.doc{background:#f3e8ff;color:#7c3aed;}
+.lec-icon.assignment{background:#fee2e2;color:#dc2626;}
+.lec-icon.lab{background:#d1fae5;color:#059669;}
+.lec-icon.done{background:#dcfce7;color:#16a34a;}
+.lec-icon.locked{background:var(--soft);color:var(--muted);}
+.lec-info{flex:1;min-width:0;}
+.lec-title{font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text);}
+.lec-title.done-text{color:var(--muted);}
+.lec-meta{font-size:10.5px;color:var(--muted);margin-top:1px;}
+.lec-check{font-size:12px;flex-shrink:0;}
+
+/* ═══════════ MAIN AREA ═══════════ */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;}
+
+.topbar {
+  background:var(--surface); border-bottom:1px solid var(--border);
+  height:var(--topbar-h); display:flex; align-items:center;
+  justify-content:space-between; padding:0 24px;
+  position:sticky; top:0; z-index:200; gap:12px;
+}
+.topbar-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.hamburger{
+  display:none; flex-direction:column; gap:5px;
+  background:none; border:none; cursor:pointer; padding:7px; border-radius:9px;
+}
+.hamburger:hover{background:var(--soft);}
+.hamburger span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px;transition:all .28s;}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.topbar-breadcrumb{display:flex;align-items:center;gap:6px;font-size:13px;min-width:0;}
+.topbar-breadcrumb a{color:var(--primary);font-weight:700;text-decoration:none;white-space:nowrap;}
+.topbar-breadcrumb a:hover{text-decoration:underline;}
+.topbar-breadcrumb span{color:var(--muted);}
+.topbar-breadcrumb .current{font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.icon-btn{
+  width:36px;height:36px;border-radius:9px;background:var(--soft);
+  border:1px solid var(--border);color:var(--muted);font-size:15px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;position:relative;
+}
+.icon-btn:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary);}
+.notif-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;background:#ef4444;border-radius:50%;border:1.5px solid var(--surface);}
+
+/* ═══════════ CONTENT AREA ═══════════ */
+.content-layout{display:flex;flex:1;gap:0;overflow:hidden;}
+.course-main{flex:1;overflow-y:auto;min-width:0;}
+
+/* ═══════════ LECTURE VIEWER (full screen panels) ═══════════ */
+.lecture-view{display:none;flex-direction:column;min-height:100vh;}
+.lecture-view.active{display:flex;}
+
+/* VIDEO PLAYER */
+.video-section{background:#000;position:relative;}
+.video-wrapper{
+  position:relative; width:100%; padding-bottom:56.25%;
+  background:linear-gradient(135deg,#0f172a,#1e293b);
+  overflow:hidden;
+}
+.video-poster{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:12px; cursor:pointer;
+}
+.video-poster-emoji{font-size:52px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5));}
+.play-btn{
+  width:68px; height:68px;
+  background:rgba(137,176,132,.9); backdrop-filter:blur(8px);
+  border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:26px; color:#fff; cursor:pointer;
+  box-shadow:0 8px 32px rgba(137,176,132,.5);
+  transition:all .25s; border:3px solid rgba(255,255,255,.3);
+  animation:pulse 2s infinite;
+}
+.play-btn:hover{transform:scale(1.1);background:var(--primary);}
+.video-poster h3{color:#fff;font-size:18px;font-weight:800;text-align:center;padding:0 20px;text-shadow:0 2px 8px rgba(0,0,0,.5);}
+.video-poster p{color:rgba(255,255,255,.7);font-size:13px;text-align:center;}
+.video-controls{
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(transparent,rgba(0,0,0,.8));
+  padding:20px 16px 10px;
+}
+.vc-bar-wrap{height:3px;background:rgba(255,255,255,.25);border-radius:3px;cursor:pointer;margin-bottom:8px;}
+.vc-bar-fill{width:0%;height:100%;background:var(--primary);border-radius:3px;position:relative;transition:width .3s;}
+.vc-bar-fill::after{content:'';position:absolute;right:-5px;top:-4px;width:11px;height:11px;background:#fff;border-radius:50%;box-shadow:0 0 4px rgba(0,0,0,.4);}
+.vc-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.vc-left{display:flex;align-items:center;gap:8px;}
+.vc-btn{background:none;border:none;color:#fff;font-size:16px;cursor:pointer;padding:4px;transition:transform .15s;}
+.vc-btn:hover{transform:scale(1.15);}
+.vc-time{color:rgba(255,255,255,.8);font-size:11.5px;font-weight:600;}
+.vc-right{display:flex;align-items:center;gap:6px;}
+.vc-right .vc-btn{font-size:14px;}
+
+/* LECTURE INFO BAR */
+.lecture-info{padding:20px 24px 0;animation:fadeUp .4s var(--ease);}
+.lec-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;}
+.lec-tag{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.tag-science{background:#dbeafe;color:#1d4ed8;}
+.tag-grade{background:#fef3c7;color:#92400e;}
+.tag-live{background:#dcfce7;color:#166534;}
+.tag-quiz{background:#fef3c7;color:#d97706;}
+.tag-assignment{background:#fee2e2;color:#dc2626;}
+.tag-lab{background:#d1fae5;color:#059669;}
+.lecture-title-main{font-size:22px;font-weight:900;letter-spacing:-.4px;line-height:1.3;margin-bottom:10px;}
+.lecture-meta-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px;}
+.lm-item{display:flex;align-items:center;gap:5px;font-size:12.5px;color:var(--muted);font-weight:600;}
+.lm-sep{width:3px;height:3px;border-radius:50%;background:var(--border);}
+
+/* TABS */
+.tabs-bar{
+  display:flex; gap:0; border-bottom:2px solid var(--border);
+  padding:0 24px; margin-top:4px; overflow-x:auto; scrollbar-width:none;
+}
+.tabs-bar::-webkit-scrollbar{display:none;}
+.tab-btn{
+  padding:12px 18px; font-size:13px; font-weight:700;
+  color:var(--muted); border:none; background:transparent;
+  cursor:pointer; font-family:inherit; white-space:nowrap;
+  border-bottom:2px solid transparent; margin-bottom:-2px;
+  transition:all .2s;
+}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);}
+.tab-panel{display:none;padding:22px 24px;animation:fadeUp .3s var(--ease);}
+.tab-panel.active{display:block;}
+
+/* ═══════════ QUIZ PANEL ═══════════ */
+.quiz-container{max-width:680px;}
+.quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;}
+.quiz-info-row{display:flex;gap:16px;flex-wrap:wrap;}
+.quiz-badge{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;background:var(--soft);border:1px solid var(--border);padding:5px 12px;border-radius:20px;}
+.quiz-timer{font-size:22px;font-weight:900;color:var(--primary);background:var(--primary-light);padding:8px 18px;border-radius:12px;letter-spacing:1px;}
+.quiz-timer.warning{color:#dc2626;background:#fee2e2;animation:pulse 1s infinite;}
+
+.question-card{
+  background:var(--surface);border:2px solid var(--border);
+  border-radius:16px;padding:22px;margin-bottom:16px;
+  transition:border-color .2s;animation:fadeUp .3s var(--ease);
+}
+.question-card.answered{border-color:var(--primary);}
+.q-number{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;}
+.q-text{font-size:15px;font-weight:700;line-height:1.5;margin-bottom:16px;}
+.q-image{width:100%;border-radius:10px;margin-bottom:14px;max-height:200px;object-fit:cover;background:linear-gradient(135deg,var(--soft),var(--border));display:flex;align-items:center;justify-content:center;font-size:48px;height:160px;}
+.options-list{display:flex;flex-direction:column;gap:9px;}
+.option-btn{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 15px;border-radius:11px;
+  border:2px solid var(--border);background:var(--soft);
+  cursor:pointer;transition:all .2s;text-align:left;
+  font-family:inherit;font-size:13.5px;font-weight:600;color:var(--text);
+  width:100%;
+}
+.option-btn:hover{border-color:var(--primary);background:var(--primary-light);}
+.option-btn.selected{border-color:var(--primary);background:var(--primary-light);color:var(--primary-dark);}
+.option-btn.correct{border-color:#22c55e;background:#dcfce7;color:#166534;}
+.option-btn.wrong{border-color:#ef4444;background:#fee2e2;color:#dc2626;}
+.option-letter{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;flex-shrink:0;transition:all .2s;
+}
+.option-btn.selected .option-letter{background:var(--primary);color:#fff;}
+.option-btn.correct .option-letter{background:#22c55e;color:#fff;}
+.option-btn.wrong .option-letter{background:#ef4444;color:#fff;}
+
+.explanation-box{
+  margin-top:12px;padding:12px 15px;
+  border-radius:10px;font-size:13px;line-height:1.6;
+  display:none;animation:fadeUp .3s var(--ease);
+}
+.explanation-box.show{display:block;}
+.explanation-box.correct-exp{background:#dcfce7;border:1px solid #22c55e;color:#166534;}
+.explanation-box.wrong-exp{background:#fee2e2;border:1px solid #ef4444;color:#dc2626;}
+
+.quiz-submit-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:8px;}
+.quiz-progress-text{font-size:13px;font-weight:700;color:var(--muted);}
+.submit-btn{padding:12px 30px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border:none;border-radius:25px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 3px 14px var(--primary-glow);transition:all .2s;}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px var(--primary-glow);}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* Quiz Result */
+.quiz-result{display:none;text-align:center;padding:40px 24px;animation:fadeUp .4s var(--ease);}
+.quiz-result.show{display:block;}
+.result-emoji{font-size:64px;margin-bottom:16px;}
+.result-score{font-size:56px;font-weight:900;color:var(--primary);line-height:1;}
+.result-label{font-size:16px;color:var(--muted);font-weight:700;margin-bottom:24px;}
+.result-stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:28px;}
+.result-stat{background:var(--soft);border:1px solid var(--border);border-radius:12px;padding:14px 22px;text-align:center;}
+.rs-val{font-size:22px;font-weight:900;}
+.rs-label{font-size:12px;color:var(--muted);font-weight:600;}
+.result-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+.retry-btn{padding:10px 22px;border-radius:22px;border:2px solid var(--border);background:var(--soft);color:var(--text);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;}
+.retry-btn:hover{border-color:var(--primary);background:var(--primary-light);color:var(--primary);}
+
+/* ═══════════ ASSIGNMENT PANEL ═══════════ */
+.assignment-container{max-width:680px;}
+.assignment-header{background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:16px;padding:24px;color:#fff;margin-bottom:24px;}
+.asgn-title{font-size:20px;font-weight:900;margin-bottom:8px;}
+.asgn-meta-row{display:flex;gap:14px;flex-wrap:wrap;}
+.asgn-meta{display:flex;align-items:center;gap:5px;font-size:12.5px;opacity:.9;font-weight:600;}
+.asgn-deadline{background:rgba(255,255,255,.2);padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;}
+
+.asgn-section{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;}
+.asgn-section-title{font-size:14px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.asgn-question{padding:14px 0;border-bottom:1px solid var(--border);}
+.asgn-question:last-child{border-bottom:none;padding-bottom:0;}
+.asgn-q-text{font-size:14px;font-weight:700;line-height:1.5;margin-bottom:10px;}
+.asgn-q-sub{font-size:12.5px;color:var(--muted);margin-bottom:10px;line-height:1.5;}
+.asgn-textarea{
+  width:100%;padding:12px 14px;min-height:100px;
+  border:1.5px solid var(--border);border-radius:10px;
+  background:var(--soft);color:var(--text);
+  font-family:inherit;font-size:13.5px;line-height:1.65;
+  outline:none;resize:vertical;transition:border-color .2s;
+}
+.asgn-textarea:focus{border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px var(--primary-glow);}
+.marks-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;background:var(--warning);color:#fff;padding:2px 8px;border-radius:20px;margin-bottom:6px;}
+
+.upload-zone{
+  border:2px dashed var(--border);border-radius:12px;
+  padding:28px;text-align:center;cursor:pointer;
+  transition:all .2s;background:var(--soft);
+}
+.upload-zone:hover{border-color:var(--primary);background:var(--primary-light);}
+.upload-zone-icon{font-size:36px;margin-bottom:10px;}
+.upload-zone-text{font-size:13.5px;font-weight:700;margin-bottom:4px;}
+.upload-zone-sub{font-size:12px;color:var(--muted);}
+.uploaded-file{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--primary-light);border:1px solid var(--primary);border-radius:10px;margin-top:10px;}
+.uf-icon{font-size:20px;}
+.uf-name{font-size:13px;font-weight:700;flex:1;}
+.uf-size{font-size:11px;color:var(--muted);}
+.uf-del{cursor:pointer;color:var(--danger);font-size:16px;background:none;border:none;padding:2px;line-height:1;}
+
+.asgn-submit-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-top:6px;}
+.asgn-points{font-size:13px;font-weight:700;color:var(--muted);}
+.asgn-submit-btn{padding:13px 32px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border:none;border-radius:25px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 3px 14px var(--primary-glow);transition:all .2s;}
+.asgn-submit-btn:hover{transform:translateY(-2px);box-shadow:0 6px 22px var(--primary-glow);}
+
+/* Submitted state */
+.submitted-badge{display:flex;align-items:center;gap:10px;padding:16px;background:#dcfce7;border:1.5px solid #22c55e;border-radius:12px;margin-bottom:16px;}
+.sb-icon{font-size:24px;}
+.sb-title{font-size:14px;font-weight:800;color:#166534;}
+.sb-sub{font-size:12.5px;color:#166534;opacity:.8;}
+
+/* ═══════════ OVERVIEW PANEL ═══════════ */
+.overview-grid{display:grid;grid-template-columns:1fr 300px;gap:20px;}
+.overview-desc{font-size:14px;line-height:1.75;color:var(--text);margin-bottom:18px;}
+.what-learn{background:var(--soft);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;margin-bottom:18px;}
+.what-learn h4{font-size:14px;font-weight:800;margin-bottom:12px;}
+.learn-item{display:flex;align-items:flex-start;gap:9px;margin-bottom:9px;font-size:13.5px;}
+.learn-item:last-child{margin-bottom:0;}
+.learn-check{color:var(--primary);font-size:14px;flex-shrink:0;margin-top:1px;}
+.instructor-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);}
+.instructor-card h4{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
+.inst-profile{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.inst-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:center;font-weight:900;color:#fff;font-size:16px;flex-shrink:0;}
+.inst-name{font-size:14px;font-weight:800;}
+.inst-role{font-size:12px;color:var(--muted);margin-top:2px;}
+.inst-bio{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:12px;}
+.inst-stats{display:flex;gap:14px;}
+.inst-stat{text-align:center;}
+.inst-stat-val{font-size:16px;font-weight:900;color:var(--primary);}
+.inst-stat-label{font-size:10px;color:var(--muted);}
+.course-stats-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);margin-top:14px;}
+.cs-stat-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.cs-stat-row:last-child{border-bottom:none;}
+.cs-stat-label{color:var(--muted);font-weight:600;}
+.cs-stat-val{font-weight:800;}
+
+/* ═══════════ NOTES ═══════════ */
+.notes-area{display:flex;flex-direction:column;gap:14px;}
+.notes-toolbar{display:flex;gap:7px;flex-wrap:wrap;}
+.nt-btn{padding:6px 13px;border-radius:8px;border:1.5px solid var(--border);background:var(--soft);color:var(--text);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.nt-btn:hover{background:var(--primary-light);border-color:var(--primary);color:var(--primary);}
+.nt-btn.active-tool{background:var(--primary);color:#fff;border-color:var(--primary);}
+textarea.notes-input{width:100%;min-height:200px;padding:16px;border:1.5px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);font-family:inherit;font-size:14px;line-height:1.7;outline:none;resize:vertical;transition:border-color .2s;}
+textarea.notes-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-glow);}
+.notes-footer{display:flex;justify-content:space-between;align-items:center;}
+.notes-count{font-size:12px;color:var(--muted);}
+.save-btn{padding:9px 22px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border:none;border-radius:25px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 3px 12px var(--primary-glow);transition:all .2s;}
+.save-btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px var(--primary-glow);}
+.saved-notes{display:flex;flex-direction:column;gap:10px;}
+.saved-note{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px 16px;}
+.sn-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+.sn-title{font-size:12.5px;font-weight:800;}
+.sn-time{font-size:11px;color:var(--muted);}
+.sn-text{font-size:13px;line-height:1.65;color:var(--text);}
+.sn-tag{display:inline-block;margin-top:8px;padding:2px 8px;border-radius:20px;font-size:10.5px;font-weight:700;background:var(--primary-light);color:var(--primary-dark);}
+
+/* ═══════════ Q&A ═══════════ */
+.qa-area{display:flex;flex-direction:column;gap:16px;}
+.qa-ask{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;}
+.qa-ask h4{font-size:14px;font-weight:800;margin-bottom:10px;}
+.qa-input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;background:var(--soft);color:var(--text);font-family:inherit;font-size:13.5px;outline:none;resize:none;min-height:80px;transition:border-color .2s;}
+.qa-input:focus{border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px var(--primary-glow);}
+.qa-post-btn{margin-top:10px;padding:8px 20px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border:none;border-radius:20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 3px 12px var(--primary-glow);}
+.qa-list{display:flex;flex-direction:column;gap:12px;}
+.qa-item{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.qa-q{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.qa-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:11px;color:#fff;flex-shrink:0;}
+.qa-q-text{font-size:13.5px;font-weight:600;line-height:1.55;}
+.qa-q-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.qa-answer{background:var(--primary-light);border:1px solid var(--primary);border-radius:10px;padding:12px 14px;margin-top:6px;}
+.qa-answer-head{display:flex;align-items:center;gap:7px;margin-bottom:6px;}
+.qa-answer-badge{background:var(--primary);color:#fff;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800;}
+.qa-answer-name{font-size:12px;font-weight:700;color:var(--primary-dark);}
+.qa-answer-text{font-size:13px;line-height:1.6;color:var(--text);}
+.qa-likes{display:flex;align-items:center;gap:12px;margin-top:10px;}
+.like-btn{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;border:none;background:transparent;font-family:inherit;transition:color .2s;}
+.like-btn:hover{color:var(--primary);}
+
+/* ═══════════ RESOURCES ═══════════ */
+.resources-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
+.resource-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .22s;}
+.resource-card:hover{border-color:var(--primary);transform:translateY(-3px);box-shadow:var(--shadow-lg);}
+.res-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.res-name{font-size:13px;font-weight:700;margin-bottom:2px;}
+.res-size{font-size:11.5px;color:var(--muted);}
+.res-dl{margin-left:auto;width:32px;height:32px;border-radius:8px;background:var(--soft);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);transition:all .2s;flex-shrink:0;}
+.resource-card:hover .res-dl{background:var(--primary);color:#fff;border-color:var(--primary);}
+
+/* ═══════════ COMPLETE BUTTON ═══════════ */
+.mark-complete-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 24px;border-top:1px solid var(--border);
+  background:var(--surface);flex-wrap:wrap;gap:10px;
+  position:sticky;bottom:0;z-index:10;
+}
+.complete-btn{
+  display:flex;align-items:center;gap:8px;
+  padding:11px 26px;border-radius:25px;font-size:14px;font-weight:800;
+  cursor:pointer;font-family:inherit;transition:all .25s;border:none;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;box-shadow:0 4px 16px var(--primary-glow);
+}
+.complete-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--primary-glow);}
+.complete-btn.done-btn{background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 4px 16px rgba(34,197,94,.3);}
+.mark-complete-nav{display:flex;gap:8px;}
+.mn-btn{padding:10px 18px;border-radius:22px;border:1.5px solid var(--border);background:var(--soft);color:var(--text);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;}
+.mn-btn:hover{border-color:var(--primary);background:var(--primary-light);color:var(--primary);}
+
+/* ═══════════ RIGHT PANEL ═══════════ */
+.right-panel{
+  width:300px; border-left:1px solid var(--border);
+  background:var(--surface); display:flex; flex-direction:column;
+  flex-shrink:0; overflow-y:auto; max-height:calc(100vh - var(--topbar-h));
+  position:sticky; top:var(--topbar-h); align-self:flex-start;
+}
+.rp-section{padding:16px 18px;border-bottom:1px solid var(--border);}
+.rp-title{font-size:13px;font-weight:800;margin-bottom:12px;}
+.progress-ring-wrap{display:flex;align-items:center;gap:14px;margin-bottom:12px;}
+.progress-ring{position:relative;width:60px;height:60px;flex-shrink:0;}
+.progress-ring svg{transform:rotate(-90deg);}
+.progress-ring circle{fill:none;stroke-width:5;stroke-linecap:round;}
+.ring-bg{stroke:var(--soft);}
+.ring-fill{stroke:var(--primary);stroke-dasharray:163;stroke-dashoffset:163;transition:stroke-dashoffset 1s var(--ease);}
+.ring-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:var(--primary);}
+.progress-stats{flex:1;}
+.ps-item{display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px;}
+.ps-label{color:var(--muted);font-weight:600;}
+.ps-val{font-weight:800;}
+.next-up-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .2s;}
+.next-up-item:last-child{border-bottom:none;}
+.next-up-item:hover .nu-title{color:var(--primary);}
+.nu-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.nu-title{font-size:12.5px;font-weight:700;margin-bottom:1px;transition:color .2s;}
+.nu-meta{font-size:11px;color:var(--muted);}
+.achievement-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);}
+.achievement-item:last-child{border-bottom:none;}
+.ach-icon{font-size:22px;flex-shrink:0;}
+.ach-title{font-size:12.5px;font-weight:700;}
+.ach-desc{font-size:11px;color:var(--muted);}
+.ach-locked{opacity:.4;filter:grayscale(1);}
+.nav-btn-row{display:flex;gap:8px;padding:14px 18px;border-top:1px solid var(--border);flex-shrink:0;position:sticky;bottom:0;background:var(--surface);}
+.nav-btn{flex:1;padding:9px;border-radius:10px;font-size:12.5px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:var(--soft);color:var(--text);font-family:inherit;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:5px;}
+.nav-btn:hover{border-color:var(--primary);background:var(--primary-light);color:var(--primary);}
+.nav-btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border-color:transparent;box-shadow:0 3px 12px var(--primary-glow);}
+.nav-btn.primary:hover{transform:translateY(-2px);box-shadow:0 6px 18px var(--primary-glow);}
+
+/* ═══════════ LAB PANEL ═══════════ */
+.lab-container{max-width:680px;}
+.lab-header{background:linear-gradient(135deg,#059669,#047857);border-radius:16px;padding:24px;color:#fff;margin-bottom:24px;}
+.lab-title{font-size:20px;font-weight:900;margin-bottom:6px;}
+.lab-sub{font-size:13px;opacity:.85;}
+.lab-steps{display:flex;flex-direction:column;gap:14px;}
+.lab-step{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;transition:all .2s;}
+.lab-step.active-step{border-color:#059669;box-shadow:0 0 0 3px rgba(5,150,105,.1);}
+.lab-step.completed-step{border-color:#22c55e;}
+.step-header{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.step-num{width:32px;height:32px;border-radius:50%;background:var(--soft);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;transition:all .3s;}
+.lab-step.active-step .step-num{background:#059669;border-color:#059669;color:#fff;}
+.lab-step.completed-step .step-num{background:#22c55e;border-color:#22c55e;color:#fff;}
+.step-title{font-size:14px;font-weight:800;}
+.step-desc{font-size:13.5px;line-height:1.65;color:var(--muted);margin-bottom:12px;}
+.step-observation{width:100%;padding:10px 14px;min-height:70px;border:1.5px solid var(--border);border-radius:10px;background:var(--soft);color:var(--text);font-family:inherit;font-size:13.5px;line-height:1.65;outline:none;resize:vertical;transition:border-color .2s;}
+.step-observation:focus{border-color:#059669;box-shadow:0 0 0 3px rgba(5,150,105,.15);}
+.step-complete-btn{margin-top:10px;padding:7px 18px;background:#059669;color:#fff;border:none;border-radius:20px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;}
+.step-complete-btn:hover{background:#047857;transform:translateY(-1px);}
+.step-complete-btn.done{background:#22c55e;cursor:default;}
+.step-complete-btn.done:hover{transform:none;}
+
+/* Sidebar overlay */
+.cs-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:299;backdrop-filter:blur(3px);}
+.cs-overlay.open{display:block;}
+
+/* ═══════════ RESPONSIVE ═══════════ */
+@media(max-width:1200px){
+  :root{--sidebar-w:260px;}
+  .right-panel{width:260px;}
+  .overview-grid{grid-template-columns:1fr;}
+}
+@media(max-width:1024px){
+  :root{--sidebar-w:0px;}
+  .curriculum-sidebar{transform:translateX(-100%);width:280px;box-shadow:none;}
+  .curriculum-sidebar.open{transform:translateX(0);box-shadow:0 0 60px rgba(0,0,0,.25);}
+  .main{margin-left:0;}
+  .hamburger{display:flex;}
+  .right-panel{display:none;}
+  .content-layout{display:block;}
+}
+@media(max-width:768px){
+  :root{--topbar-h:56px;}
+  .topbar{padding:0 12px;}
+  .lecture-info{padding:14px 16px 0;}
+  .lecture-title-main{font-size:18px;}
+  .tabs-bar{padding:0 12px;}
+  .tab-btn{padding:10px 13px;font-size:12.5px;}
+  .tab-panel{padding:16px 14px;}
+  .overview-grid{grid-template-columns:1fr;}
+  .resources-grid{grid-template-columns:1fr 1fr;}
+  .topbar-breadcrumb .current{display:none;}
+}
+@media(max-width:540px){
+  .lecture-title-main{font-size:16px;}
+  .tab-btn{padding:9px 10px;font-size:12px;}
+  .resources-grid{grid-template-columns:1fr;}
+  .mark-complete-bar{flex-direction:column-reverse;align-items:stretch;}
+  .mark-complete-nav{justify-content:space-between;}
+  .complete-btn{justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<div class="cs-overlay" id="csOverlay" onclick="closeCurriculum()"></div>
+
+<!-- ═══════════ CURRICULUM SIDEBAR ═══════════ -->
+<aside class="curriculum-sidebar" id="curriculumSidebar">
+  <a href="#" class="cs-logo">
+    <div class="logo-box">E</div>
+    <span class="logo-name">EVO<span>LVE</span></span>
+  </a>
+  <a href="#" class="cs-back">← Back to My Courses</a>
+  <div class="cs-course-info">
+    <div class="cs-course-tag">🔬 Science · Grade 9</div>
+    <div class="cs-course-title">Introduction to Photosynthesis</div>
+    <div class="cs-progress-wrap">
+      <div class="cs-progress-label">
+        <span>Your progress</span>
+        <span id="progressPct">33%</span>
+      </div>
+      <div class="cs-progress-bar">
+        <div class="cs-progress-fill" id="progressFill" style="width:33%"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="curriculum-list" id="curriculumList">
+
+    <!-- ── SECTION 1 ── -->
+    <div class="section-header" onclick="toggleSection(this)">
+      <div><div class="section-title">Section 1 · Introduction</div><div class="section-meta">3 items · 28 min</div></div>
+      <span class="section-chevron">▾</span>
+    </div>
+    <div class="section-items" style="max-height:500px">
+      <div class="lecture-item done" onclick="loadLecture(0)">
+        <div class="lec-icon done">✓</div>
+        <div class="lec-info"><div class="lec-title done-text">What is Photosynthesis?</div><div class="lec-meta">🎬 Video · 8 min</div></div>
+        <span class="lec-check" style="color:#22c55e">✓</span>
+      </div>
+      <div class="lecture-item done" onclick="loadLecture(1)">
+        <div class="lec-icon done">✓</div>
+        <div class="lec-info"><div class="lec-title done-text">History & Discovery</div><div class="lec-meta">🎬 Video · 11 min</div></div>
+        <span class="lec-check" style="color:#22c55e">✓</span>
+      </div>
+      <div class="lecture-item done" onclick="loadLecture(2)">
+        <div class="lec-icon done">✓</div>
+        <div class="lec-info"><div class="lec-title done-text">Section 1 Quiz</div><div class="lec-meta">📝 Quiz · 5 questions</div></div>
+        <span class="lec-check" style="color:#22c55e">✓</span>
+      </div>
+    </div>
+
+    <!-- ── SECTION 2 ── -->
+    <div class="section-header" onclick="toggleSection(this)">
+      <div><div class="section-title">Section 2 · The Process</div><div class="section-meta">4 items · 1h 10 min</div></div>
+      <span class="section-chevron">▾</span>
+    </div>
+    <div class="section-items" style="max-height:600px">
+      <div class="lecture-item done" onclick="loadLecture(3)">
+        <div class="lec-icon done">✓</div>
+        <div class="lec-info"><div class="lec-title done-text">Chloroplasts Explained</div><div class="lec-meta">🎬 Video · 14 min</div></div>
+        <span class="lec-check" style="color:#22c55e">✓</span>
+      </div>
+      <div class="lecture-item active" id="li-4" onclick="loadLecture(4)">
+        <div class="lec-icon video">▶</div>
+        <div class="lec-info"><div class="lec-title">Light-Dependent Reactions</div><div class="lec-meta">🎬 Video · 18 min</div></div>
+        <span style="font-size:10px;background:var(--primary);color:#fff;padding:2px 7px;border-radius:20px;font-weight:700;flex-shrink:0;">Now</span>
+      </div>
+      <div class="lecture-item" id="li-5" onclick="loadLecture(5)">
+        <div class="lec-icon quiz">❓</div>
+        <div class="lec-info"><div class="lec-title">Section 2 Quiz</div><div class="lec-meta">📝 Quiz · 8 questions</div></div>
+      </div>
+      <div class="lecture-item" id="li-6" onclick="loadLecture(6)">
+        <div class="lec-icon assignment">📋</div>
+        <div class="lec-info"><div class="lec-title">Light Reactions Assignment</div><div class="lec-meta">📋 Assignment · Due in 3 days</div></div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 3 ── -->
+    <div class="section-header" onclick="toggleSection(this)">
+      <div><div class="section-title">Section 3 · Advanced Topics</div><div class="section-meta">5 items · 1h 30 min</div></div>
+      <span class="section-chevron">▾</span>
+    </div>
+    <div class="section-items" style="max-height:600px">
+      <div class="lecture-item" id="li-7" onclick="loadLecture(7)">
+        <div class="lec-icon video">▶</div>
+        <div class="lec-info"><div class="lec-title">Calvin Cycle Deep Dive</div><div class="lec-meta">🎬 Video · 16 min</div></div>
+      </div>
+      <div class="lecture-item" id="li-8" onclick="loadLecture(8)">
+        <div class="lec-icon lab">🧪</div>
+        <div class="lec-info"><div class="lec-title">Lab: Measuring Oxygen</div><div class="lec-meta">🧪 Lab Activity</div></div>
+      </div>
+      <div class="lecture-item" id="li-9" onclick="loadLecture(9)">
+        <div class="lec-icon video">▶</div>
+        <div class="lec-info"><div class="lec-title">C4 & CAM Pathways</div><div class="lec-meta">🎬 Video · 20 min</div></div>
+      </div>
+      <div class="lecture-item" id="li-10" onclick="loadLecture(10)">
+        <div class="lec-icon quiz">❓</div>
+        <div class="lec-info"><div class="lec-title">Section 3 Quiz</div><div class="lec-meta">📝 Quiz · 10 questions</div></div>
+      </div>
+      <div class="lecture-item" id="li-11" onclick="loadLecture(11)">
+        <div class="lec-icon assignment">📋</div>
+        <div class="lec-info"><div class="lec-title">Advanced Topics Assignment</div><div class="lec-meta">📋 Assignment · Due in 7 days</div></div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 4 ── -->
+    <div class="section-header" onclick="toggleSection(this)">
+      <div><div class="section-title">Section 4 · Final Assessment</div><div class="section-meta">2 items</div></div>
+      <span class="section-chevron">▾</span>
+    </div>
+    <div class="section-items" style="max-height:300px">
+      <div class="lecture-item" id="li-12" onclick="loadLecture(12)">
+        <div class="lec-icon locked">🔒</div>
+        <div class="lec-info"><div class="lec-title" style="color:var(--muted)">Ecology & Climate Link</div><div class="lec-meta">🎬 Video · 18 min</div></div>
+      </div>
+      <div class="lecture-item" id="li-13" onclick="loadLecture(13)">
+        <div class="lec-icon locked">🔒</div>
+        <div class="lec-info"><div class="lec-title" style="color:var(--muted)">Final Exam</div><div class="lec-meta">📝 Exam · 25 questions</div></div>
+      </div>
+    </div>
+
+  </div>
+</aside>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<div class="main">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" id="hamburger" onclick="toggleCurriculum()">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="topbar-breadcrumb">
+        <a href="#">My Courses</a>
+        <span>›</span>
+        <a href="#">Photosynthesis</a>
+        <span>›</span>
+        <span class="current" id="breadcrumbCurrent">Light-Dependent Reactions</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+      <button class="icon-btn" title="Bookmarks">🔖</button>
+      <button class="icon-btn" title="Notifications">🔔<span class="notif-dot"></span></button>
+      <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:12px;cursor:pointer">EJ</div>
+    </div>
+  </header>
+
+  <div class="content-layout">
+
+    <!-- ═══ DYNAMIC LECTURE CONTENT ═══ -->
+    <div class="course-main" id="courseMain">
+      <!-- Rendered by JS -->
+    </div>
+
+    <!-- ═══ RIGHT PANEL ═══ -->
+    <div class="right-panel">
+      <div class="rp-section">
+        <div class="rp-title">📊 My Progress</div>
+        <div class="progress-ring-wrap">
+          <div class="progress-ring">
+            <svg width="60" height="60" viewBox="0 0 60 60">
+              <circle class="ring-bg" cx="30" cy="30" r="26"/>
+              <circle class="ring-fill" id="ringFill" cx="30" cy="30" r="26"/>
+            </svg>
+            <div class="ring-text" id="ringText">33%</div>
+          </div>
+          <div class="progress-stats">
+            <div class="ps-item"><span class="ps-label">Completed</span><span class="ps-val" id="rpCompleted">4 / 14</span></div>
+            <div class="ps-item"><span class="ps-label">Time spent</span><span class="ps-val">56 min</span></div>
+            <div class="ps-item"><span class="ps-label">Quiz avg</span><span class="ps-val" style="color:#22c55e">88%</span></div>
+            <div class="ps-item"><span class="ps-label">Streak</span><span class="ps-val" style="color:var(--warning)">🔥 4 days</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rp-section" id="rpNextUp">
+        <div class="rp-title">⏭ Up Next</div>
+        <div class="next-up-item" onclick="loadLecture(5)">
+          <div class="nu-icon" style="background:#fef3c7">📝</div>
+          <div><div class="nu-title">Section 2 Quiz</div><div class="nu-meta">8 questions · ~12 min</div></div>
+        </div>
+        <div class="next-up-item" onclick="loadLecture(6)">
+          <div class="nu-icon" style="background:#fee2e2">📋</div>
+          <div><div class="nu-title">Light Reactions Assignment</div><div class="nu-meta">Due in 3 days</div></div>
+        </div>
+        <div class="next-up-item" onclick="loadLecture(7)">
+          <div class="nu-icon" style="background:#dbeafe">🎬</div>
+          <div><div class="nu-title">Calvin Cycle Deep Dive</div><div class="nu-meta">Video · 16 min</div></div>
+        </div>
+      </div>
+
+      <div class="rp-section">
+        <div class="rp-title">🏆 Achievements</div>
+        <div class="achievement-item">
+          <div class="ach-icon">🌱</div>
+          <div><div class="ach-title">First Steps</div><div class="ach-desc">Completed your first lecture</div></div>
+        </div>
+        <div class="achievement-item">
+          <div class="ach-icon">🔥</div>
+          <div><div class="ach-title">4-Day Streak</div><div class="ach-desc">Studied 4 days in a row!</div></div>
+        </div>
+        <div class="achievement-item ach-locked" id="ach-quizmaster">
+          <div class="ach-icon">🏅</div>
+          <div><div class="ach-title">Quiz Master</div><div class="ach-desc">Score 90%+ on all quizzes</div></div>
+        </div>
+        <div class="achievement-item ach-locked">
+          <div class="ach-icon">🎓</div>
+          <div><div class="ach-title">Course Complete</div><div class="ach-desc">Finish all 14 items</div></div>
+        </div>
+      </div>
+
+      <div class="nav-btn-row" id="rpNavBtns">
+        <button class="nav-btn" id="rpPrevBtn" onclick="navigatePrev()">← Prev</button>
+        <button class="nav-btn primary" id="rpNextBtn" onclick="navigateNext()">Next →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   LECTURE DATA
+══════════════════════════════════════════ */
+const LECTURES = [
+  {
+    id:0, type:'video', section:'Section 1',
+    title:'What is Photosynthesis?', duration:'8 min',
+    emoji:'🌿', tag:'🎬 Video Lecture', tagClass:'tag-live',
+    completed:true,
+    desc:'An introduction to the fundamental concept of photosynthesis — how plants harness sunlight to create food. We cover the overall equation, why photosynthesis matters for life on Earth, and the two main stages.',
+    goals:['Define photosynthesis and write the overall equation','Identify where photosynthesis takes place in plant cells','Explain why photosynthesis is essential to life on Earth','Distinguish between the two main stages at a basic level'],
+    resources:[{icon:'📊',bg:'#fef3c7',name:'Intro Slides',size:'PDF · 1.8 MB'},{icon:'📋',bg:'#f3e8ff',name:'Summary Notes',size:'PDF · 320 KB'}],
+    videoProgress:100
+  },
+  {
+    id:1, type:'video', section:'Section 1',
+    title:'History & Discovery', duration:'11 min',
+    emoji:'📜', tag:'🎬 Video Lecture', tagClass:'tag-live',
+    completed:true,
+    desc:'Journey through the history of photosynthesis research — from van Helmont\'s willow experiment in 1648 to Calvin\'s isotope tracing in the 1950s. Discover how each scientist added a piece to the puzzle.',
+    goals:['Describe key experiments in photosynthesis history','Explain van Helmont\'s, Priestley\'s, and Ingenhousz\'s contributions','Understand how the Calvin Cycle was mapped using radioactive carbon'],
+    resources:[{icon:'📋',bg:'#d1fae5',name:'Timeline Chart',size:'PDF · 580 KB'},{icon:'🔬',bg:'#fef3c7',name:'Scientist Profiles',size:'PDF · 1.2 MB'}],
+    videoProgress:100
+  },
+  {
+    id:2, type:'quiz', section:'Section 1',
+    title:'Section 1 Quiz', duration:'5 questions',
+    emoji:'📝', tag:'📝 Quiz', tagClass:'tag-quiz',
+    completed:true,
+    questions:[
+      {q:'What is the overall equation for photosynthesis?',opts:['6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂','C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O','6CO₂ + 6O₂ → C₆H₁₂O₆ + 6H₂O','H₂O + CO₂ → O₂ + glucose'],correct:0,exp:'The correct equation shows carbon dioxide and water combining with light energy to produce glucose and oxygen.'},
+      {q:'Where does photosynthesis primarily take place in a plant cell?',opts:['Mitochondria','Nucleus','Chloroplast','Cell wall'],correct:2,exp:'Chloroplasts contain the pigments and enzymes needed for photosynthesis.'},
+      {q:'Who discovered that plants release oxygen?',opts:['Jan Baptist van Helmont','Joseph Priestley','Melvin Calvin','Jan Ingenhousz'],correct:1,exp:'Joseph Priestley discovered in 1771 that plants restore air that has been used up by burning or breathing.'},
+      {q:'What are the two main stages of photosynthesis?',opts:['Oxidation and Reduction','Light-dependent and Light-independent reactions','Aerobic and Anaerobic stages','Glycolysis and Krebs Cycle'],correct:1,exp:'Photosynthesis has light-dependent reactions (in thylakoids) and light-independent reactions (Calvin Cycle, in stroma).'},
+      {q:'In which decade did Calvin and Benson map the Calvin Cycle?',opts:['1920s','1940s','1950s','1970s'],correct:2,exp:'Melvin Calvin used carbon-14 isotope tracing in the 1950s to map the Calvin Cycle, winning the Nobel Prize in 1961.'}
+    ]
+  },
+  {
+    id:3, type:'video', section:'Section 2',
+    title:'Chloroplasts Explained', duration:'14 min',
+    emoji:'🔬', tag:'🎬 Video Lecture', tagClass:'tag-live',
+    completed:true,
+    desc:'A deep dive into the structure of chloroplasts — the organelles responsible for photosynthesis. We explore the outer and inner membranes, the stroma, grana, and thylakoid membranes, understanding how each component supports the process.',
+    goals:['Identify and label all parts of a chloroplast','Explain the function of thylakoid membranes and the stroma','Describe why chloroplasts have a double-membrane structure','Connect chloroplast structure to its function in photosynthesis'],
+    resources:[{icon:'🗺️',bg:'#dbeafe',name:'Chloroplast Diagram',size:'PNG · 2.1 MB'},{icon:'📊',bg:'#fef3c7',name:'Structure Slides',size:'PDF · 2.4 MB'},{icon:'📝',bg:'#dcfce7',name:'Labeling Worksheet',size:'PDF · 450 KB'}],
+    videoProgress:100
+  },
+  {
+    id:4, type:'video', section:'Section 2',
+    title:'Light-Dependent Reactions', duration:'18 min',
+    emoji:'⚡', tag:'🎬 Video Lecture', tagClass:'tag-live',
+    completed:false,
+    desc:'In this lecture, we explore the light-dependent reactions that occur in the thylakoid membranes. These reactions capture solar energy and convert it into chemical energy in the form of ATP and NADPH — the molecules that power the Calvin Cycle.',
+    goals:['How light energy is captured by chlorophyll pigments','The role of Photosystem I and Photosystem II','How ATP and NADPH are produced','The process of photolysis (splitting water)','Why oxygen is released as a byproduct','How the electron transport chain functions in plants'],
+    resources:[{icon:'📊',bg:'#fef3c7',name:'Lecture Slides',size:'PDF · 3.2 MB'},{icon:'🗺️',bg:'#dbeafe',name:'Z-Scheme Diagram',size:'PNG · 1.8 MB'},{icon:'📝',bg:'#dcfce7',name:'Practice Worksheet',size:'PDF · 890 KB'},{icon:'📋',bg:'#f3e8ff',name:'Summary Notes',size:'PDF · 420 KB'}],
+    videoProgress:42
+  },
+  {
+    id:5, type:'quiz', section:'Section 2',
+    title:'Section 2 Quiz', duration:'8 questions',
+    emoji:'📝', tag:'📝 Quiz', tagClass:'tag-quiz',
+    completed:false,
+    questions:[
+      {q:'Which photosystem absorbs light at 680 nm and is involved in splitting water?',opts:['Photosystem I','Photosystem II','Both PS I and PS II','Neither'],correct:1,exp:'Photosystem II (P680) absorbs light at 680nm and is responsible for photolysis — splitting water molecules to release electrons, protons, and oxygen.'},
+      {q:'What molecules are produced by the light-dependent reactions?',opts:['Glucose and CO₂','ATP and NADPH','ADP and NADP⁺','Starch and water'],correct:1,exp:'Light-dependent reactions produce ATP (via photophosphorylation) and NADPH (via NADP⁺ reductase), which are then used by the Calvin Cycle.'},
+      {q:'Where do the light-dependent reactions take place?',opts:['Stroma','Cytoplasm','Thylakoid membranes','Outer chloroplast membrane'],correct:2,exp:'Light-dependent reactions occur on the thylakoid membranes where photosystems and ATP synthase are embedded.'},
+      {q:'What is photolysis?',opts:['The synthesis of glucose using light','The splitting of water molecules using light energy','The breakdown of ATP','The absorption of carbon dioxide'],correct:1,exp:'Photolysis means light-splitting. In photosynthesis, water is split by light energy in Photosystem II: 2H₂O → 4H⁺ + 4e⁻ + O₂'},
+      {q:'In what order do electrons flow in the Z-scheme?',opts:['PSI → ETC → PSII','Water → PSII → ETC → PSI → NADPH','PSII → PSI → Water → NADPH','NADPH → PSI → PSII → Water'],correct:1,exp:'Electrons flow: Water (donor) → PSII → Electron Transport Chain → PSI → NADP⁺ reductase → NADPH'},
+      {q:'What drives ATP synthesis in the light reactions?',opts:['Direct phosphorylation by chlorophyll','Electron flow through rubisco','Proton gradient across thylakoid membrane via ATP synthase','Breakdown of glucose'],correct:2,exp:'As H⁺ ions flow down their concentration gradient through ATP synthase (chemiosmosis), ATP is synthesized from ADP + Pi.'},
+      {q:'Which pigment is NOT found in plants?',opts:['Chlorophyll a','Chlorophyll b','Bacteriorhodopsin','Beta-carotene'],correct:2,exp:'Bacteriorhodopsin is a light-absorbing pigment found in certain archaea and bacteria, not in plants.'},
+      {q:'Cyclic photophosphorylation involves only:',opts:['Photosystem II only','Both PS I and PS II','Photosystem I only','Neither photosystem'],correct:2,exp:'Cyclic photophosphorylation involves only PSI. Electrons cycle back from ferredoxin to the ETC, producing only ATP (no NADPH, no O₂ released).'}
+    ]
+  },
+  {
+    id:6, type:'assignment', section:'Section 2',
+    title:'Light Reactions Assignment', duration:'Due in 3 days',
+    emoji:'📋', tag:'📋 Assignment', tagClass:'tag-assignment',
+    completed:false,
+    deadline:'March 9, 2026',
+    totalPoints:40,
+    questions:[
+      {q:'Explain the Z-scheme of electron transport in your own words.',sub:'Describe the flow of electrons from water to NADPH, naming all key components. Use the analogy of electrons being "energized" and then "falling" to explain the process.',marks:10,type:'text'},
+      {q:'Compare cyclic vs non-cyclic photophosphorylation.',sub:'Create a comparison covering: photosystems involved, products formed (ATP, NADPH, O₂), and when each pathway is used by the plant.',marks:10,type:'text'},
+      {q:'Draw and label a diagram of the thylakoid membrane.',sub:'Your diagram should include: Photosystem II, Photosystem I, electron transport chain, ATP synthase, and show the direction of electron and proton flow.',marks:10,type:'upload'},
+      {q:'Short Answer: Why is oxygen released as a byproduct of the light reactions?',sub:'Answer in 2-3 sentences.',marks:10,type:'text'}
+    ]
+  },
+  {
+    id:7, type:'video', section:'Section 3',
+    title:'Calvin Cycle Deep Dive', duration:'16 min',
+    emoji:'🔄', tag:'🎬 Video Lecture', tagClass:'tag-live',
+    completed:false,
+    desc:'The Calvin Cycle (light-independent reactions) uses the ATP and NADPH from the light reactions to fix carbon dioxide into glucose. We trace the three stages: carbon fixation, reduction, and regeneration of RuBP.',
+    goals:['Trace carbon atoms through the Calvin Cycle','Identify the three stages: fixation, reduction, RuBP regeneration','Explain the role of rubisco in carbon fixation','Calculate ATP and NADPH consumption per glucose molecule'],
+    resources:[{icon:'🔄',bg:'#d1fae5',name:'Calvin Cycle Diagram',size:'PNG · 1.9 MB'},{icon:'📊',bg:'#fef3c7',name:'Lecture Slides',size:'PDF · 2.8 MB'}],
+    videoProgress:0
+  },
+  {
+    id:8, type:'lab', section:'Section 3',
+    title:'Lab: Measuring Oxygen Output', duration:'~45 min',
+    emoji:'🧪', tag:'🧪 Lab Activity', tagClass:'tag-lab',
+    completed:false,
+    labDesc:'In this virtual lab, you will investigate how light intensity affects the rate of photosynthesis by measuring oxygen bubble production in an aquatic plant (Elodea).',
+    steps:[
+      {title:'Set Up the Experiment',desc:'Place a piece of Elodea in a beaker of water with added sodium bicarbonate. Position a light source 10 cm from the beaker. Count the oxygen bubbles produced per minute. Record your observation.'},
+      {title:'Vary Light Intensity',desc:'Move the light source to 20 cm, then 30 cm, then 40 cm from the plant. At each distance, count bubbles per minute for 2 minutes and calculate the average.'},
+      {title:'Test Different Light Colors',desc:'Use colored filters (red, blue, green, white) at the same distance (10 cm). Count bubbles for each color for 2 minutes. Which color produces the most/least oxygen?'},
+      {title:'Analyze Your Results',desc:'Plot a graph of bubble count vs. light distance, and a separate bar chart for light color results. What pattern do you notice? Does this match what you learned about chlorophyll absorption?'},
+      {title:'Write Your Conclusion',desc:'Explain your results in terms of what you know about the light-dependent reactions. How does light intensity affect ATP and NADPH production?'}
+    ]
+  },
+  {
+    id:9, type:'video', section:'Section 3',
+    title:'C4 & CAM Pathways', duration:'20 min',
+    emoji:'🌵', tag:'🎬 Video Lecture', tagClass:'tag-live',
+    completed:false,
+    desc:'Not all plants use standard C3 photosynthesis. C4 plants like corn and sugarcane, and CAM plants like cacti, have evolved alternative strategies to minimize photorespiration and survive in hot, dry conditions.',
+    goals:['Explain why C3 photosynthesis is inefficient in hot climates','Describe how C4 plants spatially separate carbon fixation','Explain how CAM plants temporally separate carbon fixation','Give examples of C3, C4, and CAM plants'],
+    resources:[{icon:'🌵',bg:'#d1fae5',name:'C4 vs CAM Diagram',size:'PNG · 1.4 MB'},{icon:'📊',bg:'#fef3c7',name:'Pathways Comparison',size:'PDF · 1.1 MB'}],
+    videoProgress:0
+  },
+  {
+    id:10, type:'quiz', section:'Section 3',
+    title:'Section 3 Quiz', duration:'10 questions',
+    emoji:'📝', tag:'📝 Quiz', tagClass:'tag-quiz',
+    completed:false,
+    questions:[
+      {q:'What enzyme catalyzes carbon fixation in the Calvin Cycle?',opts:['ATP synthase','Rubisco','NADP⁺ reductase','Phosphofructokinase'],correct:1,exp:'Rubisco (RuBisCO = Ribulose-1,5-bisphosphate carboxylase/oxygenase) catalyzes the fixation of CO₂ to RuBP in the first step of the Calvin Cycle.'},
+      {q:'How many CO₂ molecules are needed to produce one molecule of G3P?',opts:['1','2','3','6'],correct:2,exp:'Three CO₂ molecules are fixed per turn of the Calvin Cycle, producing one net molecule of G3P (glyceraldehyde-3-phosphate).'},
+      {q:'What is photorespiration?',opts:['The release of CO₂ during the light reactions','When rubisco fixes O₂ instead of CO₂, wasting energy','The production of ATP from light','Photosynthesis occurring only at night'],correct:1,exp:'Photorespiration occurs when rubisco binds O₂ instead of CO₂ (especially in hot, dry conditions), producing toxic 2-phosphoglycolate and wasting ATP.'},
+      {q:'In C4 plants, where does initial CO₂ fixation occur?',opts:['Bundle sheath cells','Mesophyll cells','Guard cells','Epidermal cells'],correct:1,exp:'In C4 plants, CO₂ is first fixed in mesophyll cells into a 4-carbon compound (oxaloacetate), then transported to bundle sheath cells where the Calvin Cycle occurs.'},
+      {q:'CAM plants open their stomata primarily:',opts:['During midday when light is maximum','Only during rainfall','At night to minimize water loss','In early morning only'],correct:2,exp:'CAM (Crassulacean Acid Metabolism) plants open stomata at night to fix CO₂ into malic acid, then close them during the day to reduce water loss.'},
+      {q:'What is the first stable product of carbon fixation in C3 plants?',opts:['Oxaloacetate (OAA)','Glucose','3-phosphoglycerate (3-PGA)','Pyruvate'],correct:2,exp:'In C3 plants, CO₂ combines with RuBP (5C) to form an unstable 6C compound that immediately splits into two molecules of 3-phosphoglycerate (3-PGA), the first stable product.'},
+      {q:'Which of the following is a C4 plant?',opts:['Rice','Wheat','Maize (Corn)','Soybean'],correct:2,exp:'Maize (corn) is a classic C4 plant. Rice, wheat, and soybean are C3 plants.'},
+      {q:'How many ATP molecules are consumed to produce one molecule of glucose in the Calvin Cycle?',opts:['6','12','18','24'],correct:2,exp:'Producing one glucose requires 18 ATP and 12 NADPH. The Calvin Cycle must run 6 times (fixing 6 CO₂) to net one glucose molecule.'},
+      {q:'RuBP stands for:',opts:['Ribulose-1,5-bisphosphate','Ribose-1-phosphate','Ribulose-3-phosphate','Ribose-bisphospholipid'],correct:0,exp:'RuBP (Ribulose-1,5-bisphosphate) is the 5-carbon molecule that accepts CO₂ in the first step of the Calvin Cycle, catalyzed by rubisco.'},
+      {q:'What happens in the regeneration stage of the Calvin Cycle?',opts:['CO₂ is fixed to RuBP','G3P is reduced using ATP','RuBP is regenerated from G3P using ATP','Glucose is exported from the chloroplast'],correct:2,exp:'In the regeneration stage, 5 molecules of G3P are rearranged using ATP to regenerate 3 molecules of RuBP, allowing the cycle to continue.'}
+    ]
+  },
+  {
+    id:11, type:'assignment', section:'Section 3',
+    title:'Advanced Topics Assignment', duration:'Due in 7 days',
+    emoji:'📋', tag:'📋 Assignment', tagClass:'tag-assignment',
+    completed:false,
+    deadline:'March 13, 2026',
+    totalPoints:50,
+    questions:[
+      {q:'Trace a carbon atom through the complete Calvin Cycle.',sub:'Starting from a CO₂ molecule entering the chloroplast stroma, trace what happens to the carbon atom through each of the three stages until it ends up in G3P. Include all molecule names and the ATP/NADPH consumed.',marks:15,type:'text'},
+      {q:'Write a structured comparison of C3, C4, and CAM photosynthesis.',sub:'Your answer should cover: carbon fixation mechanism, cell types involved, water use efficiency, examples of plants using each pathway, and which environments each is best adapted to.',marks:15,type:'text'},
+      {q:'Virtual Lab Report: Light Intensity & Photosynthesis',sub:'Submit your completed lab report including: hypothesis, data table (bubble counts at different light distances), graph, results for colored light filters, and a conclusion linking results to light-dependent reactions.',marks:20,type:'upload'}
+    ]
+  },
+  {
+    id:12, type:'video', section:'Section 4',
+    title:'Ecology & Climate Link', duration:'18 min',
+    emoji:'🌍', tag:'🎬 Video Lecture', tagClass:'tag-live',
+    completed:false,
+    desc:'How does photosynthesis connect to global ecology and climate change? This lecture explores the role of plants and algae in carbon sequestration, the carbon cycle, and the potential impacts of rising CO₂ levels.',
+    goals:['Explain how photosynthesis affects atmospheric CO₂','Describe the role of forests in carbon sequestration','Analyze potential effects of climate change on photosynthesis rates'],
+    resources:[{icon:'🌍',bg:'#d1fae5',name:'Carbon Cycle Diagram',size:'PDF · 1.6 MB'}],
+    videoProgress:0
+  },
+  {
+    id:13, type:'quiz', section:'Section 4',
+    title:'Final Exam', duration:'25 questions',
+    emoji:'🎓', tag:'📝 Final Exam', tagClass:'tag-quiz',
+    completed:false,
+    questions:[
+      {q:'What is the overall equation for photosynthesis?',opts:['6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂','C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O','6CO₂ + 6O₂ → C₆H₁₂O₆ + 6H₂O','H₂O + CO₂ → O₂ + glucose'],correct:0,exp:'The photosynthesis equation: 6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂'},
+      {q:'Where do light-dependent reactions occur?',opts:['Stroma','Thylakoid membranes','Cytoplasm','Outer membrane'],correct:1,exp:'Light-dependent reactions occur on the thylakoid membranes.'},
+      {q:'Where does the Calvin Cycle occur?',opts:['Thylakoid membrane','Cytoplasm','Stroma','Nucleus'],correct:2,exp:'The Calvin Cycle (light-independent reactions) occurs in the stroma of the chloroplast.'},
+      {q:'What is the role of NADPH in photosynthesis?',opts:['It splits water molecules','It carries electrons to the Calvin Cycle as a reducing agent','It absorbs light directly','It transports CO₂'],correct:1,exp:'NADPH carries high-energy electrons from the light reactions to the Calvin Cycle where they are used to reduce 3-PGA to G3P.'},
+      {q:'Which photosystem has a reaction center at P700?',opts:['Photosystem II','Photosystem I','Both','Neither'],correct:1,exp:'Photosystem I has its reaction center at P700 (absorbs 700nm light). Photosystem II has P680.'},
+      {q:'What is produced when water is split in photolysis?',opts:['CO₂, H₂, ATP','O₂, H⁺, e⁻','NADPH, ATP, O₂','Glucose, O₂, H₂O'],correct:1,exp:'Photolysis: 2H₂O → O₂ + 4H⁺ + 4e⁻. The oxygen is released, protons build the gradient, electrons replace those lost from PSII.'},
+      {q:'What is chemiosmosis?',opts:['Direct transfer of phosphate groups','Flow of ions through channels to produce ATP','Reduction of CO₂ to glucose','The Z-scheme of electron transfer'],correct:1,exp:'Chemiosmosis is the process where H⁺ ions flow through ATP synthase down their concentration gradient, driving ATP synthesis.'},
+      {q:'Rubisco is a key enzyme in:',opts:['The light reactions','Photolysis','The Calvin Cycle','The electron transport chain'],correct:2,exp:'Rubisco (RuBisCO) catalyzes carbon fixation in the Calvin Cycle — the combination of CO₂ with RuBP.'},
+      {q:'A plant is placed in green light only. What happens?',opts:['Photosynthesis increases maximally','Photosynthesis rate drops significantly','No change in photosynthesis','The plant immediately dies'],correct:1,exp:'Chlorophyll reflects green light rather than absorbing it, so photosynthesis rate drops significantly in green light only.'},
+      {q:'What is the first stable carbon compound in the Calvin Cycle?',opts:['RuBP','G3P','3-PGA','Oxaloacetate'],correct:2,exp:'3-PGA (3-phosphoglycerate) is the first stable product after CO₂ is fixed to RuBP by rubisco.'},
+      {q:'In C4 plants, the 4-carbon acid is transported from:',opts:['Bundle sheath to mesophyll','Mesophyll to bundle sheath','Stroma to thylakoid','Thylakoid to stroma'],correct:1,exp:'In C4 plants, the 4-carbon acid (malate or aspartate) is formed in mesophyll cells and transported to bundle sheath cells where it releases CO₂ for the Calvin Cycle.'},
+      {q:'Which statement about CAM plants is TRUE?',opts:['They open stomata during the day','They fix CO₂ only in mesophyll cells like C3','They store CO₂ as malic acid at night','They have higher photorespiration than C3 plants'],correct:2,exp:'CAM plants fix CO₂ into malic acid (malate) at night when stomata are open, then release CO₂ during the day for the Calvin Cycle with stomata closed.'},
+      {q:'How many turns of the Calvin Cycle are needed to produce one molecule of glucose?',opts:['1','3','6','12'],correct:2,exp:'6 turns of the Calvin Cycle are needed to fix 6 CO₂, producing a net of 2 G3P molecules that are used to synthesize one glucose.'},
+      {q:'The light reactions convert light energy into:',opts:['Glucose and starch','ATP and NADPH','CO₂ and H₂O','ADP and NADP⁺'],correct:1,exp:'The light reactions capture light energy and store it as chemical energy in ATP and NADPH.'},
+      {q:'Which color of light is MOST effective at driving photosynthesis?',opts:['Green','Yellow','Blue-violet and Red','White only'],correct:2,exp:'Blue-violet (400-450nm) and red light (650-700nm) are most effectively absorbed by chlorophyll and drive the highest rates of photosynthesis.'},
+      {q:'What is photorespiration harmful to plant efficiency because:',opts:['It produces excess glucose','Rubisco fixes O₂ instead of CO₂, consuming ATP without producing sugar','It causes excess water loss','It destroys chlorophyll'],correct:1,exp:'In photorespiration, rubisco binds O₂ (oxygenase activity) rather than CO₂, producing a toxic 2-carbon compound and wasting ATP and NADPH without net carbon fixation.'},
+      {q:'Granum (plural: grana) in chloroplasts are:',opts:['Regions of the stroma','Stacks of thylakoid discs','The outer membrane layers','Protein channels for CO₂'],correct:1,exp:'Grana are stacks of thylakoid discs (like stacks of pancakes) connected by stroma lamellae, housing the photosystems and ATP synthase.'},
+      {q:'Photosynthesis and respiration are related because:',opts:['They both occur in chloroplasts','Products of one are reactants of the other','They use the same enzymes','Neither produces ATP'],correct:1,exp:'Photosynthesis produces glucose and O₂; cellular respiration uses them. Respiration produces CO₂ and H₂O; photosynthesis uses them. They are complementary cycles.'},
+      {q:'Increasing CO₂ concentration generally:',opts:['Has no effect on photosynthesis','Decreases photosynthesis rate','Increases photosynthesis rate up to a saturation point','Destroys rubisco'],correct:2,exp:'Increasing CO₂ increases the rate of carbon fixation and therefore photosynthesis — up to a point where other factors (light, temperature) become limiting.'},
+      {q:'Which molecule directly donates electrons to Photosystem II?',opts:['NADPH','Water','NADP⁺','Plastocyanin'],correct:1,exp:'Water molecules are split by photolysis and donate electrons to replace those lost from the P680 chlorophyll in Photosystem II.'},
+      {q:'What happens to G3P produced in the Calvin Cycle?',opts:['All of it leaves the chloroplast as glucose','Some is used to regenerate RuBP; some exits to make glucose','It is immediately oxidized in respiration','It is converted to CO₂'],correct:1,exp:'For every 6 turns: 10 G3P molecules are used to regenerate 6 RuBP (keeping the cycle running), and 2 G3P molecules exit to make glucose.'},
+      {q:'Which of the following increases photorespiration?',opts:['High CO₂, low O₂','Low temperature, high humidity','High temperature, low CO₂, high O₂','Low light intensity'],correct:2,exp:'Photorespiration increases in high temperature conditions where CO₂/O₂ ratio drops — rubisco more frequently binds O₂ instead of CO₂.'},
+      {q:'Plastocyanin and ferredoxin are:',opts:['Photosynthetic pigments that absorb light','Electron carrier proteins in the ETC','Carbon-fixing enzymes','Structural proteins in the thylakoid'],correct:1,exp:'Plastocyanin and ferredoxin are mobile electron carrier proteins. PC carries electrons from Cytochrome b6f to PSI; Fd carries electrons from PSI to NADP⁺ reductase.'},
+      {q:'The stroma lamellae connect:',opts:['Outer and inner chloroplast membranes','Individual grana to each other','Chloroplasts to mitochondria','Thylakoid lumen to the stroma'],correct:1,exp:'Stroma lamellae are flattened thylakoid membranes that connect different grana stacks, creating a continuous internal membrane system.'},
+      {q:'Which statement BEST describes the importance of photosynthesis to ecosystems?',opts:['It only benefits plants','It produces the oxygen all aerobic life depends on and forms the base of food chains','It has no effect on atmospheric gases','It only occurs in rainforests'],correct:1,exp:'Photosynthesis is foundational to almost all ecosystems: it produces O₂ for aerobic respiration, fixes CO₂ removing it from the atmosphere, and creates organic compounds that form the base of virtually all food chains.'}
+    ]
+  }
+];
+
+let currentLectureIdx = 4;
+let completedLectures = new Set([0,1,2,3]);
+let quizStates = {}; // quizStates[lectureId] = {answers, submitted, score}
+let assignmentStates = {}; // assignmentStates[lectureId] = {answers, submitted}
+let labStates = {}; // labStates[lectureId] = {steps completed}
+let notesByLecture = {}; // notesByLecture[lectureId] = []
+let videoTimers = {};
+
+/* ══════════════════════════════════════════
+   RENDER ENGINE
+══════════════════════════════════════════ */
+function loadLecture(idx) {
+  currentLectureIdx = idx;
+  const lec = LECTURES[idx];
+  updateSidebarActive(idx);
+  document.getElementById('breadcrumbCurrent').textContent = lec.title;
+  updateProgress();
+  const main = document.getElementById('courseMain');
+  
+  if(lec.type === 'video') renderVideoLecture(main, lec);
+  else if(lec.type === 'quiz') renderQuizLecture(main, lec);
+  else if(lec.type === 'assignment') renderAssignmentLecture(main, lec);
+  else if(lec.type === 'lab') renderLabLecture(main, lec);
+  
+  main.scrollTop = 0;
+  if(window.innerWidth <= 1024) closeCurriculum();
+}
+
+/* ── VIDEO LECTURE ── */
+function renderVideoLecture(main, lec) {
+  const isDone = completedLectures.has(lec.id);
+  const prog = lec.videoProgress || 0;
+  const progressBarW = prog + '%';
+  const timeDisplay = prog > 0 ? formatTime(prog, lec.duration) : '0:00 / ' + lec.duration;
+  const notes = notesByLecture[lec.id] || [];
+
+  main.innerHTML = `
+    <div class="video-section">
+      <div class="video-wrapper">
+        <div class="video-poster" id="videoPoster" onclick="playVideo(${lec.id})">
+          <div class="video-poster-emoji">${lec.emoji}</div>
+          <div class="play-btn">▶</div>
+          <h3>${lec.title}</h3>
+          <p>${lec.section} · ${lec.duration}</p>
+        </div>
+        <div class="video-controls">
+          <div class="vc-bar-wrap" onclick="seekVideo(event,${lec.id})">
+            <div class="vc-bar-fill" id="vcFill" style="width:${progressBarW}"></div>
+          </div>
+          <div class="vc-row">
+            <div class="vc-left">
+              <button class="vc-btn" onclick="togglePlay(${lec.id})">▶</button>
+              <button class="vc-btn">⏭</button>
+              <button class="vc-btn">🔊</button>
+              <span class="vc-time" id="vcTime">${timeDisplay}</span>
+            </div>
+            <div class="vc-right">
+              <button class="vc-btn" onclick="setSpeed(0.75,this)">0.75×</button>
+              <button class="vc-btn" onclick="setSpeed(1,this)" style="color:#fff;font-weight:700">1×</button>
+              <button class="vc-btn" onclick="setSpeed(1.5,this)">1.5×</button>
+              <button class="vc-btn">⛶</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lecture-info">
+      <div class="lec-tags">
+        <span class="lec-tag tag-science">🔬 Science</span>
+        <span class="lec-tag tag-grade">Grade 9</span>
+        <span class="lec-tag ${lec.tagClass}">${lec.tag}</span>
+      </div>
+      <h1 class="lecture-title-main">${lec.title}</h1>
+      <div class="lecture-meta-row">
+        <span class="lm-item">👨‍🏫 Mr. Anderson</span>
+        <div class="lm-sep"></div>
+        <span class="lm-item">⏱ ${lec.duration}</span>
+        <div class="lm-sep"></div>
+        <span class="lm-item">📅 Updated Mar 2024</span>
+      </div>
+    </div>
+
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="vSwitchTab('overview',this,${lec.id})">📋 Overview</button>
+      <button class="tab-btn" onclick="vSwitchTab('notes',this,${lec.id})">📝 My Notes</button>
+      <button class="tab-btn" onclick="vSwitchTab('qa',this,${lec.id})">❓ Q&A</button>
+      <button class="tab-btn" onclick="vSwitchTab('resources',this,${lec.id})">📁 Resources</button>
+    </div>
+
+    <div id="v-tab-overview" class="tab-panel active">
+      <div class="overview-grid">
+        <div>
+          <p class="overview-desc">${lec.desc}</p>
+          <div class="what-learn">
+            <h4>🎯 What You'll Learn</h4>
+            ${lec.goals.map(g=>`<div class="learn-item"><span class="learn-check">✓</span> ${g}</div>`).join('')}
+          </div>
+        </div>
+        <div>
+          <div class="instructor-card">
+            <h4>Instructor</h4>
+            <div class="inst-profile">
+              <div class="inst-av">MA</div>
+              <div><div class="inst-name">Mr. Anderson</div><div class="inst-role">Science & Biology Teacher</div></div>
+            </div>
+            <p class="inst-bio">Passionate science educator with 8 years of experience making complex biology concepts accessible and engaging for students.</p>
+            <div class="inst-stats">
+              <div class="inst-stat"><div class="inst-stat-val">4.9★</div><div class="inst-stat-label">Rating</div></div>
+              <div class="inst-stat"><div class="inst-stat-val">1.2k</div><div class="inst-stat-label">Students</div></div>
+              <div class="inst-stat"><div class="inst-stat-val">9</div><div class="inst-stat-label">Courses</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="v-tab-notes" class="tab-panel">
+      ${renderNotesPanel(lec.id)}
+    </div>
+    <div id="v-tab-qa" class="tab-panel">
+      ${renderQAPanel()}
+    </div>
+    <div id="v-tab-resources" class="tab-panel">
+      <div style="margin-bottom:16px"><h3 style="font-size:16px;font-weight:900;margin-bottom:4px">📁 Lecture Resources</h3><p style="font-size:13px;color:var(--muted)">Download materials to study offline</p></div>
+      <div class="resources-grid">
+        ${(lec.resources||[]).map(r=>`<div class="resource-card" onclick="showToast('⬇️ Downloading ${r.name}...')"><div class="res-icon" style="background:${r.bg}">${r.icon}</div><div><div class="res-name">${r.name}</div><div class="res-size">${r.size}</div></div><div class="res-dl">⬇</div></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="mark-complete-bar">
+      <div class="mark-complete-nav">
+        <button class="mn-btn" onclick="navigatePrev()">← Previous</button>
+        <button class="mn-btn" onclick="navigateNext()">Next →</button>
+      </div>
+      <button class="complete-btn ${isDone?'done-btn':''}" id="completeBtn" onclick="markComplete(${lec.id})">
+        ${isDone ? '✅ Completed' : '✓ Mark as Complete'}
+      </button>
+    </div>
+  `;
+}
+
+/* ── QUIZ LECTURE ── */
+function renderQuizLecture(main, lec) {
+  const state = quizStates[lec.id] || {answers:{}, submitted:false, score:0};
+  const isDone = completedLectures.has(lec.id);
+  const isFinal = lec.id === 13;
+
+  main.innerHTML = `
+    <div class="lecture-info" style="padding-top:24px">
+      <div class="lec-tags">
+        <span class="lec-tag tag-science">🔬 Science</span>
+        <span class="lec-tag tag-grade">Grade 9</span>
+        <span class="lec-tag ${lec.tagClass}">${lec.tag}</span>
+      </div>
+      <h1 class="lecture-title-main">${isFinal?'🎓 ':'📝 '}${lec.title}</h1>
+      <div class="lecture-meta-row">
+        <span class="lm-item">📝 ${lec.questions.length} Questions</span>
+        <div class="lm-sep"></div>
+        <span class="lm-item">⏱ ~${Math.ceil(lec.questions.length * 1.5)} min</span>
+        <div class="lm-sep"></div>
+        ${isDone?'<span class="lm-item" style="color:#22c55e">✅ Completed · Score: '+Math.round((state.score/lec.questions.length)*100)+'%</span>':'<span class="lm-item">Not yet attempted</span>'}
+      </div>
+    </div>
+
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="vSwitchTab('quiz',this,${lec.id})">📝 ${isFinal?'Exam':'Quiz'}</button>
+      <button class="tab-btn" onclick="vSwitchTab('qa',this,${lec.id})">❓ Q&A</button>
+    </div>
+
+    <div id="v-tab-quiz" class="tab-panel active">
+      <div class="quiz-container">
+        ${isDone && state.submitted ? renderQuizResult(lec, state) : renderQuizQuestions(lec, state)}
+      </div>
+    </div>
+    <div id="v-tab-qa" class="tab-panel">
+      ${renderQAPanel()}
+    </div>
+
+    <div class="mark-complete-bar">
+      <div class="mark-complete-nav">
+        <button class="mn-btn" onclick="navigatePrev()">← Previous</button>
+        <button class="mn-btn" onclick="navigateNext()">Next →</button>
+      </div>
+      ${isDone ? `<button class="complete-btn done-btn">✅ Completed</button>` : `<button class="complete-btn" onclick="showToast('Complete the quiz to mark as done')">Submit Quiz to Complete</button>`}
+    </div>
+  `;
+}
+
+function renderQuizQuestions(lec, state) {
+  const answered = Object.keys(state.answers).length;
+  return `
+    <div class="quiz-header">
+      <div class="quiz-info-row">
+        <div class="quiz-badge">📝 ${lec.questions.length} Questions</div>
+        <div class="quiz-badge">⏱ ~${Math.ceil(lec.questions.length * 1.5)} min</div>
+        ${state.submitted ? `<div class="quiz-badge" style="background:#dcfce7;color:#166534">Score: ${Math.round((state.score/lec.questions.length)*100)}%</div>` : ''}
+      </div>
+    </div>
+    ${lec.questions.map((q, qi) => `
+      <div class="question-card ${state.answers[qi]!==undefined?'answered':''}" id="qcard-${lec.id}-${qi}">
+        <div class="q-number">Question ${qi+1} of ${lec.questions.length}</div>
+        <div class="q-text">${q.q}</div>
+        <div class="options-list">
+          ${q.opts.map((opt, oi) => {
+            let cls = '';
+            if(state.submitted) {
+              if(oi === q.correct) cls = 'correct';
+              else if(oi === state.answers[qi] && state.answers[qi] !== q.correct) cls = 'wrong';
+            } else if(state.answers[qi] === oi) cls = 'selected';
+            return `<button class="option-btn ${cls}" onclick="selectAnswer(${lec.id},${qi},${oi})" ${state.submitted?'disabled':''}>
+              <div class="option-letter">${['A','B','C','D'][oi]}</div>
+              ${opt}
+            </button>`;
+          }).join('')}
+        </div>
+        <div class="explanation-box ${state.submitted?'show':''}  ${state.submitted?(state.answers[qi]===q.correct?'correct-exp':'wrong-exp'):''}" id="exp-${lec.id}-${qi}">
+          ${state.submitted ? (state.answers[qi]===q.correct?'✅ ':'❌ ') + q.exp : q.exp}
+        </div>
+      </div>
+    `).join('')}
+    <div class="quiz-submit-row">
+      <div class="quiz-progress-text">${answered} / ${lec.questions.length} answered</div>
+      <button class="submit-btn" id="quizSubmitBtn-${lec.id}" onclick="submitQuiz(${lec.id})" ${state.submitted?'disabled':''} ${answered<lec.questions.length?'disabled':''}>
+        ${state.submitted ? 'Submitted ✓' : 'Submit Quiz'}
+      </button>
+    </div>
+  `;
+}
+
+function renderQuizResult(lec, state) {
+  const pct = Math.round((state.score/lec.questions.length)*100);
+  const emoji = pct >= 90 ? '🏆' : pct >= 70 ? '🌟' : pct >= 50 ? '👍' : '📚';
+  const msg = pct >= 90 ? 'Outstanding!' : pct >= 70 ? 'Great Job!' : pct >= 50 ? 'Good Effort!' : 'Keep Practicing!';
+  return `
+    <div class="quiz-result show">
+      <div class="result-emoji">${emoji}</div>
+      <div class="result-score">${pct}%</div>
+      <div class="result-label">${msg} — ${lec.title}</div>
+      <div class="result-stats">
+        <div class="result-stat"><div class="rs-val" style="color:#22c55e">${state.score}</div><div class="rs-label">Correct</div></div>
+        <div class="result-stat"><div class="rs-val" style="color:#ef4444">${lec.questions.length - state.score}</div><div class="rs-label">Wrong</div></div>
+        <div class="result-stat"><div class="rs-val">${lec.questions.length}</div><div class="rs-label">Total</div></div>
+      </div>
+      <div class="result-actions">
+        <button class="retry-btn" onclick="retakeQuiz(${lec.id})">🔄 Retake Quiz</button>
+        <button class="submit-btn" onclick="navigateNext()">Next Lecture →</button>
+      </div>
+    </div>
+    <div style="margin-top:24px">
+      <h3 style="font-size:15px;font-weight:800;margin-bottom:14px">📋 Question Review</h3>
+      ${renderQuizQuestions(lec, {...state, submitted:true})}
+    </div>
+  `;
+}
+
+/* ── ASSIGNMENT LECTURE ── */
+function renderAssignmentLecture(main, lec) {
+  const state = assignmentStates[lec.id] || {answers:{}, submitted:false, uploads:{}};
+  const isDone = completedLectures.has(lec.id);
+
+  main.innerHTML = `
+    <div class="lecture-info" style="padding-top:24px">
+      <div class="lec-tags">
+        <span class="lec-tag tag-science">🔬 Science</span>
+        <span class="lec-tag tag-grade">Grade 9</span>
+        <span class="lec-tag ${lec.tagClass}">${lec.tag}</span>
+      </div>
+      <h1 class="lecture-title-main">📋 ${lec.title}</h1>
+      <div class="lecture-meta-row">
+        <span class="lm-item">📅 Due: ${lec.deadline}</span>
+        <div class="lm-sep"></div>
+        <span class="lm-item">⭐ ${lec.totalPoints} points</span>
+        <div class="lm-sep"></div>
+        ${isDone?'<span class="lm-item" style="color:#22c55e">✅ Submitted</span>':'<span class="lm-item" style="color:var(--warning)">⏳ Pending</span>'}
+      </div>
+    </div>
+
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="vSwitchTab('assignment',this,${lec.id})">📋 Assignment</button>
+      <button class="tab-btn" onclick="vSwitchTab('resources',this,${lec.id})">📁 Resources</button>
+      <button class="tab-btn" onclick="vSwitchTab('qa',this,${lec.id})">❓ Q&A</button>
+    </div>
+
+    <div id="v-tab-assignment" class="tab-panel active">
+      <div class="assignment-container">
+        <div class="assignment-header">
+          <div class="asgn-title">${lec.title}</div>
+          <div class="asgn-meta-row">
+            <div class="asgn-meta">📅 Due: <span class="asgn-deadline">${lec.deadline}</span></div>
+            <div class="asgn-meta">⭐ ${lec.totalPoints} Total Points</div>
+            <div class="asgn-meta">👨‍🏫 Graded by Mr. Anderson</div>
+          </div>
+        </div>
+
+        ${isDone ? `<div class="submitted-badge"><span class="sb-icon">✅</span><div><div class="sb-title">Assignment Submitted Successfully!</div><div class="sb-sub">Awaiting grading by Mr. Anderson · Submitted ${new Date().toLocaleDateString()}</div></div></div>` : ''}
+
+        <div class="asgn-section">
+          <div class="asgn-section-title">📋 Assignment Questions</div>
+          ${lec.questions.map((q,qi)=>`
+            <div class="asgn-question" id="aq-${lec.id}-${qi}">
+              <div class="marks-badge">⭐ ${q.marks} marks</div>
+              <div class="asgn-q-text">${qi+1}. ${q.q}</div>
+              <div class="asgn-q-sub">${q.sub}</div>
+              ${q.type === 'text' ? `
+                <textarea class="asgn-textarea" id="aq-text-${lec.id}-${qi}" placeholder="Write your answer here..." onchange="saveAssignmentAnswer(${lec.id},${qi},this.value)" ${isDone?'disabled':''}>${state.answers[qi]||''}</textarea>
+              ` : `
+                <div class="upload-zone" onclick="triggerUpload(${lec.id},${qi})" id="uz-${lec.id}-${qi}" ${isDone?'style="opacity:.6;cursor:default"':''}>
+                  <div class="upload-zone-icon">📎</div>
+                  <div class="upload-zone-text">Click to Upload File</div>
+                  <div class="upload-zone-sub">PDF, PNG, JPG, DOCX up to 10MB</div>
+                </div>
+                ${state.uploads && state.uploads[qi] ? `<div class="uploaded-file"><span class="uf-icon">📄</span><span class="uf-name">${state.uploads[qi].name}</span><span class="uf-size">${state.uploads[qi].size}</span>${!isDone?`<button class="uf-del" onclick="removeUpload(${lec.id},${qi})">✕</button>`:''}` : ''}
+              `}
+            </div>
+          `).join('')}
+        </div>
+
+        ${!isDone ? `
+          <div class="asgn-submit-row">
+            <div class="asgn-points">Total: ${lec.totalPoints} points</div>
+            <button class="asgn-submit-btn" onclick="submitAssignment(${lec.id})">📤 Submit Assignment</button>
+          </div>
+        ` : ''}
+      </div>
+    </div>
+    <div id="v-tab-resources" class="tab-panel">
+      <div style="margin-bottom:16px"><h3 style="font-size:16px;font-weight:900;margin-bottom:4px">📁 Assignment Resources</h3></div>
+      <div class="resources-grid">
+        <div class="resource-card" onclick="showToast('⬇️ Downloading Rubric...')"><div class="res-icon" style="background:#fef3c7">📊</div><div><div class="res-name">Grading Rubric</div><div class="res-size">PDF · 380 KB</div></div><div class="res-dl">⬇</div></div>
+        <div class="resource-card" onclick="showToast('⬇️ Downloading Lecture Notes...')"><div class="res-icon" style="background:#dbeafe">📋</div><div><div class="res-name">Lecture Notes</div><div class="res-size">PDF · 720 KB</div></div><div class="res-dl">⬇</div></div>
+        <div class="resource-card" onclick="showToast('⬇️ Downloading Template...')"><div class="res-icon" style="background:#dcfce7">📝</div><div><div class="res-name">Answer Template</div><div class="res-size">DOCX · 45 KB</div></div><div class="res-dl">⬇</div></div>
+      </div>
+    </div>
+    <div id="v-tab-qa" class="tab-panel">
+      ${renderQAPanel()}
+    </div>
+
+    <div class="mark-complete-bar">
+      <div class="mark-complete-nav">
+        <button class="mn-btn" onclick="navigatePrev()">← Previous</button>
+        <button class="mn-btn" onclick="navigateNext()">Next →</button>
+      </div>
+      ${isDone ? `<button class="complete-btn done-btn">✅ Submitted</button>` : `<button class="complete-btn" onclick="submitAssignment(${lec.id})">📤 Submit Assignment</button>`}
+    </div>
+  `;
+}
+
+/* ── LAB LECTURE ── */
+function renderLabLecture(main, lec) {
+  const state = labStates[lec.id] || {completedSteps:new Set(), observations:{}};
+  const isDone = completedLectures.has(lec.id);
+
+  main.innerHTML = `
+    <div class="lecture-info" style="padding-top:24px">
+      <div class="lec-tags">
+        <span class="lec-tag tag-science">🔬 Science</span>
+        <span class="lec-tag tag-grade">Grade 9</span>
+        <span class="lec-tag tag-lab">${lec.tag}</span>
+      </div>
+      <h1 class="lecture-title-main">🧪 ${lec.title}</h1>
+      <div class="lecture-meta-row">
+        <span class="lm-item">⏱ ${lec.duration}</span>
+        <div class="lm-sep"></div>
+        <span class="lm-item">${lec.steps.length} Steps</span>
+        <div class="lm-sep"></div>
+        ${isDone?'<span class="lm-item" style="color:#22c55e">✅ Completed</span>':'<span class="lm-item">In Progress</span>'}
+      </div>
+    </div>
+
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="vSwitchTab('lab',this,${lec.id})">🧪 Lab Activity</button>
+      <button class="tab-btn" onclick="vSwitchTab('notes',this,${lec.id})">📝 My Notes</button>
+      <button class="tab-btn" onclick="vSwitchTab('qa',this,${lec.id})">❓ Q&A</button>
+    </div>
+
+    <div id="v-tab-lab" class="tab-panel active">
+      <div class="lab-container">
+        <div class="lab-header">
+          <div class="lab-title">🧪 ${lec.title}</div>
+          <div class="lab-sub">${lec.labDesc}</div>
+        </div>
+        <div class="lab-steps">
+          ${lec.steps.map((step, si) => {
+            const isCompleted = state.completedSteps.has(si);
+            const isActive = !isCompleted && (si === 0 || state.completedSteps.has(si-1));
+            return `
+              <div class="lab-step ${isCompleted?'completed-step':''} ${isActive?'active-step':''}" id="lab-step-${lec.id}-${si}">
+                <div class="step-header">
+                  <div class="step-num">${isCompleted ? '✓' : si+1}</div>
+                  <div class="step-title">${step.title}</div>
+                </div>
+                <div class="step-desc">${step.desc}</div>
+                ${isActive || isCompleted ? `
+                  <textarea class="step-observation" placeholder="Record your observations here..." id="lab-obs-${lec.id}-${si}" ${isCompleted?'disabled':''}>${state.observations[si]||''}</textarea>
+                  <button class="step-complete-btn ${isCompleted?'done':''}" onclick="completeLabStep(${lec.id},${si})" ${isCompleted?'disabled':''}>
+                    ${isCompleted ? '✓ Completed' : '✓ Mark Step Complete'}
+                  </button>
+                ` : `<div style="color:var(--muted);font-size:12.5px;font-style:italic">Complete previous step to unlock this step.</div>`}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+    <div id="v-tab-notes" class="tab-panel">
+      ${renderNotesPanel(lec.id)}
+    </div>
+    <div id="v-tab-qa" class="tab-panel">
+      ${renderQAPanel()}
+    </div>
+
+    <div class="mark-complete-bar">
+      <div class="mark-complete-nav">
+        <button class="mn-btn" onclick="navigatePrev()">← Previous</button>
+        <button class="mn-btn" onclick="navigateNext()">Next →</button>
+      </div>
+      <button class="complete-btn ${isDone?'done-btn':''}" onclick="markComplete(${lec.id})">
+        ${isDone ? '✅ Lab Completed' : '✓ Mark Lab as Complete'}
+      </button>
+    </div>
+  `;
+}
+
+function renderNotesPanel(lecId) {
+  const notes = notesByLecture[lecId] || [];
+  return `
+    <div class="notes-area">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+        <div><h3 style="font-size:16px;font-weight:900;margin-bottom:2px">📝 My Notes</h3>
+        <p style="font-size:12.5px;color:var(--muted)">Notes are saved per lecture</p></div>
+      </div>
+      <div class="notes-toolbar">
+        <button class="nt-btn active-tool">B</button>
+        <button class="nt-btn"><i>I</i></button>
+        <button class="nt-btn"><u>U</u></button>
+        <button class="nt-btn">🎨 Highlight</button>
+        <button class="nt-btn">📌 Pin</button>
+      </div>
+      <textarea class="notes-input" id="noteInput-${lecId}" placeholder="Add a note for this lecture..."></textarea>
+      <div class="notes-footer">
+        <span class="notes-count" id="noteCount-${lecId}">0 / 500 characters</span>
+        <button class="save-btn" onclick="saveNote(${lecId})">💾 Save Note</button>
+      </div>
+      <div id="savedNotes-${lecId}">
+        ${notes.length ? `<h4 style="font-size:13px;font-weight:800;color:var(--muted);margin-bottom:8px">SAVED NOTES (${notes.length})</h4>` + notes.map(n=>`<div class="saved-note"><div class="sn-header"><span class="sn-title">📌 ${n.title}</span><span class="sn-time">${n.time}</span></div><div class="sn-text">${n.text}</div><span class="sn-tag">General</span></div>`).join('') : '<p style="font-size:13px;color:var(--muted)">No notes yet for this lecture.</p>'}
+      </div>
+    </div>
+  `;
+}
+
+function renderQAPanel() {
+  return `
+    <div class="qa-area">
+      <div class="qa-ask">
+        <h4>💬 Ask a Question</h4>
+        <textarea class="qa-input" id="qaInputField" placeholder="Have a question? Ask Mr. Anderson or your classmates..."></textarea>
+        <button class="qa-post-btn" onclick="postQuestion()">Post Question</button>
+      </div>
+      <div class="qa-list" id="qaList">
+        <div class="qa-item">
+          <div class="qa-q">
+            <div class="qa-av" style="background:#4f86c6">EJ</div>
+            <div><div class="qa-q-text">Why does Photosystem II come before Photosystem I if they are numbered the other way around?</div><div class="qa-q-meta">Emma Johnson · 2 hours ago</div></div>
+          </div>
+          <div class="qa-answer">
+            <div class="qa-answer-head"><span class="qa-answer-badge">👨‍🏫 Instructor</span><span class="qa-answer-name">Mr. Anderson</span></div>
+            <div class="qa-answer-text">Great question! They are numbered in the order they were DISCOVERED, not the order they function. PSI was discovered first in 1952, PSII in 1956.</div>
+          </div>
+          <div class="qa-likes"><button class="like-btn">👍 Helpful (8)</button><button class="like-btn">💬 Reply</button></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ══════════════════════════════════════════
+   INTERACTIONS
+══════════════════════════════════════════ */
+function vSwitchTab(id, btn, lecId) {
+  const parent = btn.closest('.tabs-bar');
+  parent.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const courseMain = document.getElementById('courseMain');
+  courseMain.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  const panel = document.getElementById('v-tab-'+id);
+  if(panel) panel.classList.add('active');
+
+  // Attach note listener after notes panel is shown
+  if(id === 'notes' || id === 'lab') {
+    const ni = document.getElementById('noteInput-'+lecId);
+    if(ni) ni.addEventListener('input', function(){
+      const cnt = document.getElementById('noteCount-'+lecId);
+      if(cnt) cnt.textContent = this.value.length + ' / 500 characters';
+    });
+  }
+}
+
+function selectAnswer(lecId, qi, oi) {
+  if(!quizStates[lecId]) quizStates[lecId] = {answers:{}, submitted:false, score:0};
+  if(quizStates[lecId].submitted) return;
+  quizStates[lecId].answers[qi] = oi;
+  const opts = document.querySelectorAll(`#qcard-${lecId}-${qi} .option-btn`);
+  opts.forEach((o,i) => {
+    o.classList.remove('selected');
+    if(i === oi) o.classList.add('selected');
+    o.querySelector('.option-letter').style.background = i === oi ? 'var(--primary)' : '';
+    o.querySelector('.option-letter').style.color = i === oi ? '#fff' : '';
+  });
+  document.getElementById(`qcard-${lecId}-${qi}`)?.classList.add('answered');
+  const lec = LECTURES.find(l=>l.id===lecId);
+  const answered = Object.keys(quizStates[lecId].answers).length;
+  const subBtn = document.getElementById(`quizSubmitBtn-${lecId}`);
+  if(subBtn) subBtn.disabled = answered < lec.questions.length;
+}
+
+function submitQuiz(lecId) {
+  const state = quizStates[lecId];
+  if(!state) return;
+  const lec = LECTURES.find(l=>l.id===lecId);
+  let score = 0;
+  lec.questions.forEach((q,qi) => {
+    if(state.answers[qi] === q.correct) score++;
+  });
+  state.score = score;
+  state.submitted = true;
+  const pct = Math.round((score/lec.questions.length)*100);
+
+  completedLectures.add(lecId);
+  updateSidebarItem(lecId, true);
+  updateProgress();
+
+  // Show toast
+  showToast(pct >= 70 ? `🎉 Quiz submitted! Score: ${pct}%` : `📚 Quiz submitted! Score: ${pct}% — keep studying!`);
+
+  // Re-render
+  setTimeout(() => renderQuizLecture(document.getElementById('courseMain'), lec), 300);
+}
+
+function retakeQuiz(lecId) {
+  quizStates[lecId] = {answers:{}, submitted:false, score:0};
+  completedLectures.delete(lecId);
+  updateSidebarItem(lecId, false);
+  updateProgress();
+  const lec = LECTURES.find(l=>l.id===lecId);
+  renderQuizLecture(document.getElementById('courseMain'), lec);
+}
+
+function markComplete(lecId) {
+  const wasCompleted = completedLectures.has(lecId);
+  if(wasCompleted) {
+    completedLectures.delete(lecId);
+    updateSidebarItem(lecId, false);
+    updateProgress();
+    showToast('↩️ Marked as incomplete');
+  } else {
+    completedLectures.add(lecId);
+    updateSidebarItem(lecId, true);
+    updateProgress();
+    showToast('✅ Marked as complete!');
+    spawnConfetti();
+  }
+  const btn = document.getElementById('completeBtn');
+  if(btn) {
+    btn.textContent = completedLectures.has(lecId) ? '✅ Completed' : '✓ Mark as Complete';
+    btn.classList.toggle('done-btn', completedLectures.has(lecId));
+  }
+}
+
+function submitAssignment(lecId) {
+  if(!assignmentStates[lecId]) assignmentStates[lecId] = {answers:{}, submitted:false, uploads:{}};
+  assignmentStates[lecId].submitted = true;
+  completedLectures.add(lecId);
+  updateSidebarItem(lecId, true);
+  updateProgress();
+  showToast('📤 Assignment submitted successfully!');
+  spawnConfetti();
+  const lec = LECTURES.find(l=>l.id===lecId);
+  setTimeout(() => renderAssignmentLecture(document.getElementById('courseMain'), lec), 300);
+}
+
+function saveAssignmentAnswer(lecId, qi, val) {
+  if(!assignmentStates[lecId]) assignmentStates[lecId] = {answers:{}, submitted:false, uploads:{}};
+  assignmentStates[lecId].answers[qi] = val;
+}
+
+function triggerUpload(lecId, qi) {
+  if(assignmentStates[lecId]?.submitted) return;
+  if(!assignmentStates[lecId]) assignmentStates[lecId] = {answers:{}, submitted:false, uploads:{}};
+  const fileName = ['diagram-ps-' + (qi+1) + '.png', 'lab-report.pdf', 'my-diagram.jpg', 'answer-sheet.docx'][qi % 4];
+  const fileSize = ['1.2 MB', '450 KB', '890 KB', '230 KB'][qi % 4];
+  assignmentStates[lecId].uploads[qi] = {name: fileName, size: fileSize};
+  const uz = document.getElementById(`uz-${lecId}-${qi}`);
+  if(uz) uz.insertAdjacentHTML('afterend', `<div class="uploaded-file" id="uf-${lecId}-${qi}"><span class="uf-icon">📄</span><span class="uf-name">${fileName}</span><span class="uf-size">${fileSize}</span><button class="uf-del" onclick="removeUpload(${lecId},${qi})">✕</button></div>`);
+  showToast('📎 File attached: ' + fileName);
+}
+
+function removeUpload(lecId, qi) {
+  if(assignmentStates[lecId]) delete assignmentStates[lecId].uploads[qi];
+  const uf = document.getElementById(`uf-${lecId}-${qi}`);
+  if(uf) uf.remove();
+}
+
+function completeLabStep(lecId, si) {
+  if(!labStates[lecId]) labStates[lecId] = {completedSteps: new Set(), observations:{}};
+  const obsEl = document.getElementById(`lab-obs-${lecId}-${si}`);
+  labStates[lecId].observations[si] = obsEl ? obsEl.value : '';
+  labStates[lecId].completedSteps.add(si);
+  showToast('✅ Step ' + (si+1) + ' completed!');
+  const lec = LECTURES.find(l=>l.id===lecId);
+  const allDone = labStates[lecId].completedSteps.size >= lec.steps.length;
+  if(allDone) { showToast('🧪 Lab complete! Mark it as done.'); }
+  renderLabLecture(document.getElementById('courseMain'), lec);
+}
+
+function playVideo(lecId) {
+  const poster = document.getElementById('videoPoster');
+  if(poster) poster.style.display = 'none';
+  startFakeVideo(lecId);
+  showToast('▶ Playing lecture...');
+}
+
+let fakeVideoInterval = null;
+function startFakeVideo(lecId) {
+  if(fakeVideoInterval) clearInterval(fakeVideoInterval);
+  const lec = LECTURES.find(l=>l.id===lecId);
+  let prog = lec.videoProgress || 0;
+  const fill = document.getElementById('vcFill');
+  const btn = document.querySelector('.vc-left .vc-btn');
+  if(btn) btn.textContent = '⏸';
+  fakeVideoInterval = setInterval(() => {
+    prog = Math.min(prog + 0.3, 100);
+    if(fill) fill.style.width = prog + '%';
+    lec.videoProgress = prog;
+    const timeEl = document.getElementById('vcTime');
+    if(timeEl) timeEl.textContent = formatTime(prog, lec.duration);
+    if(prog >= 100) {
+      clearInterval(fakeVideoInterval);
+      if(btn) btn.textContent = '▶';
+      showToast('🎉 Lecture complete! Mark it as done.');
+    }
+  }, 300);
+}
+
+let isPaused = false;
+function togglePlay(lecId) {
+  isPaused = !isPaused;
+  const btn = document.querySelector('.vc-left .vc-btn');
+  if(isPaused) {
+    clearInterval(fakeVideoInterval);
+    if(btn) btn.textContent = '▶';
+    showToast('⏸ Paused');
+  } else {
+    if(btn) btn.textContent = '⏸';
+    startFakeVideo(lecId);
+    showToast('▶ Playing');
+  }
+}
+
+function setSpeed(spd, el) {
+  document.querySelectorAll('.vc-right .vc-btn').forEach(b=>{b.style.color='';b.style.fontWeight='';});
+  el.style.color='#fff'; el.style.fontWeight='700';
+  showToast('⚡ Speed: '+spd+'×');
+}
+
+function seekVideo(e, lecId) {
+  const bar = e.currentTarget;
+  const pct = Math.min(Math.max(e.offsetX/bar.offsetWidth*100, 0), 100);
+  const fill = document.getElementById('vcFill');
+  if(fill) fill.style.width = pct+'%';
+  const lec = LECTURES.find(l=>l.id===lecId);
+  if(lec) { lec.videoProgress = pct; const t=document.getElementById('vcTime'); if(t) t.textContent = formatTime(pct, lec.duration); }
+}
+
+function formatTime(pct, durationStr) {
+  const match = durationStr.match(/(\d+)\s*min/);
+  if(!match) return '0:00';
+  const totalSecs = parseInt(match[1]) * 60;
+  const current = Math.floor(totalSecs * pct / 100);
+  const m = Math.floor(current/60), s = current%60;
+  return `${m}:${s.toString().padStart(2,'0')} / ${match[1]}:00`;
+}
+
+function saveNote(lecId) {
+  const input = document.getElementById('noteInput-'+lecId);
+  if(!input || !input.value.trim()) { showToast('⚠️ Write something first!'); return; }
+  if(!notesByLecture[lecId]) notesByLecture[lecId] = [];
+  const time = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  notesByLecture[lecId].push({title:'Note', time:'Today, '+time, text: input.value.trim()});
+  input.value = '';
+  const cnt = document.getElementById('noteCount-'+lecId);
+  if(cnt) cnt.textContent = '0 / 500 characters';
+  const cont = document.getElementById('savedNotes-'+lecId);
+  if(cont) {
+    cont.innerHTML = `<h4 style="font-size:13px;font-weight:800;color:var(--muted);margin-bottom:8px">SAVED NOTES (${notesByLecture[lecId].length})</h4>` +
+      notesByLecture[lecId].map(n=>`<div class="saved-note"><div class="sn-header"><span class="sn-title">📌 ${n.title}</span><span class="sn-time">${n.time}</span></div><div class="sn-text">${n.text}</div><span class="sn-tag">General</span></div>`).join('');
+  }
+  showToast('✅ Note saved!');
+}
+
+function postQuestion() {
+  const input = document.getElementById('qaInputField');
+  if(!input || !input.value.trim()) { showToast('⚠️ Write your question first!'); return; }
+  const list = document.getElementById('qaList');
+  const time = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const item = document.createElement('div');
+  item.className='qa-item'; item.style.animation='fadeUp .3s var(--ease)';
+  item.innerHTML=`<div class="qa-q"><div class="qa-av" style="background:var(--primary)">ME</div><div><div class="qa-q-text">${input.value.trim()}</div><div class="qa-q-meta">You · Just now</div></div></div><div class="qa-likes"><button class="like-btn">👍 Helpful (0)</button><button class="like-btn">💬 Reply</button></div>`;
+  if(list) list.prepend(item);
+  input.value = '';
+  showToast('✅ Question posted!');
+}
+
+/* ══════════════════════════════════════════
+   NAVIGATION
+══════════════════════════════════════════ */
+function navigatePrev() {
+  if(currentLectureIdx > 0) loadLecture(currentLectureIdx - 1);
+  else showToast('⏮ Already at the first lecture');
+}
+
+function navigateNext() {
+  if(currentLectureIdx < LECTURES.length - 1) loadLecture(currentLectureIdx + 1);
+  else showToast('🎓 You\'ve reached the end of the course!');
+}
+
+/* ══════════════════════════════════════════
+   SIDEBAR & PROGRESS
+══════════════════════════════════════════ */
+function updateSidebarActive(idx) {
+  document.querySelectorAll('.lecture-item').forEach(i => i.classList.remove('active'));
+  const item = document.getElementById('li-'+idx);
+  if(item) item.classList.add('active');
+  else {
+    const items = document.querySelectorAll('.lecture-item');
+    if(items[idx]) items[idx].classList.add('active');
+  }
+}
+
+function updateSidebarItem(lecId, done) {
+  const item = document.getElementById('li-'+lecId) || document.querySelectorAll('.lecture-item')[lecId];
+  if(!item) return;
+  item.classList.toggle('done', done);
+  const icon = item.querySelector('.lec-icon');
+  const title = item.querySelector('.lec-title');
+  let check = item.querySelector('.lec-check');
+  if(done) {
+    if(icon) { icon.className='lec-icon done'; icon.textContent='✓'; }
+    if(title) title.classList.add('done-text');
+    if(!check) { check=document.createElement('span'); check.className='lec-check'; item.appendChild(check); }
+    check.style.color='#22c55e'; check.textContent='✓';
+  } else {
+    const lec = LECTURES.find(l=>l.id===lecId);
+    const iconMap = {video:'▶',quiz:'❓',assignment:'📋',lab:'🧪'};
+    const clsMap = {video:'video',quiz:'quiz',assignment:'assignment',lab:'lab'};
+    if(icon) { icon.className='lec-icon '+(clsMap[lec.type]||'video'); icon.textContent=iconMap[lec.type]||'▶'; }
+    if(title) title.classList.remove('done-text');
+    if(check) check.remove();
+  }
+}
+
+function updateProgress() {
+  const total = LECTURES.length;
+  const done = completedLectures.size;
+  const pct = Math.round((done/total)*100);
+  const fill = document.getElementById('progressFill');
+  const pctEl = document.getElementById('progressPct');
+  const ringFill = document.getElementById('ringFill');
+  const ringText = document.getElementById('ringText');
+  const rpComp = document.getElementById('rpCompleted');
+  if(fill) fill.style.width = pct + '%';
+  if(pctEl) pctEl.textContent = pct + '%';
+  if(ringFill) ringFill.style.strokeDashoffset = (163 * (1 - pct/100)).toFixed(1);
+  if(ringText) ringText.textContent = pct + '%';
+  if(rpComp) rpComp.textContent = done + ' / ' + total;
+}
+
+/* ══════════════════════════════════════════
+   SECTION TOGGLE
+══════════════════════════════════════════ */
+function toggleSection(header) {
+  header.classList.toggle('collapsed');
+  const items = header.nextElementSibling;
+  items.classList.toggle('collapsed');
+}
+
+/* ══════════════════════════════════════════
+   SIDEBAR MOBILE
+══════════════════════════════════════════ */
+function toggleCurriculum() {
+  document.getElementById('curriculumSidebar').classList.toggle('open');
+  document.getElementById('csOverlay').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
+}
+function closeCurriculum() {
+  document.getElementById('curriculumSidebar').classList.remove('open');
+  document.getElementById('csOverlay').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
+window.addEventListener('resize', () => { if(window.innerWidth > 1024) closeCurriculum(); });
+
+/* ══════════════════════════════════════════
+   THEME
+══════════════════════════════════════════ */
+function toggleTheme() {
+  const d = document.body.getAttribute('data-theme') === 'dark';
+  document.body.setAttribute('data-theme', d ? '' : 'dark');
+  document.getElementById('themeBtn').textContent = d ? '🌙' : '☀️';
+}
+
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+function showToast(msg) {
+  const prev = document.querySelector('.toast-notif');
+  if(prev) prev.remove();
+  const t = document.createElement('div');
+  t.className = 'toast-notif';
+  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:11px 20px;border-radius:25px;font-size:13.5px;font-weight:600;box-shadow:0 8px 28px rgba(0,0,0,.25);z-index:9999;white-space:nowrap;animation:fadeUp .3s ease';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity .3s'; setTimeout(()=>t.remove(),300); }, 2200);
+}
+
+/* ══════════════════════════════════════════
+   CONFETTI
+══════════════════════════════════════════ */
+function spawnConfetti() {
+  const colors = ['#89b084','#d4a373','#4f86c6','#22c55e','#f59e0b'];
+  for(let i=0;i<12;i++){
+    const el = document.createElement('div');
+    el.style.cssText = `position:fixed;z-index:9998;pointer-events:none;width:10px;height:10px;border-radius:50%;background:${colors[i%colors.length]};left:${40+Math.random()*20}%;bottom:60px;animation:confetti ${0.8+Math.random()*0.6}s ease forwards;animation-delay:${Math.random()*0.3}s`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 1500);
+  }
+}
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
+loadLecture(4);
+setTimeout(() => {
+  updateProgress();
+  const ringFill = document.getElementById('ringFill');
+  if(ringFill) {
+    const pct = completedLectures.size / LECTURES.length;
+    ringFill.style.strokeDashoffset = (163 * (1 - pct)).toFixed(1);
+  }
+}, 400);
+</script>
+</body>
+</html>
