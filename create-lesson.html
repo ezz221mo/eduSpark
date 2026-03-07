@@ -1,66 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>EVOLVE - Create Lesson</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>EVOLVE - إنشاء كورس جديد</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
     :root {
-        --primary:        #89b084;
-        --primary-dark:   #6e9b73;
-        --primary-light:  #eef3ee;
-        --primary-glow:   rgba(137,176,132,.25);
-        --bg:             #f9f8f3;
-        --surface:        #ffffff;
-        --soft:           #eef3ee;
-        --text:           #2d3436;
-        --muted:          #6b7280;
-        --border:         #e5e7eb;
-        --danger:         #ef4444;
-        --warning:        #f5a623;
-        --accent:         #d4a373;
-        --shadow:         0 2px 12px rgba(0,0,0,.07);
-        --shadow-lg:      0 10px 36px rgba(0,0,0,.11);
-        --radius:         14px;
-        --ease:           cubic-bezier(.4,0,.2,1);
-        --sidebar-w:      240px;
-        --topbar-h:       64px;
+        --primary:       #89b084;
+        --primary-dark:  #6e9b73;
+        --primary-light: #eef3ee;
+        --primary-glow:  rgba(137,176,132,.25);
+        --bg:            #f9f8f3;
+        --surface:       #ffffff;
+        --soft:          #eef3ee;
+        --text:          #2d3436;
+        --muted:         #6b7280;
+        --border:        #e5e7eb;
+        --danger:        #ef4444;
+        --warning:       #f5a623;
+        --accent:        #d4a373;
+        --shadow:        0 2px 12px rgba(0,0,0,.07);
+        --shadow-lg:     0 10px 36px rgba(0,0,0,.11);
+        --radius:        14px;
+        --ease:          cubic-bezier(.4,0,.2,1);
+        --sidebar-w:     240px;
+        --topbar-h:      64px;
     }
     [data-theme="dark"] {
         --bg:#0f172a;--surface:#111827;--soft:#1e2d3d;--text:#e5e7eb;
-        --muted:#9ca3af;--border:#1f2937;--shadow:0 2px 12px rgba(0,0,0,.35);
+        --muted:#9ca3af;--border:#1f2937;
+        --shadow:0 2px 12px rgba(0,0,0,.35);
         --shadow-lg:0 10px 36px rgba(0,0,0,.55);
     }
+
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
     html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
-    body{font-family:'Plus Jakarta Sans','Segoe UI',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;overflow-x:hidden;line-height:1.6;-webkit-font-smoothing:antialiased;}
+    body{font-family:'Cairo','Segoe UI',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;overflow-x:hidden;line-height:1.6;direction:rtl;}
+
     @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
     @keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
     @keyframes spin{to{transform:rotate(360deg)}}
     @keyframes popIn{0%{transform:scale(.85);opacity:0}70%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
     @keyframes shimmer{0%,100%{opacity:1}50%{opacity:.55}}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 
-    /* SIDEBAR */
-    .sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:300;animation:slideIn .45s var(--ease);transition:transform .32s var(--ease);overflow-y:auto;overflow-x:hidden;}
-    .sidebar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent),var(--primary));background-size:200%;animation:shimmer 3s infinite;flex-shrink:0;}
-    .sidebar-logo{display:flex;align-items:center;gap:10px;padding:20px 18px 18px;border-bottom:1px solid var(--border);text-decoration:none;flex-shrink:0;}
+    /* ═══ SIDEBAR ═══ */
+    .sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;right:0;z-index:300;transition:transform .32s var(--ease);overflow-y:auto;overflow-x:hidden;}
+    .sidebar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--accent),var(--primary));background-size:200%;animation:shimmer 3s infinite;}
+    .sidebar-logo{display:flex;align-items:center;gap:10px;padding:20px 18px 18px;border-bottom:1px solid var(--border);text-decoration:none;}
     .logo-box{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:#fff;box-shadow:0 3px 10px var(--primary-glow);flex-shrink:0;transition:transform .3s var(--ease);}
     .sidebar-logo:hover .logo-box{transform:rotate(-8deg) scale(1.08);}
-    .logo-name{font-size:19px;font-weight:900;color:var(--text);letter-spacing:-.5px;}
+    .logo-name{font-size:19px;font-weight:900;color:var(--text);}
     .logo-name span{color:var(--primary);}
     .sidebar-section{padding:14px 10px 2px;}
     .sidebar-label{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:1.3px;color:var(--muted);padding:0 8px;margin-bottom:5px;}
-    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;color:var(--muted);font-size:13px;font-weight:500;text-decoration:none;margin-bottom:1px;transition:all .2s var(--ease);position:relative;}
-    .nav-item:hover{background:var(--soft);color:var(--primary);transform:translateX(3px);}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;color:var(--muted);font-size:13px;font-weight:600;text-decoration:none;margin-bottom:1px;transition:all .2s var(--ease);position:relative;}
+    .nav-item:hover{background:var(--soft);color:var(--primary);transform:translateX(-3px);}
     .nav-item.active{background:var(--primary-light);color:var(--primary);font-weight:700;}
-    .nav-item.active::before{content:'';position:absolute;left:0;top:22%;bottom:22%;width:3px;border-radius:0 3px 3px 0;background:var(--primary);}
+    .nav-item.active::before{content:'';position:absolute;right:0;top:22%;bottom:22%;width:3px;border-radius:3px 0 0 3px;background:var(--primary);}
     .nav-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
-    .nav-badge{margin-left:auto;background:var(--primary);color:#fff;font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:20px;min-width:18px;text-align:center;}
-    .sidebar-profile{margin-top:auto;padding:12px 10px;border-top:1px solid var(--border);flex-shrink:0;}
+    .nav-badge{margin-right:auto;background:var(--primary);color:#fff;font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:20px;min-width:18px;text-align:center;}
+    .sidebar-profile{margin-top:auto;padding:12px 10px;border-top:1px solid var(--border);}
     .profile-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;background:var(--soft);text-decoration:none;transition:all .22s var(--ease);border:1px solid transparent;}
     .profile-card:hover{background:var(--primary-light);border-color:var(--primary);}
     .p-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-dark));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:12px;flex-shrink:0;}
@@ -69,10 +72,10 @@
     .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:299;backdrop-filter:blur(3px);}
     .sidebar-overlay.open{display:block;}
 
-    /* MAIN */
-    .main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;}
+    /* ═══ MAIN ═══ */
+    .main{margin-right:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;}
 
-    /* TOPBAR */
+    /* ═══ TOPBAR ═══ */
     .topbar{background:var(--surface);border-bottom:1px solid var(--border);height:var(--topbar-h);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:200;gap:12px;}
     .topbar-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1;}
     .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:7px;border-radius:9px;transition:background .2s;flex-shrink:0;}
@@ -81,30 +84,25 @@
     .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
     .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
     .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-    .nav-pills{display:flex;gap:3px;background:var(--soft);padding:4px;border-radius:40px;border:1px solid var(--border);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
-    .nav-pills::-webkit-scrollbar{display:none;}
-    .pill{display:flex;align-items:center;gap:5px;padding:6px 14px;border-radius:30px;font-size:12.5px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--muted);white-space:nowrap;transition:all .2s var(--ease);flex-shrink:0;font-family:inherit;}
-    .pill:hover{color:var(--text);background:var(--surface);}
-    .pill.active{background:var(--primary);color:#fff;box-shadow:0 3px 12px var(--primary-glow);}
+    .page-title-bar{font-size:15px;font-weight:800;color:var(--text);}
     .topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-    .icon-btn{width:36px;height:36px;border-radius:9px;background:var(--soft);border:1px solid var(--border);color:var(--muted);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s var(--ease);position:relative;flex-shrink:0;}
+    .icon-btn{width:36px;height:36px;border-radius:9px;background:var(--soft);border:1px solid var(--border);color:var(--muted);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s var(--ease);position:relative;}
     .icon-btn:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary);}
     .notif-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;background:#ef4444;border-radius:50%;border:1.5px solid var(--surface);}
-    .create-btn{display:flex;align-items:center;gap:6px;padding:8px 18px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border-radius:25px;font-size:12.5px;font-weight:700;border:none;cursor:pointer;box-shadow:0 3px 14px var(--primary-glow);transition:all .22s var(--ease);white-space:nowrap;font-family:inherit;flex-shrink:0;}
-    .create-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--primary-glow);}
+    .publish-btn{display:flex;align-items:center;gap:6px;padding:8px 18px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border-radius:25px;font-size:12.5px;font-weight:700;border:none;cursor:pointer;box-shadow:0 3px 14px var(--primary-glow);transition:all .22s var(--ease);white-space:nowrap;font-family:inherit;}
+    .publish-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--primary-glow);}
 
-    /* CONTENT */
+    /* ═══ CONTENT ═══ */
     .content{padding:24px 28px;display:flex;flex-direction:column;gap:20px;animation:fadeUp .6s var(--ease);flex:1;}
     .breadcrumb{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);flex-wrap:wrap;}
     .breadcrumb a{color:var(--primary);text-decoration:none;font-weight:600;}
-    .breadcrumb a:hover{text-decoration:underline;}
     .page-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;}
-    .page-header h1{font-size:24px;font-weight:900;letter-spacing:-.4px;line-height:1.2;}
+    .page-header h1{font-size:22px;font-weight:900;letter-spacing:-.4px;line-height:1.2;}
     .page-header p{font-size:13px;color:var(--muted);margin-top:3px;}
     .header-actions{display:flex;gap:8px;flex-wrap:wrap;}
 
-    /* STEPPER */
-    .stepper{display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);overflow-x:auto;scrollbar-width:none;gap:0;}
+    /* ═══ STEPPER ═══ */
+    .stepper{display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);overflow-x:auto;scrollbar-width:none;}
     .stepper::-webkit-scrollbar{display:none;}
     .step{display:flex;align-items:center;gap:8px;flex-shrink:0;}
     .step-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;transition:all .3s var(--ease);}
@@ -117,75 +115,84 @@
     .step-line{flex:1;min-width:16px;height:2px;background:var(--border);margin:0 6px;border-radius:2px;transition:background .4s;}
     .step-line.done{background:var(--primary);}
 
-    /* FORM GRID */
+    /* ═══ FORM GRID ═══ */
     .form-grid{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start;}
     .left-col{display:flex;flex-direction:column;gap:18px;min-width:0;}
     .right-col{display:flex;flex-direction:column;gap:18px;}
 
-    /* CARD */
+    /* ═══ CARD ═══ */
     .card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden;animation:scaleIn .45s var(--ease) backwards;}
     .card:nth-child(1){animation-delay:.05s}.card:nth-child(2){animation-delay:.1s}
     .card:nth-child(3){animation-delay:.15s}.card:nth-child(4){animation-delay:.2s}
+    .card:nth-child(5){animation-delay:.25s}.card:nth-child(6){animation-delay:.3s}
     .card-head{display:flex;align-items:center;gap:12px;padding:18px 20px 0;margin-bottom:16px;}
     .card-head-icon{width:36px;height:36px;border-radius:9px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
     .card-head h3{font-size:15px;font-weight:800;}
     .card-head p{font-size:11.5px;color:var(--muted);margin-top:1px;}
     .card-body{padding:0 20px 20px;}
 
-    /* FORM ELEMENTS */
+    /* ═══ FORM ELEMENTS ═══ */
     .field{margin-bottom:14px;}
     .field:last-child{margin-bottom:0;}
     label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px;}
-    label .req{color:var(--danger);margin-left:2px;}
+    label .req{color:var(--danger);margin-right:2px;}
     input[type="text"],input[type="date"],input[type="time"],input[type="number"],input[type="url"],select,textarea{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font-family:inherit;font-size:13.5px;outline:none;transition:all .2s var(--ease);-webkit-appearance:none;appearance:none;}
     input:focus,select:focus,textarea:focus{border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px var(--primary-glow);}
     input::placeholder,textarea::placeholder{color:var(--muted);}
     textarea{resize:vertical;min-height:90px;}
-    select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer;}
-    .field-meta{display:flex;justify-content:flex-end;font-size:10.5px;color:var(--muted);margin-top:4px;}
+    select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 12px center;padding-left:32px;cursor:pointer;}
+    .field-meta{display:flex;justify-content:flex-start;font-size:10.5px;color:var(--muted);margin-top:4px;}
     .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
     .field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
 
-    /* TAGS */
-    .tags-wrap{display:flex;flex-wrap:wrap;gap:6px;padding:8px 11px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);cursor:text;transition:border-color .2s,box-shadow .2s;}
+    /* ═══ PRICE SECTION ═══ */
+    .price-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;align-items:end;}
+    .price-note{font-size:11px;color:var(--muted);margin-top:6px;display:flex;align-items:center;gap:5px;}
+    .price-note i{color:var(--primary);}
+    .discount-preview{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--primary-light);border-radius:10px;border:1px solid var(--primary);margin-top:10px;}
+    .discount-preview .old{text-decoration:line-through;color:var(--muted);font-size:14px;}
+    .discount-preview .new{font-size:18px;font-weight:900;color:var(--primary-dark);}
+    .discount-preview .badge{background:var(--warning);color:#fff;padding:3px 10px;border-radius:10px;font-size:12px;font-weight:700;}
+
+    /* ═══ TAGS ═══ */
+    .tags-wrap{display:flex;flex-wrap:wrap;gap:6px;padding:8px 11px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);cursor:text;transition:all .2s;}
     .tags-wrap:focus-within{border-color:var(--primary);background:var(--surface);box-shadow:0 0 0 3px var(--primary-glow);}
     .tag-chip{display:flex;align-items:center;gap:4px;background:var(--primary-light);color:var(--primary-dark);padding:3px 9px;border-radius:20px;font-size:12px;font-weight:600;}
     .tag-chip button{background:none;border:none;color:var(--primary-dark);cursor:pointer;font-size:13px;line-height:1;opacity:.7;}
     .tag-chip button:hover{opacity:1;}
-    .tag-input{border:none;background:transparent;outline:none;font-size:13px;color:var(--text);font-family:inherit;min-width:100px;flex:1;}
+    .tag-input{border:none;background:transparent;outline:none;font-size:13px;color:var(--text);font-family:inherit;min-width:80px;flex:1;}
 
-    /* DIFFICULTY */
+    /* ═══ DIFFICULTY ═══ */
     .diff-group{display:flex;gap:7px;flex-wrap:wrap;}
     .diff-pill{padding:7px 15px;border-radius:25px;font-size:12.5px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--bg);color:var(--muted);transition:all .2s var(--ease);user-select:none;}
     .diff-pill:hover{border-color:var(--primary);color:var(--primary);}
     .diff-pill.selected{border-color:var(--primary);background:var(--primary);color:#fff;box-shadow:0 3px 10px var(--primary-glow);}
 
-    /* COLOR SWATCHES */
+    /* ═══ COLOR SWATCHES ═══ */
     .color-row{display:flex;gap:8px;flex-wrap:wrap;}
-    .color-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:all .2s var(--ease);flex-shrink:0;}
+    .color-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:all .2s var(--ease);}
     .color-swatch:hover{transform:scale(1.18);}
     .color-swatch.selected{border-color:var(--text);box-shadow:0 0 0 3px var(--primary-light);}
 
-    /* UPLOAD ZONE */
+    /* ═══ UPLOAD ZONE ═══ */
     .upload-zone{border:2px dashed var(--border);border-radius:12px;padding:28px 16px;text-align:center;cursor:pointer;transition:all .22s var(--ease);background:var(--bg);}
     .upload-zone:hover,.upload-zone.drag{border-color:var(--primary);background:var(--primary-light);}
-    .upload-zone.drag{transform:scale(1.01);}
     .upload-icon{font-size:32px;margin-bottom:8px;}
     .upload-zone h4{font-size:13.5px;font-weight:700;margin-bottom:3px;}
     .upload-zone p{font-size:12px;color:var(--muted);}
     .upload-zone input{display:none;}
-    .upload-btn{display:inline-block;margin-top:10px;padding:7px 18px;background:var(--primary);color:#fff;border-radius:20px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .2s var(--ease);box-shadow:0 3px 10px var(--primary-glow);}
-    .upload-btn:hover{background:var(--primary-dark);transform:translateY(-1px);}
+    .upload-btn-label{display:inline-block;margin-top:10px;padding:7px 18px;background:var(--primary);color:#fff;border-radius:20px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 3px 10px var(--primary-glow);}
+    .upload-btn-label:hover{background:var(--primary-dark);transform:translateY(-1px);}
     .file-list{display:flex;flex-direction:column;gap:7px;margin-top:10px;}
     .file-item{display:flex;align-items:center;gap:9px;padding:9px 12px;background:var(--soft);border-radius:10px;border:1px solid var(--border);animation:popIn .28s var(--ease);}
     .file-icon{font-size:20px;flex-shrink:0;}
     .file-info{flex:1;min-width:0;}
     .file-name{font-size:12.5px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
     .file-size{font-size:11px;color:var(--muted);margin-top:1px;}
-    .file-remove{background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;transition:color .2s;flex-shrink:0;}
+    .file-remove{background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;transition:color .2s;}
     .file-remove:hover{color:var(--danger);}
 
-    /* OBJECTIVES */
+    /* ═══ OBJECTIVES ═══ */
     .obj-list{display:flex;flex-direction:column;gap:7px;margin-bottom:10px;}
     .obj-item{display:flex;align-items:center;gap:9px;padding:9px 13px;background:var(--soft);border-radius:10px;border:1px solid var(--border);animation:popIn .25s var(--ease);}
     .obj-dot{width:7px;height:7px;border-radius:50%;background:var(--primary);flex-shrink:0;}
@@ -197,7 +204,7 @@
     .add-obj-btn{padding:9px 14px;background:var(--primary-light);color:var(--primary-dark);border:1.5px solid var(--primary);border-radius:10px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s var(--ease);font-family:inherit;}
     .add-obj-btn:hover{background:var(--primary);color:#fff;}
 
-    /* SESSIONS */
+    /* ═══ SESSIONS ═══ */
     .schedule-block{padding:13px 15px;background:var(--soft);border-radius:11px;border:1px solid var(--border);margin-bottom:9px;transition:border-color .2s;}
     .schedule-block:hover{border-color:var(--primary);}
     .schedule-block-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
@@ -207,20 +214,36 @@
     .add-session-btn{width:100%;padding:9px;border:1.5px dashed var(--border);border-radius:10px;background:transparent;color:var(--muted);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .2s var(--ease);font-family:inherit;}
     .add-session-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light);}
 
-    /* LIVE PREVIEW */
+    /* ═══ REQUIREMENTS ═══ */
+    .req-list-items{display:flex;flex-direction:column;gap:7px;margin-bottom:10px;}
+    .req-item{display:flex;align-items:center;gap:9px;padding:9px 13px;background:var(--soft);border-radius:10px;border:1px solid var(--border);animation:popIn .25s var(--ease);}
+    .req-bullet{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+    .req-text{flex:1;font-size:13px;}
+
+    /* ═══ LIVE PREVIEW ═══ */
     .lesson-preview{border-radius:var(--radius);padding:20px;color:#fff;position:relative;overflow:hidden;background:linear-gradient(135deg,var(--primary),var(--primary-dark));}
     .lesson-preview::before{content:'';position:absolute;top:-25px;right:-25px;width:90px;height:90px;background:rgba(255,255,255,.1);border-radius:50%;}
     .lesson-preview::after{content:'';position:absolute;bottom:-18px;left:-18px;width:65px;height:65px;background:rgba(255,255,255,.07);border-radius:50%;}
     .preview-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.8;margin-bottom:8px;}
-    .preview-title{font-size:17px;font-weight:900;margin-bottom:5px;line-height:1.3;word-break:break-word;}
-    .preview-meta{font-size:12px;opacity:.8;margin-bottom:13px;}
+    .preview-title{font-size:16px;font-weight:900;margin-bottom:5px;line-height:1.3;word-break:break-word;}
+    .preview-cat{font-size:12px;opacity:.8;margin-bottom:6px;}
+    .preview-instructor{display:flex;align-items:center;gap:7px;margin-bottom:10px;}
+    .preview-instructor-dot{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+    .preview-price-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+    .preview-price-new{font-size:20px;font-weight:900;}
+    .preview-price-old{font-size:13px;text-decoration:line-through;opacity:.6;}
+    .preview-discount-badge{background:rgba(255,255,255,.25);padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;}
+    .preview-meta-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+    .preview-meta-item{display:flex;align-items:center;gap:5px;font-size:11px;opacity:.85;}
     .preview-tags{display:flex;flex-wrap:wrap;gap:5px;}
     .preview-tag{background:rgba(255,255,255,.22);padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;}
+    .preview-rating{display:flex;align-items:center;gap:5px;margin-bottom:8px;}
+    .preview-stars{color:#fbbf24;font-size:13px;}
 
-    /* AI CHIPS */
-    .ai-chip{display:flex;align-items:center;gap:9px;padding:10px 13px;background:linear-gradient(135deg,var(--primary-light),#fffbf0);border:1px solid var(--primary);border-radius:10px;cursor:pointer;transition:all .2s var(--ease);margin-bottom:7px;font-size:12.5px;font-weight:600;color:var(--text);position:relative;}
+    /* ═══ AI CHIPS ═══ */
+    .ai-chip{display:flex;align-items:center;gap:9px;padding:10px 13px;background:linear-gradient(135deg,var(--primary-light),#fffbf0);border:1px solid var(--primary);border-radius:10px;cursor:pointer;transition:all .2s var(--ease);margin-bottom:7px;font-size:12.5px;font-weight:600;color:var(--text);}
     .ai-chip:last-child{margin-bottom:0;}
-    .ai-chip:hover{transform:translateX(4px);box-shadow:0 3px 12px var(--primary-glow);}
+    .ai-chip:hover{transform:translateX(-4px);box-shadow:0 3px 12px var(--primary-glow);}
     .ai-chip.loading{pointer-events:none;opacity:.75;}
     .ai-chip-icon{font-size:17px;flex-shrink:0;}
     .ai-chip-text{flex:1;min-width:0;}
@@ -228,7 +251,7 @@
     .ai-chip-arr{color:var(--primary);font-size:13px;flex-shrink:0;}
     .ai-chip-spinner{width:14px;height:14px;border:2px solid var(--primary-light);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
 
-    /* AI RESULT MODAL */
+    /* ═══ AI MODAL ═══ */
     .ai-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);animation:fadeUp .3s var(--ease);}
     .ai-modal{background:var(--surface);border-radius:18px;border:1px solid var(--border);box-shadow:var(--shadow-lg);width:100%;max-width:520px;max-height:80vh;overflow:hidden;display:flex;flex-direction:column;animation:popIn .35s var(--ease);}
     .ai-modal-head{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--border);}
@@ -256,7 +279,7 @@
     .ai-tag-result:hover{background:var(--primary);color:#fff;}
     .ai-tag-result.added{background:var(--primary);color:#fff;}
 
-    /* TOGGLES */
+    /* ═══ TOGGLES ═══ */
     .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);gap:10px;}
     .toggle-row:last-child{border-bottom:none;padding-bottom:0;}
     .toggle-label{font-size:13px;font-weight:600;}
@@ -264,15 +287,15 @@
     .toggle{position:relative;width:40px;height:22px;flex-shrink:0;}
     .toggle input{opacity:0;width:0;height:0;}
     .toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:22px;cursor:pointer;transition:background .28s;}
-    .toggle-slider::before{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .28s;box-shadow:0 1px 4px rgba(0,0,0,.15);}
+    .toggle-slider::before{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;right:3px;transition:transform .28s;box-shadow:0 1px 4px rgba(0,0,0,.15);}
     .toggle input:checked + .toggle-slider{background:var(--primary);}
-    .toggle input:checked + .toggle-slider::before{transform:translateX(18px);}
+    .toggle input:checked + .toggle-slider::before{transform:translateX(-18px);}
 
-    /* CHECKLIST */
+    /* ═══ CHECKLIST ═══ */
     .chk-item{display:flex;align-items:center;gap:9px;font-size:12.5px;padding:6px 0;border-bottom:1px solid var(--border);}
     .chk-item:last-child{border-bottom:none;}
 
-    /* BUTTONS */
+    /* ═══ BUTTONS ═══ */
     .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:25px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .22s var(--ease);font-family:inherit;white-space:nowrap;}
     .btn-ghost{background:var(--soft);color:var(--text);border:1.5px solid var(--border);}
     .btn-ghost:hover{background:var(--border);}
@@ -280,22 +303,26 @@
     .btn-outline:hover{background:var(--primary-light);}
     .btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;box-shadow:0 3px 14px var(--primary-glow);}
     .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--primary-glow);}
-    .btn-primary:active{transform:scale(.97);}
     .btn-spinner{display:none;width:14px;height:14px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
     .action-bar{display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap;padding-bottom:4px;}
 
-    /* TOAST */
-    .toast{position:fixed;bottom:24px;right:24px;left:24px;max-width:360px;margin:0 auto;background:var(--text);color:var(--bg);padding:13px 18px;border-radius:12px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:9px;box-shadow:var(--shadow-lg);z-index:9999;animation:popIn .35s var(--ease);transition:opacity .35s;}
+    /* ═══ SECTION DIVIDER ═══ */
+    .section-divider{display:flex;align-items:center;gap:10px;margin:4px 0 14px;}
+    .section-divider span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--primary);white-space:nowrap;}
+    .section-divider::before,.section-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+
+    /* ═══ TOAST ═══ */
+    .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);max-width:360px;width:calc(100% - 40px);background:var(--text);color:var(--bg);padding:13px 18px;border-radius:12px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:9px;box-shadow:var(--shadow-lg);z-index:9999;animation:popIn .35s var(--ease);transition:opacity .35s;}
     .toast.hide{opacity:0;}
 
-    /* FOOTER */
-    footer{background:var(--surface);color:var(--muted);border-top:1px solid var(--border);padding:48px 28px 26px;margin-top:auto;}
-    .footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:36px;margin-bottom:32px;}
-    .f-logo{display:flex;align-items:center;gap:9px;margin-bottom:13px;text-decoration:none;}
+    /* ═══ FOOTER ═══ */
+    footer{background:var(--surface);color:var(--muted);border-top:1px solid var(--border);padding:40px 28px 24px;margin-top:auto;}
+    .footer-top{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:36px;margin-bottom:28px;}
+    .f-logo{display:flex;align-items:center;gap:9px;margin-bottom:12px;text-decoration:none;}
     .f-logo-box{width:32px;height:32px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;}
-    .f-logo-name{font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.5px;}
+    .f-logo-name{font-size:18px;font-weight:900;color:var(--text);}
     .f-logo-name span{color:var(--primary);}
-    .f-desc{font-size:13px;line-height:1.7;color:var(--muted);max-width:250px;margin-bottom:18px;}
+    .f-desc{font-size:13px;line-height:1.7;color:var(--muted);max-width:250px;margin-bottom:16px;}
     .socials{display:flex;gap:8px;}
     .socials a{width:30px;height:30px;background:var(--soft);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);text-decoration:none;font-size:12px;border:1px solid var(--border);transition:all .22s var(--ease);}
     .socials a:hover{background:var(--primary);color:#fff;border-color:var(--primary);transform:translateY(-3px);}
@@ -306,94 +333,160 @@
     .footer-col ul li a:hover{color:var(--primary);}
     .ci-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-bottom:9px;}
     .ci-item i{color:var(--primary);width:13px;}
-    .footer-bottom{padding-top:20px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:12px;flex-wrap:wrap;gap:10px;}
+    .footer-bottom{padding-top:18px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:12px;flex-wrap:wrap;gap:10px;}
     .footer-links{display:flex;gap:18px;flex-wrap:wrap;}
-    .footer-links a{text-decoration:none;color:var(--muted);font-size:12px;transition:color .2s;}
+    .footer-links a{text-decoration:none;color:var(--muted);font-size:12px;}
     .footer-links a:hover{color:var(--primary);}
 
-    /* RESPONSIVE */
-    @media(max-width:1080px){.form-grid{grid-template-columns:1fr;}.right-col{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;}}
-    @media(max-width:1024px){:root{--sidebar-w:0px;}.sidebar{transform:translateX(-100%);width:240px;}.sidebar.open{transform:translateX(0);box-shadow:var(--shadow-lg);}.main{margin-left:0;}.hamburger{display:flex;}.footer-top{grid-template-columns:1fr 1fr;}}
-    @media(max-width:768px){:root{--topbar-h:58px;}.content{padding:16px 16px 24px;gap:16px;}.topbar{padding:0 14px;}.nav-pills{display:none;}.page-header{flex-direction:column;gap:10px;}.header-actions{width:100%;}.header-actions .btn{flex:1;justify-content:center;}.field-row{grid-template-columns:1fr;gap:0;}.field-row .field{margin-bottom:14px;}.field-row-3{grid-template-columns:1fr 1fr;gap:10px;}.stepper{padding:13px 14px;}.right-col{grid-template-columns:1fr;}.footer-top{grid-template-columns:1fr;gap:22px;}footer{padding:32px 16px 22px;}.footer-bottom{flex-direction:column;text-align:center;}.footer-links{justify-content:center;}.action-bar{flex-direction:column;}.action-bar .btn{justify-content:center;}}
-    @media(min-width:769px) and (max-width:1024px){.nav-pills{display:flex;}}
-    @media(max-width:540px){.content{padding:12px 12px 20px;gap:14px;}.topbar{padding:0 12px;gap:8px;}.card-head{padding:14px 14px 0;}.card-body{padding:0 14px 16px;}.field-row-3{grid-template-columns:1fr 1fr;}.diff-group{gap:6px;}.diff-pill{padding:6px 11px;font-size:12px;}.step-label{display:none;}.create-btn .btn-text{display:none;}.page-header h1{font-size:20px;}.icon-btn.hide-xs{display:none;}}
-    @media(max-width:360px){.content{padding:10px 10px 18px;}.topbar{padding:0 10px;}.card-head{padding:12px 12px 0;}.card-body{padding:0 12px 14px;}.field-row-3{grid-template-columns:1fr;}.btn{padding:9px 14px;font-size:12px;}}
+    /* ═══════════════════════════════
+       RESPONSIVE — COMPLETE SYSTEM
+    ═══════════════════════════════ */
+
+    /* Large desktop */
+    @media(min-width:1280px){
+        .content{padding:28px 36px;}
+        footer{padding:48px 36px 28px;}
+    }
+
+    /* Tablet landscape */
+    @media(max-width:1080px){
+        .form-grid{grid-template-columns:1fr;}
+        .right-col{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;}
+    }
+
+    /* Tablet portrait — hide sidebar */
+    @media(max-width:1024px){
+        :root{--sidebar-w:0px;}
+        .sidebar{transform:translateX(100%);width:240px;}
+        .sidebar.open{transform:translateX(0);box-shadow:var(--shadow-lg);}
+        .main{margin-right:0;}
+        .hamburger{display:flex;}
+        .footer-top{grid-template-columns:1fr 1fr;}
+    }
+
+    /* Mobile large */
+    @media(max-width:768px){
+        :root{--topbar-h:58px;}
+        .content{padding:16px 16px 24px;gap:16px;}
+        .topbar{padding:0 14px;}
+        .page-header{flex-direction:column;gap:10px;}
+        .header-actions{width:100%;}
+        .header-actions .btn{flex:1;justify-content:center;}
+        .field-row{grid-template-columns:1fr;gap:0;}
+        .field-row .field{margin-bottom:14px;}
+        .field-row-3{grid-template-columns:1fr 1fr;}
+        .price-grid{grid-template-columns:1fr 1fr;}
+        .price-grid .field:last-child{grid-column:1/-1;}
+        .stepper{padding:12px 14px;}
+        .right-col{grid-template-columns:1fr;}
+        .footer-top{grid-template-columns:1fr;gap:22px;}
+        footer{padding:30px 16px 20px;}
+        .footer-bottom{flex-direction:column;text-align:center;}
+        .footer-links{justify-content:center;}
+        .action-bar{flex-direction:column;}
+        .action-bar .btn{justify-content:center;}
+        .card-head{padding:14px 16px 0;}
+        .card-body{padding:0 16px 16px;}
+    }
+
+    /* Mobile medium */
+    @media(max-width:540px){
+        .content{padding:12px 12px 20px;gap:14px;}
+        .topbar{padding:0 12px;gap:8px;}
+        .field-row-3{grid-template-columns:1fr 1fr;}
+        .diff-group{gap:6px;}
+        .diff-pill{padding:6px 11px;font-size:12px;}
+        .step-label{display:none;}
+        .publish-btn .btn-text{display:none;}
+        .page-header h1{font-size:18px;}
+        .icon-btn.hide-xs{display:none;}
+        .price-grid{grid-template-columns:1fr;}
+        .add-obj-row{flex-direction:column;}
+        .add-obj-btn{text-align:center;}
+    }
+
+    /* Mobile small */
+    @media(max-width:380px){
+        .content{padding:10px 10px 18px;}
+        .topbar{padding:0 10px;}
+        .card-head{padding:12px 12px 0;}
+        .card-body{padding:0 12px 14px;}
+        .field-row-3{grid-template-columns:1fr;}
+        .btn{padding:9px 14px;font-size:12px;}
+        .diff-pill{padding:6px 9px;font-size:11.5px;}
+        .color-swatch{width:24px;height:24px;}
+    }
     </style>
 </head>
 <body>
 
 <div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
 
-<!-- SIDEBAR -->
+<!-- ═══ SIDEBAR ═══ -->
 <aside class="sidebar" id="sidebar">
     <a href="index.html" class="sidebar-logo">
         <div class="logo-box">E</div>
         <span class="logo-name">EVO<span>LVE</span></span>
     </a>
     <div class="sidebar-section">
-        <div class="sidebar-label">Main</div>
-        <a href="teacher_dashboard.html" class="nav-item"><span class="nav-icon">🏠</span> Dashboard</a>
-        <a href="courses.html"           class="nav-item"><span class="nav-icon">📚</span> Courses</a>
-        <a href="students.html"          class="nav-item"><span class="nav-icon">👥</span> Students</a>
-        <a href="schedule.html"          class="nav-item"><span class="nav-icon">📅</span> Schedule</a>
-        <a href="sparky.html"            class="nav-item"><span class="nav-icon">🤖</span> AI Assistant</a>
+        <div class="sidebar-label">الرئيسية</div>
+        <a href="teacher_dashboard.html" class="nav-item"><span class="nav-icon">🏠</span> لوحة التحكم</a>
+        <a href="courses.html"           class="nav-item"><span class="nav-icon">📚</span> الكورسات</a>
+        <a href="students.html"          class="nav-item"><span class="nav-icon">👥</span> الطلاب</a>
+        <a href="schedule.html"          class="nav-item"><span class="nav-icon">📅</span> الجدول</a>
+        <a href="sparky.html"            class="nav-item"><span class="nav-icon">🤖</span> المساعد الذكي</a>
     </div>
     <div class="sidebar-section">
-        <div class="sidebar-label">Tools</div>
-        <a href="messages.html" class="nav-item"><span class="nav-icon">💬</span> Messages <span class="nav-badge">5</span></a>
-        <a href="library.html"  class="nav-item"><span class="nav-icon">📖</span> Library</a>
-        <a href="#"             class="nav-item active"><span class="nav-icon">✏️</span> Create Lesson</a>
-        <a href="settings.html" class="nav-item"><span class="nav-icon">⚙️</span> Settings</a>
+        <div class="sidebar-label">الأدوات</div>
+        <a href="messages.html" class="nav-item"><span class="nav-icon">💬</span> الرسائل <span class="nav-badge">5</span></a>
+        <a href="library.html"  class="nav-item"><span class="nav-icon">📖</span> المكتبة</a>
+        <a href="#"             class="nav-item active"><span class="nav-icon">✏️</span> إنشاء كورس</a>
+        <a href="settings.html" class="nav-item"><span class="nav-icon">⚙️</span> الإعدادات</a>
     </div>
     <div class="sidebar-profile">
         <a href="profile_teacher.html" class="profile-card">
-            <div class="p-avatar">MA</div>
-            <div><div class="p-name">Mr. Anderson</div><div class="p-role">Teacher</div></div>
+            <div class="p-avatar">م أ</div>
+            <div><div class="p-name">د. أحمد السيد</div><div class="p-role">معلم</div></div>
         </a>
     </div>
 </aside>
 
-<!-- MAIN -->
+<!-- ═══ MAIN ═══ -->
 <div class="main">
     <header class="topbar">
         <div class="topbar-left">
-            <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu">
+            <button class="hamburger" id="hamburger" onclick="toggleSidebar()">
                 <span></span><span></span><span></span>
             </button>
-            <nav class="nav-pills">
-                <button class="pill" onclick="go('index.html')">🏠 Home</button>
-                <button class="pill" onclick="go('courses.html')">📚 Courses</button>
-                <button class="pill" onclick="go('ai.html')">🤖 AI</button>
-                <button class="pill" onclick="go('voice.html')">🎤 Voice</button>
-                <button class="pill active">✏️ Create</button>
-                <button class="pill" onclick="go('student.html')">🎓 Student</button>
-            </nav>
+            <span class="page-title-bar">✏️ إنشاء كورس جديد</span>
         </div>
         <div class="topbar-right">
-            <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
-            <button class="icon-btn hide-xs" title="Notifications">🔔<span class="notif-dot"></span></button>
-            <button class="create-btn" onclick="publishLesson()">
-                <span>🚀</span><span class="btn-text">Publish</span>
+            <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="تغيير الثيم">🌙</button>
+            <button class="icon-btn hide-xs" title="الإشعارات">🔔<span class="notif-dot"></span></button>
+            <button class="publish-btn" onclick="publishLesson()">
+                <span>🚀</span><span class="btn-text">نشر الكورس</span>
             </button>
         </div>
     </header>
 
     <div class="content">
+
+        <!-- Breadcrumb + Header -->
         <div>
-            <div class="breadcrumb" style="margin-bottom:8px;">
-                <a href="teacher_dashboard.html">Dashboard</a>
-                <span>›</span><a href="courses.html">Courses</a>
-                <span>›</span><span style="color:var(--text);font-weight:600;">Create Lesson</span>
+            <div class="breadcrumb" style="margin-bottom:8px">
+                <a href="teacher_dashboard.html">لوحة التحكم</a>
+                <span>›</span><a href="courses.html">الكورسات</a>
+                <span>›</span><span style="color:var(--text);font-weight:600">إنشاء كورس</span>
             </div>
             <div class="page-header">
                 <div>
-                    <h1>✏️ Create New Lesson</h1>
-                    <p>Fill in the details below to publish a lesson for your students.</p>
+                    <h1>✏️ إنشاء كورس جديد</h1>
+                    <p>اكتمل كل الحقول وانشر الكورس ليظهر لطلابك فوراً.</p>
                 </div>
                 <div class="header-actions">
-                    <button class="btn btn-ghost" onclick="saveDraft()">💾 Save Draft</button>
+                    <button class="btn btn-ghost" onclick="saveDraft()">💾 حفظ مسودة</button>
                     <button class="btn btn-primary" onclick="publishLesson()">
-                        <span class="btn-spinner" id="spinner"></span> 🚀 Publish
+                        <span class="btn-spinner" id="spinner"></span> 🚀 نشر الكورس
                     </button>
                 </div>
             </div>
@@ -401,92 +494,114 @@
 
         <!-- Stepper -->
         <div class="stepper">
-            <div class="step active" id="step1"><div class="step-num">1</div><div class="step-label">Basic Info</div></div>
+            <div class="step active" id="step1"><div class="step-num">1</div><div class="step-label">المعلومات الأساسية</div></div>
             <div class="step-line" id="line1"></div>
-            <div class="step idle" id="step2"><div class="step-num">2</div><div class="step-label">Content</div></div>
+            <div class="step idle" id="step2"><div class="step-num">2</div><div class="step-label">المحتوى</div></div>
             <div class="step-line" id="line2"></div>
-            <div class="step idle" id="step3"><div class="step-num">3</div><div class="step-label">Schedule</div></div>
+            <div class="step idle" id="step3"><div class="step-num">3</div><div class="step-label">التسعير والجدول</div></div>
             <div class="step-line" id="line3"></div>
-            <div class="step idle" id="step4"><div class="step-num">4</div><div class="step-label">Publish</div></div>
+            <div class="step idle" id="step4"><div class="step-num">4</div><div class="step-label">النشر</div></div>
         </div>
 
-        <!-- Form grid -->
+        <!-- Form Grid -->
         <div class="form-grid">
-            <!-- LEFT -->
+
+            <!-- ═══ LEFT COL ═══ -->
             <div class="left-col">
-                <!-- Basic Info -->
+
+                <!-- 1. المعلومات الأساسية -->
                 <div class="card">
                     <div class="card-head">
                         <div class="card-head-icon">📋</div>
-                        <div><h3>Basic Information</h3><p>Title, subject and core details</p></div>
+                        <div><h3>المعلومات الأساسية</h3><p>اسم الكورس والتفاصيل الجوهرية</p></div>
                     </div>
                     <div class="card-body">
                         <div class="field">
-                            <label>Lesson Title <span class="req">*</span></label>
-                            <input type="text" id="lessonTitle" placeholder="e.g. Introduction to Photosynthesis" oninput="updatePreview()">
+                            <label>عنوان الكورس <span class="req">*</span></label>
+                            <input type="text" id="courseTitle" placeholder="مثال: Python للمبتدئين — من الصفر للاحتراف" oninput="updatePreview()">
                             <div class="field-meta"><span id="titleCount">0 / 80</span></div>
                         </div>
                         <div class="field">
-                            <label>Description</label>
-                            <textarea id="lessonDesc" placeholder="What will students learn in this lesson?" oninput="updatePreview()"></textarea>
+                            <label>وصف مختصر <span class="req">*</span></label>
+                            <textarea id="courseDesc" placeholder="ما الذي سيتعلمه الطالب؟ ولماذا يختار هذا الكورس؟" rows="4" oninput="updatePreview()"></textarea>
                             <div class="field-meta"><span id="descCount">0 / 500</span></div>
                         </div>
                         <div class="field-row">
                             <div class="field">
-                                <label>Subject <span class="req">*</span></label>
-                                <select id="lessonSubject" onchange="updatePreview()">
-                                    <option value="">Select subject...</option>
-                                    <option>Mathematics</option><option>Science</option>
-                                    <option>English Language</option><option>History</option>
-                                    <option>Geography</option><option>Art & Design</option>
-                                    <option>Music</option><option>Physical Education</option>
-                                    <option>Computer Science</option><option>Foreign Language</option>
+                                <label>التخصص / المادة <span class="req">*</span></label>
+                                <select id="courseSubject" onchange="updatePreview()">
+                                    <option value="">اختر التخصص...</option>
+                                    <option>البرمجة والتكنولوجيا</option>
+                                    <option>الرياضيات والعلوم</option>
+                                    <option>اللغات والأدب</option>
+                                    <option>التطوير الشخصي</option>
+                                    <option>تصميم الجرافيك</option>
+                                    <option>الذكاء الاصطناعي</option>
+                                    <option>إدارة الأعمال</option>
+                                    <option>التربية وعلم النفس</option>
+                                    <option>الفنون والموسيقى</option>
+                                    <option>الرياضة والصحة</option>
                                 </select>
                             </div>
                             <div class="field">
-                                <label>Grade Level <span class="req">*</span></label>
-                                <select id="lessonGrade">
-                                    <option value="">Select grade...</option>
-                                    <option>Grade 1–2</option><option>Grade 3–4</option>
-                                    <option>Grade 5–6</option><option>Grade 7–8</option>
-                                    <option>Grade 9–10</option><option>Grade 11–12</option>
-                                    <option>College Level</option>
+                                <label>المرحلة الدراسية <span class="req">*</span></label>
+                                <select id="courseGrade" onchange="updatePreview()">
+                                    <option value="">اختر المرحلة...</option>
+                                    <option>الصف 1–2 ابتدائي</option>
+                                    <option>الصف 3–4 ابتدائي</option>
+                                    <option>الصف 5–6 ابتدائي</option>
+                                    <option>إعدادي (7–9)</option>
+                                    <option>ثانوي (10–12)</option>
+                                    <option>جامعي</option>
+                                    <option>جميع الأعمار</option>
                                 </select>
                             </div>
                         </div>
                         <div class="field-row">
                             <div class="field">
-                                <label>Duration (mins)</label>
-                                <input type="number" value="45" min="5" max="240" id="lessonDuration">
-                            </div>
-                            <div class="field">
-                                <label>Lesson Type</label>
-                                <select id="lessonType">
-                                    <option>Live Session</option><option>Recorded Video</option>
-                                    <option>Reading / Text</option><option>Quiz / Assessment</option>
-                                    <option>Interactive Exercise</option><option>Project Based</option>
+                                <label>نوع الكورس</label>
+                                <select id="courseType" onchange="updatePreview()">
+                                    <option>فيديو مسجّل</option>
+                                    <option>جلسة مباشرة</option>
+                                    <option>مقروء / نصوص</option>
+                                    <option>اختبارات تفاعلية</option>
+                                    <option>مشروع تطبيقي</option>
+                                    <option>مختلط</option>
                                 </select>
                             </div>
+                            <div class="field">
+                                <label>المدة الإجمالية (ساعة)</label>
+                                <input type="number" id="courseDuration" value="10" min="1" max="500" placeholder="عدد الساعات" oninput="updatePreview()">
+                            </div>
                         </div>
                         <div class="field">
-                            <label>Difficulty Level</label>
+                            <label>مستوى الصعوبة</label>
                             <div class="diff-group">
-                                <div class="diff-pill" onclick="selectDiff(this)">🌱 Beginner</div>
-                                <div class="diff-pill selected" onclick="selectDiff(this)">📘 Intermediate</div>
-                                <div class="diff-pill" onclick="selectDiff(this)">🔥 Advanced</div>
-                                <div class="diff-pill" onclick="selectDiff(this)">⭐ All Levels</div>
+                                <div class="diff-pill" onclick="selectDiff(this)">🌱 مبتدئ</div>
+                                <div class="diff-pill selected" onclick="selectDiff(this)">📘 متوسط</div>
+                                <div class="diff-pill" onclick="selectDiff(this)">🔥 متقدم</div>
+                                <div class="diff-pill" onclick="selectDiff(this)">⭐ جميع المستويات</div>
                             </div>
                         </div>
                         <div class="field">
-                            <label>Tags</label>
+                            <label>لغة التدريس</label>
+                            <select id="courseLang" onchange="updatePreview()">
+                                <option>العربية</option>
+                                <option>الإنجليزية</option>
+                                <option>عربي / إنجليزي</option>
+                                <option>الفرنسية</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>الوسوم (Tags)</label>
                             <div class="tags-wrap" id="tagsWrap" onclick="document.getElementById('tagInput').focus()">
-                                <div class="tag-chip">photosynthesis<button onclick="removeTag(this)">×</button></div>
-                                <div class="tag-chip">biology<button onclick="removeTag(this)">×</button></div>
-                                <input type="text" class="tag-input" id="tagInput" placeholder="Add tag + Enter">
+                                <div class="tag-chip">python<button onclick="removeTag(this)">×</button></div>
+                                <div class="tag-chip">برمجة<button onclick="removeTag(this)">×</button></div>
+                                <input type="text" class="tag-input" id="tagInput" placeholder="أضف وسماً + Enter">
                             </div>
                         </div>
                         <div class="field">
-                            <label>Cover Color</label>
+                            <label>لون غلاف الكورس</label>
                             <div class="color-row" id="colorRow">
                                 <div class="color-swatch selected" style="background:#89b084" data-color="#89b084" onclick="selectColor(this)"></div>
                                 <div class="color-swatch" style="background:#6e9b73" data-color="#6e9b73" onclick="selectColor(this)"></div>
@@ -501,198 +616,312 @@
                     </div>
                 </div>
 
-                <!-- Objectives -->
-                <div class="card">
-                    <div class="card-head">
-                        <div class="card-head-icon">🎯</div>
-                        <div><h3>Learning Objectives</h3><p>What students will achieve</p></div>
-                    </div>
-                    <div class="card-body">
-                        <div class="obj-list" id="objList">
-                            <div class="obj-item"><div class="obj-dot"></div><div class="obj-text">Understand the process of photosynthesis</div><button class="obj-del" onclick="removeObj(this)">×</button></div>
-                            <div class="obj-item"><div class="obj-dot"></div><div class="obj-text">Identify chloroplasts and their role</div><button class="obj-del" onclick="removeObj(this)">×</button></div>
-                        </div>
-                        <div class="add-obj-row">
-                            <input type="text" id="newObj" placeholder="Add a new learning objective...">
-                            <button class="add-obj-btn" onclick="addObjective()">+ Add</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Content Upload -->
+                <!-- 2. المحتوى والمرفقات -->
                 <div class="card">
                     <div class="card-head">
                         <div class="card-head-icon">📁</div>
-                        <div><h3>Lesson Content</h3><p>Upload files, slides or videos</p></div>
+                        <div><h3>محتوى الكورس</h3><p>صورة الغلاف، فيديو التعريف، والملفات</p></div>
                     </div>
                     <div class="card-body">
+                        <div class="section-divider"><span>صورة الغلاف</span></div>
+                        <div class="upload-zone" id="coverZone"
+                             ondragover="event.preventDefault();this.classList.add('drag')"
+                             ondragleave="this.classList.remove('drag')"
+                             ondrop="handleDrop(event,'cover')">
+                            <div class="upload-icon">🖼️</div>
+                            <h4>اسحب صورة الغلاف هنا</h4>
+                            <p>JPG, PNG, WEBP — يُفضّل 1280×720px</p>
+                            <label class="upload-btn-label">اختر صورة
+                                <input type="file" accept="image/*" onchange="handleCoverImg(this)">
+                            </label>
+                        </div>
+                        <div id="coverPreviewWrap" style="display:none;margin-top:10px;">
+                            <img id="coverPreviewImg" style="width:100%;max-height:200px;object-fit:cover;border-radius:12px;border:1px solid var(--border)">
+                        </div>
+
+                        <div class="section-divider" style="margin-top:18px"><span>فيديو تعريفي</span></div>
+                        <div class="field">
+                            <label>رابط فيديو YouTube / Vimeo</label>
+                            <input type="url" id="previewVideoUrl" placeholder="https://youtube.com/watch?v=...">
+                        </div>
+
+                        <div class="section-divider" style="margin-top:4px"><span>ملفات ومواد الكورس</span></div>
                         <div class="upload-zone" id="dropZone"
                              ondragover="event.preventDefault();this.classList.add('drag')"
                              ondragleave="this.classList.remove('drag')"
-                             ondrop="handleDrop(event)">
+                             ondrop="handleDrop(event,'files')">
                             <div class="upload-icon">📂</div>
-                            <h4>Drag & drop files here</h4>
-                            <p>PDF, PPT, DOCX, MP4, JPG, PNG</p>
-                            <label class="upload-btn">Browse Files
+                            <h4>اسحب الملفات هنا</h4>
+                            <p>PDF, PPT, DOCX, MP4, ZIP</p>
+                            <label class="upload-btn-label">تصفح الملفات
                                 <input type="file" id="fileInput" multiple onchange="handleFiles(this.files)">
                             </label>
                         </div>
                         <div class="file-list" id="fileList"></div>
-                        <div class="field" style="margin-top:14px;">
-                            <label>Or paste a video / resource URL</label>
-                            <input type="url" placeholder="https://youtube.com/...">
+                    </div>
+                </div>
+
+                <!-- 3. أهداف التعلم -->
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-head-icon">🎯</div>
+                        <div><h3>ماذا سيتعلم الطالب؟</h3><p>أهداف التعلم تظهر في صفحة الكورس</p></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="obj-list" id="objList">
+                            <div class="obj-item"><div class="obj-dot"></div><div class="obj-text">فهم أساسيات لغة Python وبنيتها</div><button class="obj-del" onclick="removeObj(this)">×</button></div>
+                            <div class="obj-item"><div class="obj-dot"></div><div class="obj-text">بناء برامج تفاعلية من الصفر</div><button class="obj-del" onclick="removeObj(this)">×</button></div>
+                        </div>
+                        <div class="add-obj-row">
+                            <input type="text" id="newObj" placeholder="أضف هدفاً تعليمياً...">
+                            <button class="add-obj-btn" onclick="addObjective()">+ إضافة</button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Schedule -->
+                <!-- 4. المتطلبات المسبقة -->
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-head-icon">📌</div>
+                        <div><h3>المتطلبات المسبقة</h3><p>ما يحتاجه الطالب قبل البدء</p></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="req-list-items" id="reqList">
+                            <div class="req-item"><div class="req-bullet"></div><div class="req-text">لا يلزم خبرة برمجية مسبقة</div><button class="obj-del" onclick="removeReq(this)">×</button></div>
+                            <div class="req-item"><div class="req-bullet"></div><div class="req-text">جهاز كمبيوتر بنظام Windows / Mac / Linux</div><button class="obj-del" onclick="removeReq(this)">×</button></div>
+                        </div>
+                        <div class="add-obj-row">
+                            <input type="text" id="newReq" placeholder="أضف متطلباً مسبقاً...">
+                            <button class="add-obj-btn" onclick="addReq()">+ إضافة</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. التسعير -->
+                <div class="card">
+                    <div class="card-head">
+                        <div class="card-head-icon">💰</div>
+                        <div><h3>التسعير</h3><p>حدد سعر الكورس أو اجعله مجانياً</p></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="field">
+                            <label>نوع الوصول</label>
+                            <div class="diff-group" id="priceTypeGroup">
+                                <div class="diff-pill selected" onclick="selectPriceType(this,'paid')">💳 مدفوع</div>
+                                <div class="diff-pill" onclick="selectPriceType(this,'free')">🎁 مجاني</div>
+                                <div class="diff-pill" onclick="selectPriceType(this,'sub')">🔑 اشتراك</div>
+                            </div>
+                        </div>
+                        <div id="priceFields">
+                            <div class="price-grid">
+                                <div class="field">
+                                    <label>السعر الأصلي (ج.م) <span class="req">*</span></label>
+                                    <input type="number" id="priceOriginal" value="599" min="0" placeholder="0" oninput="updatePricePreview()">
+                                </div>
+                                <div class="field">
+                                    <label>السعر بعد الخصم (ج.م)</label>
+                                    <input type="number" id="priceDiscount" value="299" min="0" placeholder="0" oninput="updatePricePreview()">
+                                </div>
+                                <div class="field">
+                                    <label>رمز العملة</label>
+                                    <select id="priceCurrency" onchange="updatePricePreview()">
+                                        <option value="ج.م">ج.م (جنيه)</option>
+                                        <option value="$">$ (دولار)</option>
+                                        <option value="€">€ (يورو)</option>
+                                        <option value="ر.س">ر.س (ريال)</option>
+                                        <option value="د.إ">د.إ (درهم)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="discount-preview" id="discountPreview">
+                                <span class="old" id="dpOld">599 ج.م</span>
+                                <span>←</span>
+                                <span class="new" id="dpNew">299 ج.م</span>
+                                <span class="badge" id="dpBadge">50% خصم</span>
+                            </div>
+                            <div class="price-note">
+                                <i class="fas fa-info-circle"></i>
+                                تظهر هذه الأسعار في صفحة تفاصيل الكورس وبطاقة التسجيل.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. الجدول الزمني -->
                 <div class="card">
                     <div class="card-head">
                         <div class="card-head-icon">📅</div>
-                        <div><h3>Schedule</h3><p>When students will see this lesson</p></div>
+                        <div><h3>الجدول الزمني</h3><p>تاريخ النشر وجلسات الكورس</p></div>
                     </div>
                     <div class="card-body">
                         <div class="field-row">
                             <div class="field">
-                                <label>Publish Date <span class="req">*</span></label>
+                                <label>تاريخ النشر <span class="req">*</span></label>
                                 <input type="date" id="pubDate" onchange="updateChecklist()">
                             </div>
                             <div class="field">
-                                <label>Publish Time</label>
+                                <label>وقت النشر</label>
                                 <input type="time" value="09:00">
                             </div>
                         </div>
                         <div class="field-row">
                             <div class="field">
-                                <label>Deadline / Due Date</label>
+                                <label>تاريخ الانتهاء / الموعد النهائي</label>
                                 <input type="date">
                             </div>
                             <div class="field">
-                                <label>Max Students</label>
-                                <input type="number" placeholder="Unlimited" min="1">
+                                <label>الحد الأقصى للطلاب</label>
+                                <input type="number" placeholder="بلا حد" min="1">
                             </div>
                         </div>
                         <div class="field">
-                            <label>Sessions</label>
+                            <label>الجلسات المباشرة</label>
                             <div id="sessions">
                                 <div class="schedule-block">
                                     <div class="schedule-block-head">
-                                        <span class="schedule-block-title">📍 Session 1</span>
+                                        <span class="schedule-block-title">📍 الجلسة 1</span>
                                         <button class="remove-session" onclick="removeSession(this)">×</button>
                                     </div>
                                     <div class="field-row-3">
-                                        <div class="field" style="margin:0"><label>Date</label><input type="date"></div>
-                                        <div class="field" style="margin:0"><label>Start</label><input type="time" value="09:00"></div>
-                                        <div class="field" style="margin:0"><label>End</label><input type="time" value="10:00"></div>
+                                        <div class="field" style="margin:0"><label>التاريخ</label><input type="date"></div>
+                                        <div class="field" style="margin:0"><label>البداية</label><input type="time" value="09:00"></div>
+                                        <div class="field" style="margin:0"><label>النهاية</label><input type="time" value="10:00"></div>
                                     </div>
                                 </div>
                             </div>
-                            <button class="add-session-btn" onclick="addSession()">＋ Add Session</button>
+                            <button class="add-session-btn" onclick="addSession()">＋ إضافة جلسة</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="action-bar">
-                    <button class="btn btn-ghost"   onclick="go('teacher_dashboard.html')">← Back</button>
-                    <button class="btn btn-ghost"   onclick="saveDraft()">💾 Save Draft</button>
-                    <button class="btn btn-outline" onclick="showToast('👁 Opening preview...')">👁 Preview</button>
+                    <button class="btn btn-ghost" onclick="location.href='teacher_dashboard.html'">← رجوع</button>
+                    <button class="btn btn-ghost" onclick="saveDraft()">💾 حفظ مسودة</button>
+                    <button class="btn btn-outline" onclick="showToast('👁 جاري فتح المعاينة...')">👁 معاينة</button>
                     <button class="btn btn-primary" onclick="publishLesson()">
-                        <span class="btn-spinner" id="spinner2"></span> 🚀 Publish
+                        <span class="btn-spinner" id="spinner2"></span> 🚀 نشر الكورس
                     </button>
                 </div>
             </div>
 
-            <!-- RIGHT -->
+            <!-- ═══ RIGHT COL ═══ -->
             <div class="right-col">
-                <!-- Live Preview -->
+
+                <!-- معاينة حية -->
                 <div class="lesson-preview" id="previewCard">
-                    <div class="preview-label">✨ Live Preview</div>
-                    <div class="preview-title" id="previewTitle">Your Lesson Title</div>
-                    <div class="preview-meta"  id="previewMeta">Subject · Intermediate</div>
-                    <div class="preview-tags"  id="previewTags">
-                        <div class="preview-tag">photosynthesis</div>
-                        <div class="preview-tag">biology</div>
+                    <div class="preview-label">✨ معاينة مباشرة</div>
+                    <div class="preview-title" id="previewTitle">عنوان الكورس</div>
+                    <div class="preview-cat" id="previewCat">التخصص · المستوى · المدة</div>
+                    <div class="preview-rating">
+                        <span class="preview-stars">★★★★★</span>
+                        <span style="font-size:12px;opacity:.8">4.9 (جديد)</span>
+                    </div>
+                    <div class="preview-instructor">
+                        <div class="preview-instructor-dot">م أ</div>
+                        <span style="font-size:12px;opacity:.9">د. أحمد السيد</span>
+                    </div>
+                    <div class="preview-price-row" id="previewPriceRow">
+                        <span class="preview-price-new" id="previewPriceNew">299 ج.م</span>
+                        <span class="preview-price-old" id="previewPriceOld">599 ج.م</span>
+                        <span class="preview-discount-badge" id="previewDisBadge">50% خصم</span>
+                    </div>
+                    <div class="preview-meta-row" id="previewMetaRow">
+                        <div class="preview-meta-item"><i class="fas fa-clock" style="font-size:10px"></i> <span id="previewDuration">10 ساعة</span></div>
+                        <div class="preview-meta-item"><i class="fas fa-language" style="font-size:10px"></i> <span id="previewLang">عربية</span></div>
+                        <div class="preview-meta-item"><i class="fas fa-certificate" style="font-size:10px"></i> شهادة</div>
+                    </div>
+                    <div class="preview-tags" id="previewTags">
+                        <div class="preview-tag">python</div>
+                        <div class="preview-tag">برمجة</div>
                     </div>
                 </div>
 
-                <!-- AI Suggestions — NOW FUNCTIONAL -->
+                <!-- AI Suggestions -->
                 <div class="card">
                     <div class="card-head">
                         <div class="card-head-icon">🤖</div>
-                        <div><h3>AI Suggestions</h3><p>Let Sparky help you</p></div>
+                        <div><h3>مقترحات سباركي</h3><p>دع الذكاء الاصطناعي يساعدك</p></div>
                     </div>
                     <div class="card-body">
                         <div class="ai-chip" id="chip-obj" onclick="aiGenerateObjectives()">
                             <span class="ai-chip-icon">🎯</span>
-                            <div class="ai-chip-text"><div>Generate Objectives</div><div class="ai-chip-sub">Auto-create learning goals</div></div>
-                            <i class="fas fa-arrow-right ai-chip-arr"></i>
+                            <div class="ai-chip-text"><div>توليد الأهداف</div><div class="ai-chip-sub">أنشئ أهداف التعلم تلقائياً</div></div>
+                            <i class="fas fa-arrow-left ai-chip-arr"></i>
                         </div>
                         <div class="ai-chip" id="chip-tags" onclick="aiSuggestTags()">
                             <span class="ai-chip-icon">🔖</span>
-                            <div class="ai-chip-text"><div>Suggest Tags</div><div class="ai-chip-sub">Smart keyword tagging</div></div>
-                            <i class="fas fa-arrow-right ai-chip-arr"></i>
+                            <div class="ai-chip-text"><div>اقتراح وسوم</div><div class="ai-chip-sub">وسوم ذكية للكورس</div></div>
+                            <i class="fas fa-arrow-left ai-chip-arr"></i>
                         </div>
                         <div class="ai-chip" id="chip-desc" onclick="aiWriteDescription()">
                             <span class="ai-chip-icon">📝</span>
-                            <div class="ai-chip-text"><div>Write Description</div><div class="ai-chip-sub">Auto-fill from title</div></div>
-                            <i class="fas fa-arrow-right ai-chip-arr"></i>
+                            <div class="ai-chip-text"><div>كتابة الوصف</div><div class="ai-chip-sub">ملء تلقائي من العنوان</div></div>
+                            <i class="fas fa-arrow-left ai-chip-arr"></i>
                         </div>
                         <div class="ai-chip" id="chip-quiz" onclick="aiGenerateQuiz()">
                             <span class="ai-chip-icon">❓</span>
-                            <div class="ai-chip-text"><div>Generate Quiz</div><div class="ai-chip-sub">Create assessment questions</div></div>
-                            <i class="fas fa-arrow-right ai-chip-arr"></i>
+                            <div class="ai-chip-text"><div>توليد اختبار</div><div class="ai-chip-sub">أسئلة تقييمية للكورس</div></div>
+                            <i class="fas fa-arrow-left ai-chip-arr"></i>
+                        </div>
+                        <div class="ai-chip" id="chip-req" onclick="aiGenerateReqs()">
+                            <span class="ai-chip-icon">📌</span>
+                            <div class="ai-chip-text"><div>اقتراح المتطلبات</div><div class="ai-chip-sub">ما يحتاجه الطالب مسبقاً</div></div>
+                            <i class="fas fa-arrow-left ai-chip-arr"></i>
                         </div>
                     </div>
                 </div>
 
-                <!-- Publish Settings -->
+                <!-- إعدادات النشر -->
                 <div class="card">
                     <div class="card-head">
                         <div class="card-head-icon">⚙️</div>
-                        <div><h3>Publish Settings</h3><p>Visibility & access</p></div>
+                        <div><h3>إعدادات النشر</h3><p>الظهور والوصول</p></div>
                     </div>
                     <div class="card-body">
                         <div class="toggle-row">
-                            <div><div class="toggle-label">Public Lesson</div><div class="toggle-sub">Visible to all students</div></div>
+                            <div><div class="toggle-label">كورس عام</div><div class="toggle-sub">يظهر لجميع الطلاب</div></div>
                             <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
                         </div>
                         <div class="toggle-row">
-                            <div><div class="toggle-label">Allow Comments</div><div class="toggle-sub">Students can ask questions</div></div>
+                            <div><div class="toggle-label">السماح بالتعليقات</div><div class="toggle-sub">يمكن للطلاب طرح الأسئلة</div></div>
                             <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
                         </div>
                         <div class="toggle-row">
-                            <div><div class="toggle-label">Require Completion</div><div class="toggle-sub">Mark as mandatory</div></div>
+                            <div><div class="toggle-label">إتمام إلزامي</div><div class="toggle-sub">وضع الكورس كإلزامي</div></div>
                             <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
                         </div>
                         <div class="toggle-row">
-                            <div><div class="toggle-label">Certificate on Finish</div><div class="toggle-sub">Issue completion badge</div></div>
-                            <label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label>
+                            <div><div class="toggle-label">شهادة عند الإتمام</div><div class="toggle-sub">منح شارة للطلاب المكتملين</div></div>
+                            <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
                         </div>
                         <div class="toggle-row">
-                            <div><div class="toggle-label">Notify Students</div><div class="toggle-sub">Send email on publish</div></div>
+                            <div><div class="toggle-label">إشعار الطلاب</div><div class="toggle-sub">إرسال بريد عند النشر</div></div>
                             <label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label>
                         </div>
                     </div>
                 </div>
 
-                <!-- Checklist -->
+                <!-- قائمة الفحص -->
                 <div class="card">
                     <div class="card-head">
                         <div class="card-head-icon">✅</div>
-                        <div><h3>Ready Checklist</h3><p>Before you publish</p></div>
+                        <div><h3>قائمة الاكتمال</h3><p>قبل النشر تأكد من:</p></div>
                     </div>
                     <div class="card-body">
-                        <div id="chk-title"   class="chk-item"><span>⭕</span> Add a lesson title</div>
-                        <div id="chk-subject" class="chk-item"><span>⭕</span> Choose a subject</div>
-                        <div id="chk-obj"     class="chk-item"><span>✅</span> Add learning objectives</div>
-                        <div id="chk-date"    class="chk-item"><span>⭕</span> Set a publish date</div>
+                        <div id="chk-title"   class="chk-item"><span>⭕</span> إضافة عنوان الكورس</div>
+                        <div id="chk-subject" class="chk-item"><span>⭕</span> اختيار التخصص</div>
+                        <div id="chk-desc"    class="chk-item"><span>⭕</span> كتابة وصف الكورس</div>
+                        <div id="chk-price"   class="chk-item"><span>⭕</span> تحديد سعر الكورس</div>
+                        <div id="chk-obj"     class="chk-item"><span>✅</span> إضافة أهداف التعلم</div>
+                        <div id="chk-date"    class="chk-item"><span>⭕</span> تحديد تاريخ النشر</div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <!-- FOOTER -->
+    <!-- ═══ FOOTER ═══ -->
     <footer>
         <div class="footer-top">
             <div>
@@ -700,7 +929,7 @@
                     <div class="f-logo-box">E</div>
                     <span class="f-logo-name">EVO<span>LVE</span></span>
                 </a>
-                <p class="f-desc">Making learning magical for the next generation of creators, scientists, and leaders.</p>
+                <p class="f-desc">نجعل التعلم ساحراً للجيل القادم من المبدعين والعلماء والقادة.</p>
                 <div class="socials">
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
                     <a href="#"><i class="fab fa-twitter"></i></a>
@@ -709,75 +938,75 @@
                 </div>
             </div>
             <div class="footer-col">
-                <h4>Platform</h4>
-                <ul><li><a href="#">Courses</a></li><li><a href="#">Teachers</a></li><li><a href="#">AI Assistant</a></li><li><a href="#">Learning Path</a></li></ul>
+                <h4>المنصة</h4>
+                <ul><li><a href="#">الكورسات</a></li><li><a href="#">المعلمون</a></li><li><a href="#">المساعد الذكي</a></li></ul>
             </div>
             <div class="footer-col">
-                <h4>Company</h4>
-                <ul><li><a href="#">Articles</a></li><li><a href="#">About Us</a></li><li><a href="#">Success Stories</a></li><li><a href="#">Contact</a></li></ul>
+                <h4>الشركة</h4>
+                <ul><li><a href="#">المقالات</a></li><li><a href="#">من نحن</a></li><li><a href="#">قصص النجاح</a></li></ul>
             </div>
             <div class="footer-col">
-                <h4>Support</h4>
+                <h4>الدعم</h4>
                 <div class="ci-item"><i class="fas fa-envelope"></i> hello@evolve.com</div>
-                <div class="ci-item"><i class="fas fa-phone"></i> +1 (555) 000-1234</div>
-                <div class="ci-item"><i class="fas fa-map-marker-alt"></i> Silicon Valley, CA</div>
+                <div class="ci-item"><i class="fas fa-phone"></i> +20 100 000 1234</div>
+                <div class="ci-item"><i class="fas fa-map-marker-alt"></i> القاهرة، مصر</div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2024 EVOLVE. All rights reserved.</p>
+            <p>© 2026 EVOLVE. جميع الحقوق محفوظة.</p>
             <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Cookie Policy</a>
+                <a href="#">سياسة الخصوصية</a>
+                <a href="#">شروط الخدمة</a>
+                <a href="#">سياسة الكوكيز</a>
             </div>
         </div>
     </footer>
 </div>
 
-<!-- AI MODAL -->
+<!-- ═══ AI MODAL ═══ -->
 <div class="ai-modal-overlay" id="aiModal" style="display:none" onclick="closeAiModal(event)">
     <div class="ai-modal" onclick="event.stopPropagation()">
         <div class="ai-modal-head">
             <div class="ai-modal-head-icon" id="modalIcon">🤖</div>
-            <h3 id="modalTitle">AI Suggestion</h3>
+            <h3 id="modalTitle">مقترح سباركي</h3>
             <button class="ai-modal-close" onclick="closeAiModal()">×</button>
         </div>
         <div class="ai-modal-body" id="modalBody">
             <div class="ai-modal-loading">
                 <div class="ai-modal-loading-dots"><span></span><span></span><span></span></div>
-                <p>Sparky is thinking...</p>
+                <p>سباركي يفكر...</p>
             </div>
         </div>
         <div class="ai-modal-foot" id="modalFoot" style="display:none">
-            <button class="btn btn-ghost" onclick="closeAiModal()">Cancel</button>
-            <button class="btn btn-primary" id="modalApplyBtn">✅ Apply All</button>
+            <button class="btn btn-ghost" onclick="closeAiModal()">إلغاء</button>
+            <button class="btn btn-primary" id="modalApplyBtn">✅ تطبيق الكل</button>
         </div>
     </div>
 </div>
 
 <script>
-/* ── helpers ── */
-const go = url => location.href = url;
+/* ═══ HELPERS ═══ */
 const $ = id => document.getElementById(id);
 
-/* ── sidebar ── */
+/* ═══ SIDEBAR ═══ */
 function toggleSidebar(){['sidebar','overlay','hamburger'].forEach(id=>$(id).classList.toggle('open'));}
 function closeSidebar(){['sidebar','overlay','hamburger'].forEach(id=>$(id).classList.remove('open'));}
 window.addEventListener('resize',()=>{if(window.innerWidth>1024)closeSidebar();});
 
-/* ── theme ── */
+/* ═══ THEME ═══ */
 function toggleTheme(){
     const dark=document.body.getAttribute('data-theme')==='dark';
     document.body.setAttribute('data-theme',dark?'':'dark');
     $('themeBtn').textContent=dark?'🌙':'☀️';
 }
 
-/* ── tags ── */
+/* ═══ TAGS ═══ */
 $('tagInput').addEventListener('keydown',function(e){
     if((e.key==='Enter'||e.key===',')&&this.value.trim()){e.preventDefault();addTag(this.value.trim());this.value='';}
     if(e.key==='Backspace'&&this.value===''){const chips=document.querySelectorAll('#tagsWrap .tag-chip');if(chips.length)chips[chips.length-1].remove();}
 });
 function addTag(text){
+    if(!text.trim())return;
     const wrap=$('tagsWrap');
     const chip=document.createElement('div');chip.className='tag-chip';
     chip.innerHTML=`${text}<button onclick="removeTag(this)">×</button>`;
@@ -785,10 +1014,20 @@ function addTag(text){
 }
 function removeTag(btn){btn.parentElement.remove();updatePreview();}
 
-/* ── difficulty ── */
-function selectDiff(el){document.querySelectorAll('.diff-pill').forEach(p=>p.classList.remove('selected'));el.classList.add('selected');}
+/* ═══ DIFFICULTY ═══ */
+function selectDiff(el){document.querySelectorAll('.diff-pill').forEach(p=>p.classList.remove('selected'));el.classList.add('selected');updatePreview();}
 
-/* ── color ── */
+/* ═══ PRICE TYPE ═══ */
+function selectPriceType(el,type){
+    el.closest('.diff-group').querySelectorAll('.diff-pill').forEach(p=>p.classList.remove('selected'));
+    el.classList.add('selected');
+    $('priceFields').style.display=type==='free'?'none':'block';
+    if(type==='free'){$('previewPriceRow').innerHTML='<span class="preview-price-new">🎁 مجاني</span>';}
+    else{updatePricePreview();}
+    updateChecklist();
+}
+
+/* ═══ COLOR ═══ */
 function selectColor(el){
     document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('selected'));
     el.classList.add('selected');
@@ -796,32 +1035,66 @@ function selectColor(el){
     $('previewCard').style.background=`linear-gradient(135deg,${c},${darken(c)})`;
 }
 function darken(hex){
-    const r=Math.max(0,parseInt(hex.slice(1,3),16)-30);
-    const g=Math.max(0,parseInt(hex.slice(3,5),16)-30);
-    const b=Math.max(0,parseInt(hex.slice(5,7),16)-30);
-    return `rgb(${r},${g},${b})`;
+    try{const r=Math.max(0,parseInt(hex.slice(1,3),16)-30),g=Math.max(0,parseInt(hex.slice(3,5),16)-30),b=Math.max(0,parseInt(hex.slice(5,7),16)-30);return `rgb(${r},${g},${b})`;}catch{return hex;}
 }
 
-/* ── live preview ── */
+/* ═══ COVER IMAGE ═══ */
+function handleCoverImg(input){
+    if(!input.files||!input.files[0])return;
+    const reader=new FileReader();
+    reader.onload=e=>{$('coverPreviewImg').src=e.target.result;$('coverPreviewWrap').style.display='block';};
+    reader.readAsDataURL(input.files[0]);
+}
+
+/* ═══ PRICE PREVIEW ═══ */
+function updatePricePreview(){
+    const orig=parseFloat($('priceOriginal').value)||0;
+    const disc=parseFloat($('priceDiscount').value)||0;
+    const cur=$('priceCurrency').value;
+    const pct=orig>0&&disc<orig?Math.round((1-disc/orig)*100):0;
+    $('dpOld').textContent=orig+' '+cur;
+    $('dpNew').textContent=(disc||orig)+' '+cur;
+    $('dpBadge').textContent=pct>0?pct+'% خصم':'';
+    $('dpBadge').style.display=pct>0?'':'none';
+    // Update preview card
+    $('previewPriceNew').textContent=(disc||orig)+' '+cur;
+    $('previewPriceOld').textContent=orig>0&&disc>0?orig+' '+cur:'';
+    $('previewDisBadge').textContent=pct>0?pct+'% خصم':'';
+    $('previewDisBadge').style.display=pct>0?'':'none';
+}
+
+/* ═══ LIVE PREVIEW ═══ */
 function updatePreview(){
-    const title=$('lessonTitle').value||'Your Lesson Title';
-    const subject=$('lessonSubject').value||'Subject';
+    const title=$('courseTitle').value||'عنوان الكورس';
+    const subject=$('courseSubject').value||'التخصص';
+    const diff=document.querySelector('.diff-pill.selected')?.textContent.trim()||'متوسط';
+    const dur=$('courseDuration').value||'10';
+    const lang=$('courseLang').value||'عربية';
+    const tl=$('courseTitle').value.length;
+    const dl=$('courseDesc').value.length;
     $('previewTitle').textContent=title;
-    $('previewMeta').textContent=subject+' · Intermediate';
+    $('previewCat').textContent=subject+' · '+diff;
+    $('previewDuration').textContent=dur+' ساعة';
+    $('previewLang').textContent=lang;
+    $('titleCount').textContent=tl+' / 80';
+    $('titleCount').style.color=tl>80?'var(--danger)':'var(--muted)';
+    $('descCount').textContent=dl+' / 500';
     const tags=[...$('tagsWrap').querySelectorAll('.tag-chip')].map(c=>c.textContent.replace('×','').trim());
-    $('previewTags').innerHTML=(tags.length?tags:['no tags']).map(t=>`<div class="preview-tag">${t}</div>`).join('');
-    const tl=$('lessonTitle').value.length;const dl=$('lessonDesc').value.length;
-    const tc=$('titleCount');const dc=$('descCount');
-    tc.textContent=`${tl} / 80`;tc.style.color=tl>80?'var(--danger)':'var(--muted)';
-    dc.textContent=`${dl} / 500`;
+    $('previewTags').innerHTML=(tags.length?tags:['لا توجد وسوم']).map(t=>`<div class="preview-tag">${t}</div>`).join('');
+    updatePricePreview();
     updateChecklist();
 }
 
-/* ── checklist ── */
+/* ═══ CHECKLIST ═══ */
 function updateChecklist(){
-    setChk('chk-title',!!$('lessonTitle').value.trim(),'Add a lesson title');
-    setChk('chk-subject',!!$('lessonSubject').value,'Choose a subject');
-    setChk('chk-date',!!$('pubDate').value,'Set a publish date');
+    setChk('chk-title',!!$('courseTitle').value.trim(),'إضافة عنوان الكورس');
+    setChk('chk-subject',!!$('courseSubject').value,'اختيار التخصص');
+    setChk('chk-desc',!!$('courseDesc').value.trim(),'كتابة وصف الكورس');
+    setChk('chk-date',!!$('pubDate').value,'تحديد تاريخ النشر');
+    const isFree=document.querySelector('#priceTypeGroup .diff-pill.selected')?.textContent.includes('مجاني');
+    const hasPrice=isFree||($('priceOriginal')&&parseFloat($('priceOriginal').value)>0);
+    setChk('chk-price',hasPrice,'تحديد سعر الكورس');
+    setChk('chk-obj',$('objList').querySelectorAll('.obj-item').length>0,'إضافة أهداف التعلم');
 }
 function setChk(id,done,label){
     const el=$(id);if(!el)return;
@@ -830,17 +1103,27 @@ function setChk(id,done,label){
     el.style.fontWeight=done?'700':'400';
 }
 
-/* ── objectives ── */
+/* ═══ OBJECTIVES ═══ */
 function addObjective(){
     const inp=$('newObj'),text=inp.value.trim();if(!text)return;
     const item=document.createElement('div');item.className='obj-item';
     item.innerHTML=`<div class="obj-dot"></div><div class="obj-text">${text}</div><button class="obj-del" onclick="removeObj(this)">×</button>`;
-    $('objList').appendChild(item);inp.value='';
+    $('objList').appendChild(item);inp.value='';updateChecklist();
 }
 $('newObj').addEventListener('keydown',e=>{if(e.key==='Enter')addObjective();});
-function removeObj(btn){btn.closest('.obj-item').remove();}
+function removeObj(btn){btn.closest('.obj-item').remove();updateChecklist();}
 
-/* ── files ── */
+/* ═══ REQUIREMENTS ═══ */
+function addReq(){
+    const inp=$('newReq'),text=inp.value.trim();if(!text)return;
+    const item=document.createElement('div');item.className='req-item';
+    item.innerHTML=`<div class="req-bullet"></div><div class="req-text">${text}</div><button class="obj-del" onclick="removeReq(this)">×</button>`;
+    $('reqList').appendChild(item);inp.value='';
+}
+$('newReq').addEventListener('keydown',e=>{if(e.key==='Enter')addReq();});
+function removeReq(btn){btn.closest('.req-item').remove();}
+
+/* ═══ FILES ═══ */
 const fIcons={pdf:'📄',ppt:'📊',pptx:'📊',doc:'📝',docx:'📝',mp4:'🎬',mov:'🎬',jpg:'🖼',jpeg:'🖼',png:'🖼',zip:'🗜'};
 const getIcon=name=>fIcons[name.split('.').pop().toLowerCase()]||'📎';
 const fmtSize=b=>b>1048576?(b/1048576).toFixed(1)+' MB':(b/1024).toFixed(0)+' KB';
@@ -852,28 +1135,33 @@ function handleFiles(files){
         list.appendChild(item);
     });
 }
-function handleDrop(e){e.preventDefault();$('dropZone').classList.remove('drag');handleFiles(e.dataTransfer.files);}
+function handleDrop(e,type){
+    e.preventDefault();
+    $(type==='cover'?'coverZone':'dropZone').classList.remove('drag');
+    if(type==='cover'&&e.dataTransfer.files[0]?.type.startsWith('image/'))handleCoverImg({files:e.dataTransfer.files});
+    else handleFiles(e.dataTransfer.files);
+}
 
-/* ── sessions ── */
+/* ═══ SESSIONS ═══ */
 let sessionCount=1;
 function addSession(){
     sessionCount++;
     const block=document.createElement('div');block.className='schedule-block';
-    block.innerHTML=`<div class="schedule-block-head"><span class="schedule-block-title">📍 Session ${sessionCount}</span><button class="remove-session" onclick="removeSession(this)">×</button></div><div class="field-row-3"><div class="field" style="margin:0"><label>Date</label><input type="date"></div><div class="field" style="margin:0"><label>Start</label><input type="time" value="09:00"></div><div class="field" style="margin:0"><label>End</label><input type="time" value="10:00"></div></div>`;
+    block.innerHTML=`<div class="schedule-block-head"><span class="schedule-block-title">📍 الجلسة ${sessionCount}</span><button class="remove-session" onclick="removeSession(this)">×</button></div><div class="field-row-3"><div class="field" style="margin:0"><label>التاريخ</label><input type="date"></div><div class="field" style="margin:0"><label>البداية</label><input type="time" value="09:00"></div><div class="field" style="margin:0"><label>النهاية</label><input type="time" value="10:00"></div></div>`;
     $('sessions').appendChild(block);
 }
 function removeSession(btn){btn.closest('.schedule-block').remove();}
 
-/* ── publish / draft ── */
+/* ═══ PUBLISH / DRAFT ═══ */
 function publishLesson(){
-    if(!$('lessonTitle').value.trim()){showToast('⚠️ Please add a lesson title first!','warn');return;}
+    if(!$('courseTitle').value.trim()){showToast('⚠️ يرجى إضافة عنوان الكورس أولاً!','warn');return;}
     setLoading(true);
-    setTimeout(()=>{setLoading(false);showToast('🎉 Lesson published successfully!');updateStepper(4);},2000);
+    setTimeout(()=>{setLoading(false);showToast('🎉 تم نشر الكورس بنجاح!');updateStepper(4);},2000);
 }
-function saveDraft(){showToast('💾 Draft saved!');updateStepper(2);}
+function saveDraft(){showToast('💾 تم حفظ المسودة!');updateStepper(2);}
 function setLoading(on){['spinner','spinner2'].forEach(id=>{const el=$(id);if(el)el.style.display=on?'block':'none';});}
 
-/* ── stepper ── */
+/* ═══ STEPPER ═══ */
 function updateStepper(active){
     for(let i=1;i<=4;i++){
         const s=$('step'+i);if(!s)continue;
@@ -884,7 +1172,7 @@ function updateStepper(active){
     }
 }
 
-/* ── toast ── */
+/* ═══ TOAST ═══ */
 function showToast(msg,type='success'){
     const prev=document.querySelector('.toast');if(prev)prev.remove();
     const t=document.createElement('div');t.className='toast';
@@ -893,247 +1181,145 @@ function showToast(msg,type='success'){
     setTimeout(()=>{t.classList.add('hide');setTimeout(()=>t.remove(),400);},3000);
 }
 
-/* ══════════════════════════════════════
+/* ═══════════════════════════════════════
    AI FUNCTIONS — CALLS CLAUDE API
-══════════════════════════════════════ */
-
-function getLessonContext(){
-    const title=$('lessonTitle').value.trim()||'(no title yet)';
-    const subject=$('lessonSubject').value||'(no subject yet)';
-    const grade=$('lessonGrade').value||'general';
-    const type=$('lessonType').value||'';
-    const diff=document.querySelector('.diff-pill.selected')?.textContent.trim()||'Intermediate';
-    const existingObjs=[...$('objList').querySelectorAll('.obj-text')].map(el=>el.textContent).join(', ')||'none yet';
-    const existingTags=[...$('tagsWrap').querySelectorAll('.tag-chip')].map(c=>c.textContent.replace('×','').trim()).join(', ')||'none';
-    return {title,subject,grade,type,diff,existingObjs,existingTags};
+═══════════════════════════════════════ */
+function getCourseContext(){
+    return {
+        title:$('courseTitle').value.trim()||'(لم يُكتب بعد)',
+        subject:$('courseSubject').value||'(لم يُختر بعد)',
+        grade:$('courseGrade').value||'عام',
+        type:$('courseType').value||'',
+        diff:document.querySelector('.diff-pill.selected')?.textContent.trim()||'متوسط',
+        existingObjs:[...$('objList').querySelectorAll('.obj-text')].map(el=>el.textContent).join(', ')||'لا شيء',
+        existingTags:[...$('tagsWrap').querySelectorAll('.tag-chip')].map(c=>c.textContent.replace('×','').trim()).join(', ')||'لا شيء'
+    };
 }
-
 function setChipLoading(chipId,loading){
-    const chip=$(chipId);
-    if(loading){
-        chip.classList.add('loading');
-        chip.querySelector('.ai-chip-arr').style.display='none';
-        const spinner=document.createElement('div');spinner.className='ai-chip-spinner';spinner.id=chipId+'-spinner';
-        chip.appendChild(spinner);
-    } else {
-        chip.classList.remove('loading');
-        chip.querySelector('.ai-chip-arr').style.display='';
-        const s=$(chipId+'-spinner');if(s)s.remove();
-    }
+    const chip=$(chipId);if(!chip)return;
+    if(loading){chip.classList.add('loading');chip.querySelector('.ai-chip-arr').style.display='none';const s=document.createElement('div');s.className='ai-chip-spinner';s.id=chipId+'-spinner';chip.appendChild(s);}
+    else{chip.classList.remove('loading');chip.querySelector('.ai-chip-arr').style.display='';const s=$(chipId+'-spinner');if(s)s.remove();}
 }
-
 function openModal(icon,title){
-    $('modalIcon').textContent=icon;
-    $('modalTitle').textContent=title;
-    $('modalBody').innerHTML=`<div class="ai-modal-loading"><div class="ai-modal-loading-dots"><span></span><span></span><span></span></div><p>Sparky is thinking...</p></div>`;
-    $('modalFoot').style.display='none';
-    $('aiModal').style.display='flex';
+    $('modalIcon').textContent=icon;$('modalTitle').textContent=title;
+    $('modalBody').innerHTML=`<div class="ai-modal-loading"><div class="ai-modal-loading-dots"><span></span><span></span><span></span></div><p>سباركي يفكر...</p></div>`;
+    $('modalFoot').style.display='none';$('aiModal').style.display='flex';
 }
-function closeAiModal(e){
-    if(e&&e.target!==e.currentTarget)return;
-    $('aiModal').style.display='none';
-}
-
+function closeAiModal(e){if(e&&e.target!==e.currentTarget)return;$('aiModal').style.display='none';}
 async function callClaude(prompt){
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-            model:'claude-sonnet-4-20250514',
-            max_tokens:1000,
-            messages:[{role:'user',content:prompt}]
-        })
-    });
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
     const data=await res.json();
     return data.content?.map(b=>b.text||'').join('')||'';
 }
-
-/* 1. Generate Objectives */
-async function aiGenerateObjectives(){
-    const ctx=getLessonContext();
-    if(ctx.title==='(no title yet)'&&ctx.subject==='(no subject yet)'){
-        showToast('⚠️ Please enter a lesson title or subject first!','warn');return;
-    }
-    setChipLoading('chip-obj',true);
-    openModal('🎯','Generate Objectives');
-    try{
-        const raw=await callClaude(
-            `You are an expert educator. Generate exactly 5 clear, measurable learning objectives for a lesson titled "${ctx.title}" on the subject "${ctx.subject}" for ${ctx.grade} students at ${ctx.diff} level (${ctx.type}).
-            
-Return ONLY a JSON array of 5 strings, no markdown, no explanation. Example: ["Students will...", "Students will..."]`
-        );
-        let objectives=[];
-        try{
-            const clean=raw.replace(/```json|```/g,'').trim();
-            objectives=JSON.parse(clean);
-        } catch(e){
-            objectives=raw.split('\n').filter(l=>l.trim()).slice(0,5).map(l=>l.replace(/^[\d\.\-\*\s]+/,'').trim());
-        }
-        objectives=objectives.filter(o=>o.length>5).slice(0,5);
-        let html='';
-        objectives.forEach((obj,i)=>{
-            html+=`<div class="ai-result-item"><div class="ai-result-dot"></div><div class="ai-result-text">${obj}</div><button class="ai-result-add" data-obj="${escHtml(obj)}" onclick="applySingleObj(this)">+ Add</button></div>`;
-        });
-        $('modalBody').innerHTML=html||'<p style="color:var(--muted)">No objectives generated. Try adding a title.</p>';
-        $('modalFoot').style.display='flex';
-        $('modalApplyBtn').onclick=()=>{
-            objectives.forEach(obj=>addObjDirect(obj));
-            showToast('🎯 '+objectives.length+' objectives added!');
-            closeAiModal();
-        };
-    } catch(err){
-        $('modalBody').innerHTML=`<p style="color:var(--danger)">⚠️ Something went wrong. Please try again.</p>`;
-    }
-    setChipLoading('chip-obj',false);
-}
-
-function applySingleObj(btn){
-    const text=btn.getAttribute('data-obj');
-    addObjDirect(text);
-    btn.textContent='✓ Added';btn.classList.add('added');btn.disabled=true;
-    showToast('✅ Objective added!');
-}
+function escHtml(str){return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function addObjDirect(text){
     const item=document.createElement('div');item.className='obj-item';
     item.innerHTML=`<div class="obj-dot"></div><div class="obj-text">${text}</div><button class="obj-del" onclick="removeObj(this)">×</button>`;
-    $('objList').appendChild(item);
+    $('objList').appendChild(item);updateChecklist();
 }
 
-/* 2. Suggest Tags */
-async function aiSuggestTags(){
-    const ctx=getLessonContext();
-    if(ctx.title==='(no title yet)'&&ctx.subject==='(no subject yet)'){
-        showToast('⚠️ Please enter a lesson title or subject first!','warn');return;
-    }
-    setChipLoading('chip-tags',true);
-    openModal('🔖','Suggest Tags');
+/* 1. توليد الأهداف */
+async function aiGenerateObjectives(){
+    const ctx=getCourseContext();
+    if(ctx.title==='(لم يُكتب بعد)'&&ctx.subject==='(لم يُختر بعد)'){showToast('⚠️ أضف عنوان الكورس أو التخصص أولاً','warn');return;}
+    setChipLoading('chip-obj',true);openModal('🎯','توليد أهداف التعلم');
     try{
-        const raw=await callClaude(
-            `You are an expert educator. Suggest 8–10 relevant keyword tags for a lesson titled "${ctx.title}" on "${ctx.subject}" for ${ctx.grade} students.
-            
-Return ONLY a JSON array of short tag strings (1–3 words each), no markdown, no explanation. Example: ["photosynthesis","chlorophyll","plant biology"]`
-        );
-        let tags=[];
-        try{
-            const clean=raw.replace(/```json|```/g,'').trim();
-            tags=JSON.parse(clean);
-        } catch(e){
-            tags=raw.split(/[\n,]+/).map(t=>t.replace(/[\[\]"']/g,'').trim()).filter(t=>t.length>1);
-        }
-        tags=tags.slice(0,10);
-        let html='<p style="font-size:12px;color:var(--muted);margin-bottom:12px">Click tags to add them:</p><div style="display:flex;flex-wrap:wrap;gap:6px">';
-        tags.forEach(tag=>{
-            html+=`<span class="ai-tag-result" data-tag="${escHtml(tag)}" onclick="applySingleTag(this)">${tag} <i class="fas fa-plus" style="font-size:10px"></i></span>`;
-        });
-        html+='</div>';
-        $('modalBody').innerHTML=html;
+        const raw=await callClaude(`أنت خبير تعليمي. أنشئ 5 أهداف تعلم واضحة وقابلة للقياس لكورس بعنوان "${ctx.title}" في مجال "${ctx.subject}" للمرحلة "${ctx.grade}" ومستوى ${ctx.diff}.\n\nأعد فقط مصفوفة JSON من 5 نصوص، بدون markdown أو شرح. مثال: ["الطالب سيتمكن من...","الطالب سيتعلم..."]`);
+        let objectives=[];
+        try{objectives=JSON.parse(raw.replace(/```json|```/g,'').trim());}
+        catch{objectives=raw.split('\n').filter(l=>l.trim()).slice(0,5).map(l=>l.replace(/^[\d\.\-\*\s]+/,'').trim());}
+        objectives=objectives.filter(o=>o.length>5).slice(0,5);
+        $('modalBody').innerHTML=objectives.map(obj=>`<div class="ai-result-item"><div class="ai-result-dot"></div><div class="ai-result-text">${obj}</div><button class="ai-result-add" data-obj="${escHtml(obj)}" onclick="applySingleObj(this)">+ إضافة</button></div>`).join('')||'<p style="color:var(--muted)">لم يتم توليد أهداف. جرب إضافة عنوان.</p>';
         $('modalFoot').style.display='flex';
-        $('modalApplyBtn').onclick=()=>{
-            tags.forEach(t=>addTag(t));
-            showToast('🔖 '+tags.length+' tags added!');
-            closeAiModal();
-        };
-    } catch(err){
-        $('modalBody').innerHTML=`<p style="color:var(--danger)">⚠️ Something went wrong. Please try again.</p>`;
-    }
+        $('modalApplyBtn').onclick=()=>{objectives.forEach(obj=>addObjDirect(obj));showToast('🎯 تمت إضافة '+objectives.length+' أهداف!');closeAiModal();};
+    }catch{$('modalBody').innerHTML=`<p style="color:var(--danger)">⚠️ حدث خطأ. حاول مجدداً.</p>`;}
+    setChipLoading('chip-obj',false);
+}
+function applySingleObj(btn){addObjDirect(btn.getAttribute('data-obj'));btn.textContent='✓ أُضيف';btn.classList.add('added');btn.disabled=true;showToast('✅ تمت إضافة الهدف!');}
+
+/* 2. اقتراح وسوم */
+async function aiSuggestTags(){
+    const ctx=getCourseContext();
+    if(ctx.title==='(لم يُكتب بعد)'&&ctx.subject==='(لم يُختر بعد)'){showToast('⚠️ أضف عنواناً أو تخصصاً أولاً','warn');return;}
+    setChipLoading('chip-tags',true);openModal('🔖','اقتراح وسوم ذكية');
+    try{
+        const raw=await callClaude(`أنت خبير تعليمي. اقترح 8 وسوم مختصرة لكورس بعنوان "${ctx.title}" في مجال "${ctx.subject}".\n\nأعد فقط مصفوفة JSON من وسوم قصيرة (1-3 كلمات)، بدون markdown. مثال: ["python","برمجة","تعليم"]`);
+        let tags=[];
+        try{tags=JSON.parse(raw.replace(/```json|```/g,'').trim());}
+        catch{tags=raw.split(/[\n,]+/).map(t=>t.replace(/[\[\]"']/g,'').trim()).filter(t=>t.length>1);}
+        tags=tags.slice(0,10);
+        $('modalBody').innerHTML='<p style="font-size:12px;color:var(--muted);margin-bottom:12px">انقر على الوسم لإضافته:</p><div style="display:flex;flex-wrap:wrap;gap:6px">'+tags.map(tag=>`<span class="ai-tag-result" data-tag="${escHtml(tag)}" onclick="applySingleTag(this)">${tag} <i class="fas fa-plus" style="font-size:10px"></i></span>`).join('')+'</div>';
+        $('modalFoot').style.display='flex';
+        $('modalApplyBtn').onclick=()=>{tags.forEach(t=>addTag(t));showToast('🔖 تمت إضافة '+tags.length+' وسوم!');closeAiModal();};
+    }catch{$('modalBody').innerHTML=`<p style="color:var(--danger)">⚠️ حدث خطأ. حاول مجدداً.</p>`;}
     setChipLoading('chip-tags',false);
 }
+function applySingleTag(el){if(el.classList.contains('added'))return;addTag(el.getAttribute('data-tag'));el.classList.add('added');el.innerHTML=el.getAttribute('data-tag')+' <i class="fas fa-check" style="font-size:10px"></i>';showToast('🔖 تمت إضافة الوسم!');}
 
-function applySingleTag(el){
-    if(el.classList.contains('added'))return;
-    addTag(el.getAttribute('data-tag'));
-    el.classList.add('added');
-    el.innerHTML=el.getAttribute('data-tag')+' <i class="fas fa-check" style="font-size:10px"></i>';
-    showToast('🔖 Tag added!');
-}
-
-/* 3. Write Description */
+/* 3. كتابة الوصف */
 async function aiWriteDescription(){
-    const ctx=getLessonContext();
-    if(ctx.title==='(no title yet)'){
-        showToast('⚠️ Please enter a lesson title first!','warn');return;
-    }
-    setChipLoading('chip-desc',true);
-    openModal('📝','Write Description');
+    const ctx=getCourseContext();
+    if(ctx.title==='(لم يُكتب بعد)'){showToast('⚠️ أضف عنوان الكورس أولاً','warn');return;}
+    setChipLoading('chip-desc',true);openModal('📝','كتابة وصف الكورس');
     try{
-        const raw=await callClaude(
-            `You are an expert educator. Write a compelling, student-friendly lesson description (2–3 paragraphs, around 150 words) for a lesson titled "${ctx.title}" on "${ctx.subject}" for ${ctx.grade} students at ${ctx.diff} level.
-            
-The description should explain what students will learn, why it matters, and what activities they can expect. Write in a warm, engaging tone. Return only the description text, no labels or extra formatting.`
-        );
-        const desc=raw.trim();
-        $('modalBody').innerHTML=`<div class="ai-result-text-block">${desc.replace(/\n/g,'<br>')}</div>`;
+        const raw=await callClaude(`أنت خبير تعليمي. اكتب وصفاً جذاباً (2-3 فقرات، حوالي 150 كلمة) لكورس بعنوان "${ctx.title}" في مجال "${ctx.subject}" للمرحلة "${ctx.grade}" ومستوى ${ctx.diff}.\n\nالوصف يجب أن يشرح ما سيتعلمه الطالب، ولماذا يهمه هذا الكورس. أسلوب ودي وحماسي. أعد النص فقط بدون عناوين أو تنسيق إضافي.`);
+        $('modalBody').innerHTML=`<div class="ai-result-text-block">${raw.trim().replace(/\n/g,'<br>')}</div>`;
         $('modalFoot').style.display='flex';
-        $('modalApplyBtn').onclick=()=>{
-            $('lessonDesc').value=desc;
-            updatePreview();
-            showToast('📝 Description applied!');
-            closeAiModal();
-        };
-    } catch(err){
-        $('modalBody').innerHTML=`<p style="color:var(--danger)">⚠️ Something went wrong. Please try again.</p>`;
-    }
+        $('modalApplyBtn').onclick=()=>{$('courseDesc').value=raw.trim();updatePreview();showToast('📝 تم تطبيق الوصف!');closeAiModal();};
+    }catch{$('modalBody').innerHTML=`<p style="color:var(--danger)">⚠️ حدث خطأ. حاول مجدداً.</p>`;}
     setChipLoading('chip-desc',false);
 }
 
-/* 4. Generate Quiz */
+/* 4. توليد اختبار */
 async function aiGenerateQuiz(){
-    const ctx=getLessonContext();
-    if(ctx.title==='(no title yet)'&&ctx.subject==='(no subject yet)'){
-        showToast('⚠️ Please enter a lesson title or subject first!','warn');return;
-    }
-    setChipLoading('chip-quiz',true);
-    openModal('❓','Generate Quiz Questions');
+    const ctx=getCourseContext();
+    if(ctx.title==='(لم يُكتب بعد)'&&ctx.subject==='(لم يُختر بعد)'){showToast('⚠️ أضف عنواناً أو تخصصاً أولاً','warn');return;}
+    setChipLoading('chip-quiz',true);openModal('❓','توليد أسئلة اختبار');
     try{
-        const raw=await callClaude(
-            `You are an expert educator. Generate 4 multiple-choice quiz questions for a lesson on "${ctx.title}" (subject: ${ctx.subject}, level: ${ctx.diff}, grade: ${ctx.grade}).
-
-Return ONLY a JSON array in this exact format, no markdown:
-[
-  {
-    "question": "Question text?",
-    "options": ["A) ...", "B) ...", "C) ...", "D) ..."],
-    "answer": "A"
-  }
-]`
-        );
+        const raw=await callClaude(`أنت خبير تعليمي. أنشئ 4 أسئلة اختيار من متعدد لكورس "${ctx.title}" (${ctx.subject}، ${ctx.diff}، ${ctx.grade}).\n\nأعد فقط مصفوفة JSON هكذا، بدون markdown:\n[{"question":"السؤال؟","options":["أ) ...","ب) ...","ج) ...","د) ..."],"answer":"أ"}]`);
         let questions=[];
-        try{
-            const clean=raw.replace(/```json|```/g,'').trim();
-            questions=JSON.parse(clean);
-        } catch(e){
-            $('modalBody').innerHTML=`<p style="color:var(--danger)">⚠️ Could not parse quiz. Try again.</p>`;
-            setChipLoading('chip-quiz',false);return;
-        }
-        let html='';
-        questions.forEach((q,i)=>{
-            html+=`<div class="ai-result-item" style="flex-direction:column;align-items:flex-start;gap:8px">
-                <div style="font-weight:700;font-size:13px">Q${i+1}: ${q.question}</div>
-                <div style="display:flex;flex-direction:column;gap:4px;width:100%">
-                    ${(q.options||[]).map(o=>`<div style="font-size:12.5px;padding:5px 10px;background:var(--surface);border-radius:7px;border:1px solid var(--border);${o.startsWith(q.answer)?'border-color:var(--primary);color:var(--primary-dark);font-weight:600':''}">${o}${o.startsWith(q.answer)?' ✓':''}</div>`).join('')}
-                </div>
-            </div>`;
-        });
-        $('modalBody').innerHTML=html||'<p style="color:var(--muted)">No questions generated.</p>';
+        try{questions=JSON.parse(raw.replace(/```json|```/g,'').trim());}
+        catch{$('modalBody').innerHTML=`<p style="color:var(--danger)">⚠️ تعذّر تحليل الأسئلة. حاول مجدداً.</p>`;setChipLoading('chip-quiz',false);return;}
+        $('modalBody').innerHTML=questions.map((q,i)=>`<div class="ai-result-item" style="flex-direction:column;align-items:flex-start;gap:8px"><div style="font-weight:700;font-size:13px">س${i+1}: ${q.question}</div><div style="display:flex;flex-direction:column;gap:4px;width:100%">${(q.options||[]).map(o=>`<div style="font-size:12.5px;padding:5px 10px;background:var(--surface);border-radius:7px;border:1px solid var(--border);${o.startsWith(q.answer)?'border-color:var(--primary);color:var(--primary-dark);font-weight:600':''}">${o}${o.startsWith(q.answer)?' ✓':''}</div>`).join('')}</div></div>`).join('')||'<p style="color:var(--muted)">لم تُولَّد أسئلة.</p>';
         $('modalFoot').style.display='flex';
-        $('modalApplyBtn').textContent='📋 Copy to Clipboard';
+        $('modalApplyBtn').textContent='📋 نسخ للحافظة';
         $('modalApplyBtn').onclick=()=>{
-            const text=questions.map((q,i)=>`Q${i+1}: ${q.question}\n${q.options.join('\n')}\nAnswer: ${q.answer}`).join('\n\n');
-            navigator.clipboard.writeText(text).then(()=>showToast('📋 Quiz copied to clipboard!'));
+            const text=questions.map((q,i)=>`س${i+1}: ${q.question}\n${q.options.join('\n')}\nالإجابة: ${q.answer}`).join('\n\n');
+            navigator.clipboard.writeText(text).then(()=>showToast('📋 تم نسخ الأسئلة!'));
             closeAiModal();
         };
-    } catch(err){
-        $('modalBody').innerHTML=`<p style="color:var(--danger)">⚠️ Something went wrong. Please try again.</p>`;
-    }
+    }catch{$('modalBody').innerHTML=`<p style="color:var(--danger)">⚠️ حدث خطأ. حاول مجدداً.</p>`;}
     setChipLoading('chip-quiz',false);
 }
 
-function escHtml(str){return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+/* 5. اقتراح المتطلبات */
+async function aiGenerateReqs(){
+    const ctx=getCourseContext();
+    if(ctx.title==='(لم يُكتب بعد)'&&ctx.subject==='(لم يُختر بعد)'){showToast('⚠️ أضف عنواناً أو تخصصاً أولاً','warn');return;}
+    setChipLoading('chip-req',true);openModal('📌','اقتراح المتطلبات المسبقة');
+    try{
+        const raw=await callClaude(`أنت خبير تعليمي. اقترح 4-5 متطلبات مسبقة للالتحاق بكورس "${ctx.title}" في مجال "${ctx.subject}" للمستوى ${ctx.diff}.\n\nأعد فقط مصفوفة JSON من نصوص قصيرة، بدون markdown. مثال: ["لا يلزم خبرة مسبقة","جهاز كمبيوتر"]`);
+        let reqs=[];
+        try{reqs=JSON.parse(raw.replace(/```json|```/g,'').trim());}
+        catch{reqs=raw.split('\n').filter(l=>l.trim()).map(l=>l.replace(/^[\d\.\-\*\s]+/,'').trim());}
+        reqs=reqs.filter(r=>r.length>3).slice(0,5);
+        $('modalBody').innerHTML=reqs.map(r=>`<div class="ai-result-item"><div class="ai-result-dot" style="background:var(--accent)"></div><div class="ai-result-text">${r}</div><button class="ai-result-add" data-req="${escHtml(r)}" onclick="applySingleReq(this)">+ إضافة</button></div>`).join('')||'<p style="color:var(--muted)">لم تُولَّد متطلبات.</p>';
+        $('modalFoot').style.display='flex';
+        $('modalApplyBtn').onclick=()=>{reqs.forEach(r=>addReqDirect(r));showToast('📌 تمت إضافة '+reqs.length+' متطلبات!');closeAiModal();};
+    }catch{$('modalBody').innerHTML=`<p style="color:var(--danger)">⚠️ حدث خطأ. حاول مجدداً.</p>`;}
+    setChipLoading('chip-req',false);
+}
+function applySingleReq(btn){addReqDirect(btn.getAttribute('data-req'));btn.textContent='✓ أُضيف';btn.classList.add('added');btn.disabled=true;showToast('✅ تمت إضافة المتطلب!');}
+function addReqDirect(text){
+    const item=document.createElement('div');item.className='req-item';
+    item.innerHTML=`<div class="req-bullet"></div><div class="req-text">${text}</div><button class="obj-del" onclick="removeReq(this)">×</button>`;
+    $('reqList').appendChild(item);
+}
 
-/* ── init ── */
+/* ═══ INIT ═══ */
 document.addEventListener('DOMContentLoaded',()=>{
     $('pubDate').value=new Date().toISOString().split('T')[0];
-    updateChecklist();
+    updateChecklist();updatePricePreview();
 });
 </script>
 </body>

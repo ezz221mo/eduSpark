@@ -6,24 +6,20 @@
     <title>Evolve - Explore Courses</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
- 
 </head>
 <body dir="ltr">
 
-
     <nav>
         <a href="#" class="logo"><span class="logo-box">E</span> EVOLVE</a>
-        
         <div class="menu-toggle" id="mobile-menu">
             <i class="fas fa-bars"></i>
         </div>
-
         <div class="nav-links">
             <a href="index.html"><i class="fas fa-home"></i> Home</a>
-                        <a href="cart.html" class="cart-link">
+            <a href="cart.html" class="cart-link">
                 <i class="fas fa-shopping-cart"></i>
                 <span id="cart-count">0</span>
-                    </a>
+            </a>
             <a href="courses.html"><i class="fas fa-book"></i> Courses</a>
             <a href="sparky.html"><i class="fas fa-robot"></i> AI Assistant</a>
             <button onclick="window.location.href='voice.html'" class="voice-btn"><i class="fas fa-microphone"></i> Voice Assistant</button>
@@ -60,7 +56,8 @@
         </div>
 
         <div class="courses-grid" id="coursesGrid">
-            
+
+            <!-- ===== Graphic Design ===== -->
             <div class="course-card" data-category="Art">
                 <div class="course-image-container">
                     <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=400&h=250&fit=crop" alt="Course" class="course-image">
@@ -79,11 +76,37 @@
                     </div>
                     <div class="course-footer">
                         <button class="enroll-btn">Enroll Now</button>
+                        <button class="enroll" onclick="goToCourse({
+                            id: 'graphic-design',
+                            title: 'Fundamentals of Graphic Design',
+                            instructor: 'Ms. Nour El-Din',
+                            instructorImg: 'https://randomuser.me/api/portraits/women/44.jpg',
+                            category: 'Art & Design',
+                            categoryIcon: 'fas fa-paint-brush',
+                            rating: '4.8',
+                            reviewsCount: '2,150',
+                            students: '25,100',
+                            price: '429',
+                            oldPrice: '850',
+                            discount: '50',
+                            hours: '18',
+                            lectures: '12',
+                            level: 'Beginner',
+                            language: 'English',
+                            updated: 'March 2026',
+                            image: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=400&q=80',
+                            description: 'Master the core principles of graphic design — from color theory and typography to layout and branding. This hands-on course is designed for absolute beginners who want to build real-world design skills fast.',
+                            badge: 'Popular',
+                            instructorRole: 'Senior Graphic Designer & Certified Trainer',
+                            instructorBio: 'Ms. Nour El-Din is an award-winning graphic designer with 10+ years of experience working with top international brands. She has taught design to over 25,000 students worldwide and believes creativity is a skill anyone can develop.',
+                            instructorStats: '4.8|25,000|8|10'
+                        })">Go</button>
                         <span class="course-price">429 EGP</span>
                     </div>
                 </div>
             </div>
 
+            <!-- ===== English Language ===== -->
             <div class="course-card" data-category="Languages">
                 <div class="course-image-container">
                     <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&h=250&fit=crop" alt="Course" class="course-image">
@@ -102,11 +125,37 @@
                     </div>
                     <div class="course-footer">
                         <button class="enroll-btn">Enroll Now</button>
+                        <button class="enroll" onclick="goToCourse({
+                            id: 'english-advanced',
+                            title: 'English Language - Advanced',
+                            instructor: 'Ms. Sarah Johnson',
+                            instructorImg: 'https://randomuser.me/api/portraits/women/68.jpg',
+                            category: 'Languages',
+                            categoryIcon: 'fas fa-language',
+                            rating: '4.6',
+                            reviewsCount: '980',
+                            students: '1,968',
+                            price: '429',
+                            oldPrice: '850',
+                            discount: '50',
+                            hours: '18',
+                            lectures: '12',
+                            level: 'Advanced',
+                            language: 'English',
+                            updated: 'March 2026',
+                            image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&q=80',
+                            description: 'Take your English to the next level with advanced grammar, professional writing, and fluent conversation skills. Perfect for students and professionals aiming for academic or career excellence.',
+                            badge: 'Popular',
+                            instructorRole: 'IELTS Trainer & Language Coach',
+                            instructorBio: 'Ms. Sarah Johnson is a certified IELTS and TOEFL trainer with over 12 years of experience. She has helped thousands of students achieve top scores and land their dream opportunities abroad.',
+                            instructorStats: '4.6|15,000|6|12'
+                        })">Go</button>
                         <span class="course-price">429 EGP</span>
                     </div>
                 </div>
             </div>
 
+            <!-- ===== Python ===== -->
             <div class="course-card" data-category="Technology">
                 <div class="course-image-container">
                     <img src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400&h=250&fit=crop" alt="Course" class="course-image">
@@ -125,11 +174,37 @@
                     </div>
                     <div class="course-footer">
                         <button class="enroll-btn">Enroll Now</button>
+                        <button class="enroll" onclick="goToCourse({
+                            id: 'python-beginners',
+                            title: 'Learn Programming in Python',
+                            instructor: 'Mr. Ahmed Ali',
+                            instructorImg: 'https://randomuser.me/api/portraits/men/41.jpg',
+                            category: 'Programming & Technology',
+                            categoryIcon: 'fas fa-code',
+                            rating: '4.9',
+                            reviewsCount: '3,241',
+                            students: '3,100',
+                            price: '429',
+                            oldPrice: '850',
+                            discount: '50',
+                            hours: '42',
+                            lectures: '156',
+                            level: 'Beginner',
+                            language: 'Arabic',
+                            updated: 'March 2026',
+                            image: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400&q=80',
+                            description: 'Learn Python programming from scratch to building real projects. A comprehensive course for kids and beginners with interactive exercises and direct AI assistance from Sparky.',
+                            badge: 'Popular',
+                            instructorRole: 'Senior Software Engineer & Certified Python Trainer',
+                            instructorBio: 'Mr. Ahmed Ali is a software engineer with 15 years of experience at top tech companies. He has taught Python to over 52,000 students worldwide and is certified by Google and Microsoft in AI development.',
+                            instructorStats: '4.9|52,000|12|15'
+                        })">Go</button>
                         <span class="course-price">429 EGP</span>
                     </div>
                 </div>
             </div>
 
+            <!-- ===== Mathematics ===== -->
             <div class="course-card" data-category="Mathematics">
                 <div class="course-image-container">
                     <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400&h=250&fit=crop" alt="Course" class="course-image">
@@ -148,6 +223,31 @@
                     </div>
                     <div class="course-footer">
                         <button class="enroll-btn">Enroll Now</button>
+                        <button class="enroll" onclick="goToCourse({
+                            id: 'math-comprehensive',
+                            title: 'Comprehensive Mathematics Course',
+                            instructor: 'Mr. Nour El-Din',
+                            instructorImg: 'https://randomuser.me/api/portraits/men/32.jpg',
+                            category: 'Mathematics',
+                            categoryIcon: 'fas fa-square-root-alt',
+                            rating: '4.8',
+                            reviewsCount: '1,430',
+                            students: '1,560',
+                            price: '429',
+                            oldPrice: '850',
+                            discount: '50',
+                            hours: '18',
+                            lectures: '12',
+                            level: 'Intermediate',
+                            language: 'Arabic',
+                            updated: 'February 2026',
+                            image: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400&q=80',
+                            description: 'A complete mathematics curriculum covering algebra, geometry, calculus and statistics. This course is designed to build strong problem-solving skills and deep mathematical intuition from the ground up.',
+                            badge: 'Mathematics',
+                            instructorRole: 'Mathematics Professor & Academic Coach',
+                            instructorBio: 'Mr. Nour El-Din holds a PhD in Applied Mathematics and has over 20 years of teaching experience at university level. He simplifies complex concepts and makes math accessible to everyone.',
+                            instructorStats: '4.8|30,000|15|20'
+                        })">Go</button>
                         <span class="course-price">429 EGP</span>
                     </div>
                 </div>
@@ -157,63 +257,70 @@
     </div>
 
     <footer>
-    <div class="footer-container">
-        <div class="footer-column">
-            <div class="footer-logo">
-                <span class="footer-logo-icon">E</span> EVOLVE
+        <div class="footer-container">
+            <div class="footer-column">
+                <div class="footer-logo">
+                    <span class="footer-logo-icon">E</span> EVOLVE
+                </div>
+                <p class="footer-description">
+                    Making learning magical for the next generation of creators, scientists, and leaders through the power of AI.
+                </p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                </div>
             </div>
-            <p class="footer-description">
-                Making learning magical for the next generation of creators, scientists, and leaders through the power of AI. 
-            </p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#"><i class="fab fa-github"></i></a>
+            <div class="footer-column">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="#">Courses</a></li>
+                    <li><a href="#">Teachers</a></li>
+                    <li><a href="#">AI Assistant</a></li>
+                    <li><a href="#">Learning Path</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">Articles</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Success Stories</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul class="contact-info">
+                    <li><i class="fas fa-envelope"></i> hello@eduspark.com</li>
+                    <li><i class="fas fa-phone"></i> +1 (555) 000-1234</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Silicon Valley, CA</li>
+                </ul>
             </div>
         </div>
-
-        <div class="footer-column">
-            <h4>Platform</h4>
-            <ul>
-                <li><a href="#">Courses</a></li>
-                <li><a href="#">Teachers</a></li>
-                <li><a href="#">AI Assistant</a></li>
-                <li><a href="#">Learning Path</a></li>
-            </ul>
+        <div class="footer-bottom">
+            <p>© 2026 EduSpark Platform. All rights reserved.</p>
+            <div class="footer-bottom-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
         </div>
+    </footer>
 
-        <div class="footer-column">
-            <h4>Company</h4>
-            <ul>
-                <li><a href="#">Articles</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Success Stories</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </div>
-
-        <div class="footer-column">
-            <h4>Support</h4>
-            <ul class="contact-info">
-                <li><i class="fas fa-envelope"></i> hello@eduspark.com</li>
-                <li><i class="fas fa-phone"></i> +1 (555) 000-1234</li>
-                <li><i class="fas fa-map-marker-alt"></i> Silicon Valley, CA</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="footer-bottom">
-        <p>© 2026 EduSpark Platform. All rights reserved.</p>
-        <div class="footer-bottom-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Cookie Policy</a>
-        </div>
-    </div>
-</footer>
     <script src="nav-handler.js"></script>
     <script src="js/auth-check.js"></script>
     <script src="app.js"></script>
+
+    <script>
+        // ===== Navigate to Course Detail with data =====
+        function goToCourse(courseData) {
+            // Save full course data in sessionStorage
+            sessionStorage.setItem('selectedCourse', JSON.stringify(courseData));
+            // Also pass the ID in the URL as a fallback
+            window.location.href = 'course-detail.html?id=' + courseData.id;
+        }
+    </script>
 </body>
 </html>

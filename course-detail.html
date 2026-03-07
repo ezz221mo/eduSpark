@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVOLVE - Course Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #89b084;
+            --primary-green-dark: #6e9b73;
+            --bg-main: #f9f8f3;
+            --bg-card: #ffffff;
+            --bg-soft: #eef3ee;
+            --text-main: #333333;
+            --text-muted: #6b7280;
+            --text-invert: #ffffff;
+            --border-color: #e5e7eb;
+            --shadow-soft: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        [data-theme="dark"] {
+            --primary-green: #8fd3a5;
+            --primary-green-dark: #5fa37a;
+            --bg-main: #0f172a;
+            --bg-card: #111827;
+            --bg-soft: #1f2933;
+            --text-main: #e5e7eb;
+            --text-muted: #9ca3af;
+            --text-invert: #020617;
+            --border-color: #1f2937;
+            --shadow-soft: 0 20px 50px rgba(0,0,0,0.6);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* ===== Navbar ===== */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 5%;
+            background: var(--bg-card);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-green);
+            text-decoration: none;
+        }
+        .logo-box {
+            background: var(--primary-green);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--primary-green); }
+        .get-started {
+            background: var(--primary-green);
+            color: white !important;
+            padding: 10px 22px;
+            border-radius: 25px;
+            font-weight: 600;
+        }
+        .theme-toggle {
+            background: var(--bg-soft);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .menu-toggle {
+            display: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--text-main);
+            background: var(--bg-soft);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 10px;
+        }
+
+        /* ===== Breadcrumb ===== */
+        .breadcrumb {
+            padding: 18px 5%;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .breadcrumb a { color: var(--primary-green); text-decoration: none; }
+        .breadcrumb i { font-size: 10px; }
+
+        /* ===== Hero ===== */
+        .course-hero {
+            background: linear-gradient(135deg, #2d3a2d 0%, #1a2e1a 50%, #0d1f0d 100%);
+            padding: 60px 5%;
+            position: relative;
+            overflow: hidden;
+        }
+        .course-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -10%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(137,176,132,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .course-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%; right: 5%;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(137,176,132,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .course-hero-content {
+            display: flex;
+            gap: 60px;
+            align-items: flex-start;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+        .course-hero-info { flex: 1.5; color: white; }
+        .course-category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(137,176,132,0.25);
+            color: #a8d8a3;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            border: 1px solid rgba(137,176,132,0.3);
+        }
+        .course-hero h1 {
+            font-size: 38px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 18px;
+            color: white;
+        }
+        .course-hero-desc {
+            font-size: 16px;
+            color: rgba(255,255,255,0.75);
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+        .course-meta-row {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.8);
+        }
+        .meta-item i { color: var(--primary-green); }
+        .hero-stars {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .stars { color: #fbbf24; font-size: 16px; }
+        .rating-num { color: white; font-weight: 700; font-size: 18px; }
+        .rating-count { color: rgba(255,255,255,0.6); font-size: 13px; }
+        .instructor-mini {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            width: fit-content;
+        }
+        .instructor-mini img {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-green);
+        }
+        .instructor-mini-text { font-size: 13px; color: rgba(255,255,255,0.7); }
+        .instructor-mini-name { color: white; font-weight: 600; font-size: 15px; }
+
+        /* ===== Enroll Card ===== */
+        .enroll-card {
+            width: 340px;
+            flex-shrink: 0;
+            background: var(--bg-card);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 90px;
+            align-self: flex-start;
+        }
+        .enroll-preview { position: relative; cursor: pointer; }
+        .enroll-preview img { width: 100%; height: 200px; object-fit: cover; }
+        .preview-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        .preview-overlay:hover { background: rgba(0,0,0,0.55); }
+        .play-btn-big {
+            width: 65px;
+            height: 65px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--primary-green);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+        .preview-overlay:hover .play-btn-big { transform: scale(1.1); }
+        .enroll-body { padding: 25px; }
+        .price-row {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .price-new { font-size: 32px; font-weight: 800; color: var(--text-main); }
+        .price-old { font-size: 18px; color: var(--text-muted); text-decoration: line-through; }
+        .price-discount {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .enroll-btn-main {
+            width: 100%;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .enroll-btn-main:hover {
+            background: var(--primary-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(137,176,132,0.4);
+        }
+        .wishlist-btn {
+            width: 100%;
+            background: transparent;
+            color: var(--text-main);
+            border: 1.5px solid var(--border-color);
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .wishlist-btn:hover { border-color: var(--primary-green); color: var(--primary-green); }
+        .enroll-features {
+            margin-top: 22px;
+            padding-top: 22px;
+            border-top: 1px solid var(--border-color);
+        }
+        .enroll-features h4 {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+        .feature-item i { color: var(--primary-green); width: 16px; }
+        .guarantee {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* ===== Main Content ===== */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 50px 5%;
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 50px;
+        }
+        .content-left { min-width: 0; }
+
+        /* ===== Section Blocks ===== */
+        .section-block {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-soft);
+        }
+        .section-block h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-block h2 i { color: var(--primary-green); }
+
+        /* ===== Learn Grid ===== */
+        .learn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .learn-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text-main);
+            line-height: 1.5;
+        }
+        .learn-item i { color: var(--primary-green); margin-top: 2px; flex-shrink: 0; }
+
+        /* ===== Curriculum ===== */
+        .curriculum-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .curriculum-summary { font-size: 14px; color: var(--text-muted); }
+        .expand-all-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            color: var(--primary-green);
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .section-accordion {
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 22px;
+            cursor: pointer;
+            background: var(--bg-soft);
+            transition: background 0.2s;
+            user-select: none;
+        }
+        .accordion-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-main);
+        }
+        .section-number {
+            width: 28px;
+            height: 28px;
+            background: var(--primary-green);
+            color: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .accordion-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .accordion-toggle {
+            width: 28px;
+            height: 28px;
+            background: var(--bg-card);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            transition: transform 0.3s;
+        }
+        .section-accordion.open .accordion-toggle { transform: rotate(180deg); }
+        .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .section-accordion.open .accordion-body { max-height: 2000px; }
+        .lecture-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 22px;
+            border-top: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+        .lecture-item:hover { background: var(--bg-soft); }
+        .lecture-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .lecture-icon.video { background: #dbeafe; color: #2563eb; }
+        .lecture-icon.quiz { background: #fef3c7; color: #d97706; }
+        .lecture-icon.file { background: #f3e8ff; color: #7c3aed; }
+        .lecture-icon.live { background: #dcfce7; color: #16a34a; }
+        .lecture-info { flex: 1; }
+        .lecture-title { font-size: 14px; color: var(--text-main); font-weight: 500; margin-bottom: 3px; }
+        .lecture-type { font-size: 12px; color: var(--text-muted); }
+        .lecture-duration { font-size: 13px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+        .free-badge { background: #dcfce7; color: #16a34a; font-size: 11px; padding: 3px 8px; border-radius: 8px; font-weight: 600; }
+
+        /* ===== Instructor ===== */
+        .instructor-card { display: flex; gap: 25px; align-items: flex-start; }
+        .instructor-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 3px solid var(--primary-green);
+        }
+        .instructor-info h3 { font-size: 22px; font-weight: 700; color: var(--text-main); margin-bottom: 5px; }
+        .instructor-role { color: var(--primary-green); font-size: 15px; font-weight: 500; margin-bottom: 15px; }
+        .instructor-quick-stats { display: flex; gap: 20px; margin-bottom: 15px; flex-wrap: wrap; }
+        .inst-stat { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--text-muted); }
+        .inst-stat i { color: var(--primary-green); }
+        .instructor-bio { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+
+        /* ===== Reviews ===== */
+        .reviews-overview {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            margin-bottom: 35px;
+            padding: 25px;
+            background: var(--bg-soft);
+            border-radius: 16px;
+        }
+        .rating-big { text-align: center; flex-shrink: 0; }
+        .rating-big .num { font-size: 64px; font-weight: 900; color: var(--primary-green); line-height: 1; }
+        .rating-big .stars { font-size: 20px; margin: 8px 0 5px; color: #fbbf24; }
+        .rating-big p { font-size: 13px; color: var(--text-muted); }
+        .rating-bars { flex: 1; }
+        .rating-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .rating-bar-label { font-size: 13px; color: var(--text-muted); width: 30px; text-align: center; }
+        .bar-track { flex: 1; height: 8px; background: var(--border-color); border-radius: 4px; overflow: hidden; }
+        .bar-fill { height: 100%; background: var(--primary-green); border-radius: 4px; transition: width 1s ease; }
+        .bar-pct { font-size: 13px; color: var(--text-muted); width: 35px; }
+        .reviews-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .review-card { background: var(--bg-soft); border-radius: 16px; padding: 22px; border: 1px solid var(--border-color); }
+        .review-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+        .reviewer-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; }
+        .reviewer-name { font-size: 15px; font-weight: 600; color: var(--text-main); }
+        .review-date { font-size: 12px; color: var(--text-muted); }
+        .review-stars { color: #fbbf24; font-size: 14px; margin-bottom: 10px; }
+        .review-text { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+        /* ===== Requirements ===== */
+        .req-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+        .req-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--text-main); }
+        .req-list li::before {
+            content: '';
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: var(--primary-green);
+            flex-shrink: 0;
+            margin-top: 8px;
+        }
+
+        /* ===== Sidebar ===== */
+        .sidebar-sticky { position: sticky; top: 90px; align-self: flex-start; }
+        .course-stats-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 28px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-soft);
+        }
+        .course-stats-card h3 { font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+        .course-stats-card h3 i { color: var(--primary-green); }
+        .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border-color); font-size: 14px; }
+        .stat-row:last-child { border-bottom: none; }
+        .stat-label { color: var(--text-muted); }
+        .stat-value { font-weight: 600; color: var(--text-main); }
+        .level-badge { padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+        .level-beginner { background: #dcfce7; color: #16a34a; }
+        .level-intermediate { background: #fef3c7; color: #d97706; }
+        .level-advanced { background: #fee2e2; color: #dc2626; }
+
+        /* ===== Related Courses ===== */
+        .related-card { display: flex; gap: 14px; padding: 14px; border-radius: 14px; cursor: pointer; transition: background 0.2s; margin-bottom: 10px; border: 1px solid transparent; }
+        .related-card:hover { background: var(--bg-soft); border-color: var(--border-color); }
+        .related-thumb { width: 70px; height: 55px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+        .related-info { flex: 1; }
+        .related-title { font-size: 13px; font-weight: 600; color: var(--text-main); line-height: 1.4; margin-bottom: 4px; }
+        .related-meta { display: flex; gap: 8px; font-size: 12px; color: var(--text-muted); }
+        .related-price { font-size: 13px; font-weight: 700; color: var(--primary-green); margin-top: 4px; }
+
+        /* ===== Tabs ===== */
+        .tabs-container {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 30px;
+            background: var(--bg-soft);
+            padding: 6px;
+            border-radius: 16px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px 16px;
+            background: transparent;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab-btn.active {
+            background: var(--bg-card);
+            color: var(--primary-green);
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ===== Sticky Bottom Bar ===== */
+        .sticky-enroll-bar {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: 12px 5%;
+            z-index: 997;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            align-items: center;
+            gap: 15px;
+        }
+        .sticky-price { font-size: 20px; font-weight: 800; color: var(--text-main); }
+        .sticky-old-price { font-size: 13px; color: var(--text-muted); text-decoration: line-through; }
+        .sticky-enroll-btn {
+            flex: 1;
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 13px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* ===== Mobile Nav Drawer ===== */
+        .mobile-nav-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 998; }
+        .mobile-nav-drawer {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 75%;
+            max-width: 300px;
+            height: 100%;
+            background: var(--bg-card);
+            z-index: 999;
+            padding: 30px 20px;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.2);
+            transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+            overflow-y: auto;
+        }
+        .mobile-nav-drawer.open { right: 0; }
+        .drawer-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
+        .drawer-close { background: var(--bg-soft); border: none; color: var(--text-main); font-size: 18px; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; }
+        .drawer-link { display: flex; align-items: center; gap: 12px; padding: 13px 15px; text-decoration: none; color: var(--text-main); font-size: 15px; border-radius: 12px; transition: background 0.2s; }
+        .drawer-link:hover { background: var(--bg-soft); color: var(--primary-green); }
+        .drawer-link i { width: 18px; color: var(--primary-green); }
+        .drawer-cta { background: var(--primary-green); color: white !important; text-align: center; justify-content: center; border-radius: 25px; margin-top: 10px; font-weight: 700; }
+
+        /* ===== Footer ===== */
+        footer { background: var(--bg-card); padding: 60px 5% 30px; border-top: 1px solid var(--border-color); margin-top: 60px; }
+        .footer-container { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 50px; }
+        .footer-logo { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: bold; color: var(--text-main); margin-bottom: 15px; }
+        .footer-logo-icon { background: var(--primary-green); color: white; padding: 5px 10px; border-radius: 8px; }
+        .footer-description { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
+        .footer-column h4 { font-size: 16px; margin-bottom: 20px; color: var(--text-main); }
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 12px; }
+        .footer-column ul li a { text-decoration: none; color: var(--text-muted); font-size: 14px; transition: color 0.2s; }
+        .footer-column ul li a:hover { color: var(--primary-green); }
+        .footer-bottom { padding-top: 25px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; color: var(--text-muted); font-size: 13px; }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1100px) {
+            .course-hero-content { flex-direction: column; gap: 30px; }
+            .enroll-card { width: 100%; max-width: 560px; margin: 0 auto; position: static; display: flex; flex-direction: row; }
+            .enroll-preview { width: 250px; flex-shrink: 0; }
+            .enroll-preview img { height: 100%; border-radius: 0; }
+            .main-content { grid-template-columns: 1fr; gap: 30px; }
+            .sidebar-sticky { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+            .reviews-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none !important; }
+            .menu-toggle { display: flex; align-items: center; }
+            .mobile-nav-drawer { display: flex; }
+            .course-hero { padding: 28px 5% 80px; }
+            .course-hero h1 { font-size: 24px; }
+            .enroll-card { flex-direction: column; max-width: 100%; }
+            .enroll-preview { width: 100%; }
+            .enroll-preview img { height: 200px; }
+            .main-content { padding: 25px 4%; }
+            .section-block { padding: 22px 18px; }
+            .learn-grid { grid-template-columns: 1fr; }
+            .instructor-card { flex-direction: column; align-items: center; text-align: center; }
+            .reviews-overview { flex-direction: column; }
+            .reviews-grid { grid-template-columns: 1fr; }
+            .sidebar-sticky { display: block; }
+            .footer-container { grid-template-columns: 1fr 1fr; gap: 25px; }
+            footer { padding: 40px 5% 80px; }
+            .sticky-enroll-bar { display: flex; }
+        }
+        @media (max-width: 480px) {
+            .course-hero h1 { font-size: 20px; }
+            .tabs-container { overflow-x: auto; flex-wrap: nowrap; }
+            .tab-btn { white-space: nowrap; flex: none; font-size: 12px; }
+            .learn-grid { gap: 10px; }
+            .footer-container { grid-template-columns: 1fr; }
+        }
+
+        /* ===== Loading skeleton ===== */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-soft) 25%, var(--border-color) 50%, var(--bg-soft) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <a href="index.html" class="logo"><span class="logo-box">E</span> EVOLVE</a>
+        <div class="nav-links">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="courses.html"><i class="fas fa-book"></i> Courses</a>
+            <a href="sparky.html"><i class="fas fa-robot"></i> AI Assistant</a>
+            <a href="teachers.html">Teachers</a>
+            <button class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+            <a href="sing.html" class="get-started">Get Started</a>
+        </div>
+        <button class="menu-toggle" id="menuToggle" onclick="openDrawer()"><i class="fas fa-bars"></i></button>
+    </nav>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-nav-overlay" id="navOverlay" onclick="closeDrawer()"></div>
+    <div class="mobile-nav-drawer" id="navDrawer">
+        <div class="drawer-header">
+            <a href="index.html" class="logo" style="font-size:18px"><span class="logo-box">E</span> EVOLVE</a>
+            <button class="drawer-close" onclick="closeDrawer()"><i class="fas fa-times"></i></button>
+        </div>
+        <a class="drawer-link" href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a class="drawer-link" href="courses.html"><i class="fas fa-book"></i> Courses</a>
+        <a class="drawer-link" href="sparky.html"><i class="fas fa-robot"></i> AI Assistant</a>
+        <a class="drawer-link" href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a>
+        <div style="margin-top:10px; border-top:1px solid var(--border-color); padding-top:15px; display:flex; flex-direction:column; gap:8px;">
+            <a href="sing.html" class="drawer-link drawer-cta"><i class="fas fa-bolt"></i> Get Started</a>
+        </div>
+    </div>
+
+    <!-- Sticky Bottom Bar -->
+    <div class="sticky-enroll-bar" id="stickyBar">
+        <div>
+            <div class="sticky-price" id="stickyPrice">429 EGP</div>
+            <div class="sticky-old-price" id="stickyOldPrice">850 EGP</div>
+        </div>
+        <button class="sticky-enroll-btn" onclick="enrollNow()">
+            <i class="fas fa-bolt"></i> Enroll Now
+        </button>
+    </div>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <i class="fas fa-chevron-right"></i>
+        <a href="courses.html">Courses</a>
+        <i class="fas fa-chevron-right"></i>
+        <span id="breadcrumbCategory">Loading...</span>
+        <i class="fas fa-chevron-right"></i>
+        <span id="breadcrumbTitle">Loading...</span>
+    </div>
+
+    <!-- Course Hero -->
+    <section class="course-hero">
+        <div class="course-hero-content">
+            <div class="course-hero-info">
+                <span class="course-category-badge" id="heroCategoryBadge">
+                    <i id="heroCategoryIcon" class="fas fa-book"></i>
+                    <span id="heroCategoryText">Loading...</span>
+                </span>
+                <h1 id="heroTitle">Loading course...</h1>
+                <p class="course-hero-desc" id="heroDescription">Loading description...</p>
+
+                <div class="hero-stars">
+                    <span class="rating-num" id="heroRating">—</span>
+                    <span class="stars" id="heroStars">★★★★★</span>
+                    <span class="rating-count" id="heroRatingCount">(—) · — Students</span>
+                </div>
+
+                <div class="course-meta-row">
+                    <div class="meta-item"><i class="fas fa-clock"></i><span id="metaHours">— Hours</span></div>
+                    <div class="meta-item"><i class="fas fa-play-circle"></i><span id="metaLectures">— Lectures</span></div>
+                    <div class="meta-item"><i class="fas fa-signal"></i><span id="metaLevel">—</span></div>
+                    <div class="meta-item"><i class="fas fa-language"></i><span id="metaLanguage">—</span></div>
+                    <div class="meta-item"><i class="fas fa-sync-alt"></i><span id="metaUpdated">—</span></div>
+                </div>
+
+                <div class="instructor-mini">
+                    <img id="heroInstructorImg" src="https://randomuser.me/api/portraits/men/41.jpg" alt="Instructor">
+                    <div>
+                        <div class="instructor-mini-text">Instructor</div>
+                        <div class="instructor-mini-name" id="heroInstructorName">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enroll Card -->
+            <div class="enroll-card">
+                <div class="enroll-preview">
+                    <img id="enrollCardImage" src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400&q=80" alt="Course Preview">
+                    <div class="preview-overlay">
+                        <div class="play-btn-big"><i class="fas fa-play"></i></div>
+                    </div>
+                </div>
+                <div class="enroll-body">
+                    <div class="price-row">
+                        <span class="price-new" id="priceNew">—</span>
+                        <span class="price-old" id="priceOld">—</span>
+                        <span class="price-discount" id="priceDiscount">—</span>
+                    </div>
+                    <p style="font-size:13px; color:#e53e3e; font-weight:600; margin-bottom:16px;">
+                        <i class="fas fa-fire"></i> Offer ends in 2 days!
+                    </p>
+                    <button class="enroll-btn-main" onclick="enrollNow()">
+                        <i class="fas fa-bolt"></i> Enroll Now
+                    </button>
+                    <button class="wishlist-btn" onclick="toggleWishlist(this)">
+                        <i class="far fa-heart"></i> Add to Wishlist
+                    </button>
+                    <div class="enroll-features">
+                        <h4>What you'll get:</h4>
+                        <div class="feature-item"><i class="fas fa-infinity"></i> Lifetime access</div>
+                        <div class="feature-item"><i class="fas fa-mobile-alt"></i> Available on mobile & desktop</div>
+                        <div class="feature-item"><i class="fas fa-certificate"></i> Certificate on completion</div>
+                        <div class="feature-item"><i class="fas fa-robot"></i> Direct Sparky AI support</div>
+                        <div class="feature-item"><i class="fas fa-code"></i> Downloadable practice projects</div>
+                        <div class="feature-item"><i class="fas fa-users"></i> Private student community</div>
+                    </div>
+                    <div class="guarantee">
+                        <i class="fas fa-shield-alt" style="color:var(--primary-green)"></i>
+                        30-day money-back guarantee
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="content-left">
+
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <button class="tab-btn active" onclick="switchTab('overview', this)">Overview</button>
+                <button class="tab-btn" onclick="switchTab('curriculum', this)">Curriculum</button>
+                <button class="tab-btn" onclick="switchTab('instructor', this)">Instructor</button>
+                <button class="tab-btn" onclick="switchTab('reviews', this)">Reviews</button>
+            </div>
+
+            <!-- Tab: Overview -->
+            <div id="tab-overview" class="tab-panel active">
+                <div class="section-block">
+                    <h2><i class="fas fa-graduation-cap"></i> What you'll learn</h2>
+                    <div class="learn-grid" id="learnGrid">
+                        <!-- Injected dynamically -->
+                    </div>
+                </div>
+                <div class="section-block">
+                    <h2><i class="fas fa-list-check"></i> Requirements</h2>
+                    <ul class="req-list" id="requirementsList">
+                        <!-- Injected dynamically -->
+                    </ul>
+                </div>
+                <div class="section-block">
+                    <h2><i class="fas fa-info-circle"></i> Course Description</h2>
+                    <p id="courseFullDescription" style="font-size:15px; color:var(--text-muted); line-height:1.8;"></p>
+                </div>
+            </div>
+
+            <!-- Tab: Curriculum -->
+            <div id="tab-curriculum" class="tab-panel">
+                <div class="section-block">
+                    <div class="curriculum-header">
+                        <div>
+                            <h2 style="margin-bottom:5px"><i class="fas fa-list"></i> Course Content</h2>
+                            <p class="curriculum-summary" id="curriculumSummary">Loading...</p>
+                        </div>
+                        <button class="expand-all-btn" onclick="expandAll()">Expand All</button>
+                    </div>
+                    <div id="curriculumAccordions">
+                        <!-- Injected dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Instructor -->
+            <div id="tab-instructor" class="tab-panel">
+                <div class="section-block">
+                    <h2><i class="fas fa-chalkboard-teacher"></i> About the Instructor</h2>
+                    <div class="instructor-card">
+                        <img class="instructor-photo" id="instructorPhoto" src="" alt="Instructor">
+                        <div class="instructor-info">
+                            <h3 id="instructorName">—</h3>
+                            <div class="instructor-role" id="instructorRole">—</div>
+                            <div class="instructor-quick-stats" id="instructorStats">
+                                <!-- Injected dynamically -->
+                            </div>
+                            <p class="instructor-bio" id="instructorBio">—</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Reviews -->
+            <div id="tab-reviews" class="tab-panel">
+                <div class="section-block">
+                    <h2><i class="fas fa-star"></i> Student Reviews</h2>
+                    <div class="reviews-overview">
+                        <div class="rating-big">
+                            <div class="num" id="reviewRatingBig">—</div>
+                            <div class="stars">★★★★★</div>
+                            <p>Course Rating</p>
+                        </div>
+                        <div class="rating-bars">
+                            <div class="rating-bar-row"><span class="rating-bar-label">5 ★</span><div class="bar-track"><div class="bar-fill" style="width:87%"></div></div><span class="bar-pct">87%</span></div>
+                            <div class="rating-bar-row"><span class="rating-bar-label">4 ★</span><div class="bar-track"><div class="bar-fill" style="width:9%"></div></div><span class="bar-pct">9%</span></div>
+                            <div class="rating-bar-row"><span class="rating-bar-label">3 ★</span><div class="bar-track"><div class="bar-fill" style="width:3%"></div></div><span class="bar-pct">3%</span></div>
+                            <div class="rating-bar-row"><span class="rating-bar-label">2 ★</span><div class="bar-track"><div class="bar-fill" style="width:1%"></div></div><span class="bar-pct">1%</span></div>
+                            <div class="rating-bar-row"><span class="rating-bar-label">1 ★</span><div class="bar-track"><div class="bar-fill" style="width:0%"></div></div><span class="bar-pct">0%</span></div>
+                        </div>
+                    </div>
+                    <div class="reviews-grid" id="reviewsGrid">
+                        <!-- Injected dynamically -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar -->
+        <div>
+            <div class="sidebar-sticky">
+                <div class="course-stats-card">
+                    <h3><i class="fas fa-chart-bar"></i> Course Stats</h3>
+                    <div class="stat-row">
+                        <span class="stat-label">Level</span>
+                        <span class="stat-value"><span class="level-badge" id="levelBadge">—</span></span>
+                    </div>
+                    <div class="stat-row"><span class="stat-label">Total Duration</span><span class="stat-value" id="sidebarHours">—</span></div>
+                    <div class="stat-row"><span class="stat-label">Lectures</span><span class="stat-value" id="sidebarLectures">—</span></div>
+                    <div class="stat-row"><span class="stat-label">Enrolled Students</span><span class="stat-value" id="sidebarStudents">—</span></div>
+                    <div class="stat-row"><span class="stat-label">Language</span><span class="stat-value" id="sidebarLanguage">—</span></div>
+                    <div class="stat-row"><span class="stat-label">Last Updated</span><span class="stat-value" id="sidebarUpdated">—</span></div>
+                    <div class="stat-row"><span class="stat-label">Certificate</span><span class="stat-value" style="color:var(--primary-green)">✓ Accredited</span></div>
+                </div>
+
+                <div class="course-stats-card">
+                    <h3><i class="fas fa-book-open"></i> Related Courses</h3>
+                    <div class="related-card" onclick="window.location.href='courses.html'">
+                        <img class="related-thumb" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=100&q=80" alt="">
+                        <div class="related-info">
+                            <div class="related-title">JavaScript for Beginners</div>
+                            <div class="related-meta"><span>★ 4.8</span><span>12,000 students</span></div>
+                            <div class="related-price">249 EGP</div>
+                        </div>
+                    </div>
+                    <div class="related-card" onclick="window.location.href='courses.html'">
+                        <img class="related-thumb" src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=100&q=80" alt="">
+                        <div class="related-info">
+                            <div class="related-title">HTML/CSS Web Development</div>
+                            <div class="related-meta"><span>★ 4.7</span><span>9,500 students</span></div>
+                            <div class="related-price">199 EGP</div>
+                        </div>
+                    </div>
+                    <div class="related-card" onclick="window.location.href='courses.html'">
+                        <img class="related-thumb" src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=100&q=80" alt="">
+                        <div class="related-info">
+                            <div class="related-title">AI for Kids</div>
+                            <div class="related-meta"><span>★ 4.9</span><span>6,200 students</span></div>
+                            <div class="related-price">349 EGP</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, var(--primary-green), var(--primary-green-dark)); border-radius: 20px; padding: 25px; color: white; text-align: center;">
+                    <div style="font-size: 36px; margin-bottom: 12px;">🤖</div>
+                    <h3 style="margin-bottom: 8px;">Sparky is here!</h3>
+                    <p style="font-size: 13px; opacity: 0.9; margin-bottom: 16px;">Have a question about the course? Ask Sparky AI and get an instant answer</p>
+                    <button onclick="window.location.href='sparky.html'" style="background: white; color: var(--primary-green); border: none; padding: 12px 24px; border-radius: 25px; font-weight: 700; cursor: pointer; width: 100%; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                        <i class="fas fa-robot"></i> Ask Sparky
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <div class="footer-logo"><span class="footer-logo-icon">E</span> EVOLVE</div>
+                <p class="footer-description">Making learning magical for the next generation of creators, scientists, and leaders.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Platform</h4>
+                <ul><li><a href="courses.html">Courses</a></li><li><a href="teachers.html">Teachers</a></li><li><a href="sparky.html">AI Assistant</a></li></ul>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul><li><a href="#">About Us</a></li><li><a href="#">Success Stories</a></li><li><a href="#">Contact</a></li></ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul><li><a href="#">hello@evolve.com</a></li><li><a href="#">+1 (555) 000-1234</a></li></ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 EVOLVE Platform. All rights reserved.</p>
+            <div style="display:flex; gap:20px;"><a href="#" style="color:var(--text-muted); text-decoration:none;">Privacy Policy</a><a href="#" style="color:var(--text-muted); text-decoration:none;">Terms of Service</a></div>
+        </div>
+    </footer>
+
+    <script>
+    // =============================================
+    //   COURSE DATA — per-course dynamic content
+    // =============================================
+    const COURSE_CONTENT = {
+        'graphic-design': {
+            learn: [
+                'Master color theory and typography fundamentals',
+                'Create stunning logos and brand identities',
+                'Design professional layouts for print and web',
+                'Use Adobe Photoshop & Illustrator confidently',
+                'Build a professional design portfolio',
+                'Understand visual hierarchy and composition',
+                'Create social media graphics and banners',
+                'Apply UX principles to your designs'
+            ],
+            requirements: [
+                'No prior design experience needed',
+                'A computer with internet access',
+                'Free or trial versions of design software (links provided)',
+                'Passion for creativity and visual arts'
+            ],
+            curriculum: [
+                { title: 'Design Fundamentals', lectures: 3, hours: '2.5', items: [
+                    { type: 'video', title: 'Welcome & Course Overview', duration: '10:00', free: true },
+                    { type: 'video', title: 'Understanding Color Theory', duration: '22:30', free: true },
+                    { type: 'quiz', title: 'Color Theory Quiz', duration: '10 questions', free: false }
+                ]},
+                { title: 'Typography Mastery', lectures: 4, hours: '3', items: [
+                    { type: 'video', title: 'Font Families & Pairing', duration: '18:00', free: false },
+                    { type: 'video', title: 'Hierarchy & Readability', duration: '20:15', free: false },
+                    { type: 'file', title: 'Typography Exercise Pack', duration: 'PDF', free: false }
+                ]},
+                { title: 'Logo & Brand Design', lectures: 5, hours: '4', items: [] },
+                { title: 'Layout & Composition', lectures: 4, hours: '3.5', items: [] },
+                { title: 'Final Project', lectures: 3, hours: '5', items: [] }
+            ],
+            reviews: [
+                { name: 'Emily Chen', date: 'March 2026', stars: 5, text: 'This course transformed my design skills completely! Ms. Nour explains every concept so clearly. I landed my first freelance client after finishing!', avatar: 'https://randomuser.me/api/portraits/women/30.jpg' },
+                { name: 'James Wright', date: 'February 2026', stars: 5, text: 'Best design course I\'ve taken. The projects are practical and portfolio-ready. Highly recommend for anyone starting out.', avatar: 'https://randomuser.me/api/portraits/men/15.jpg' },
+                { name: 'Sofia Reyes', date: 'January 2026', stars: 5, text: 'Amazing content! The color theory section alone was worth the price. My Instagram content has never looked better!', avatar: 'https://randomuser.me/api/portraits/women/22.jpg' },
+                { name: 'Omar Hassan', date: 'December 2025', stars: 4, text: 'Very comprehensive course. Would love more content on motion graphics, but overall the quality is excellent.', avatar: 'https://randomuser.me/api/portraits/men/50.jpg' }
+            ]
+        },
+        'english-advanced': {
+            learn: [
+                'Master advanced English grammar structures',
+                'Write professional emails and reports',
+                'Speak fluently in business and academic contexts',
+                'Prepare confidently for IELTS & TOEFL',
+                'Expand vocabulary with 2000+ advanced words',
+                'Improve reading comprehension speed',
+                'Give powerful presentations in English',
+                'Understand and use idiomatic expressions'
+            ],
+            requirements: [
+                'Intermediate English level (B1/B2 or equivalent)',
+                'Willingness to practice speaking daily',
+                'A notebook for vocabulary tracking',
+                'Access to a microphone for speaking exercises'
+            ],
+            curriculum: [
+                { title: 'Advanced Grammar Deep Dive', lectures: 4, hours: '3.5', items: [
+                    { type: 'video', title: 'Course Introduction & Level Assessment', duration: '15:00', free: true },
+                    { type: 'video', title: 'Complex Sentence Structures', duration: '25:40', free: true },
+                    { type: 'quiz', title: 'Grammar Diagnostic Test', duration: '20 questions', free: false }
+                ]},
+                { title: 'Professional Writing Skills', lectures: 5, hours: '4', items: [
+                    { type: 'video', title: 'Writing Effective Emails', duration: '20:00', free: false },
+                    { type: 'file', title: 'Email Templates Pack', duration: 'PDF', free: false }
+                ]},
+                { title: 'Fluent Speaking & Pronunciation', lectures: 6, hours: '5', items: [] },
+                { title: 'IELTS/TOEFL Preparation', lectures: 5, hours: '4.5', items: [] }
+            ],
+            reviews: [
+                { name: 'Aisha Mohammed', date: 'March 2026', stars: 5, text: 'I scored 7.5 on IELTS thanks to this course! Ms. Sarah\'s teaching method is incredibly effective. She focuses on real usage not just grammar rules.', avatar: 'https://randomuser.me/api/portraits/women/45.jpg' },
+                { name: 'Lucas Fernandez', date: 'February 2026', stars: 5, text: 'The professional writing module alone transformed my career communications. My manager noticed the improvement immediately!', avatar: 'https://randomuser.me/api/portraits/men/28.jpg' },
+                { name: 'Yuki Tanaka', date: 'January 2026', stars: 4, text: 'Excellent course for non-native speakers. The pronunciation exercises are particularly helpful. Would love more listening materials.', avatar: 'https://randomuser.me/api/portraits/women/60.jpg' },
+                { name: 'Daniel Kim', date: 'December 2025', stars: 5, text: 'Got a promotion at work after improving my English presentation skills through this course. Worth every penny!', avatar: 'https://randomuser.me/api/portraits/men/72.jpg' }
+            ]
+        },
+        'python-beginners': {
+            learn: [
+                'Python basics from absolute zero',
+                'Work with data, variables and arrays',
+                'Build interactive programs and APIs',
+                'Use popular libraries like NumPy and Pandas',
+                'Complete a full practical project',
+                'Solve problems like a professional coder',
+                'Handle files and databases',
+                'AI fundamentals using Python'
+            ],
+            requirements: [
+                'No prior programming experience needed',
+                'A computer or laptop (Windows / Mac / Linux)',
+                'Internet connection to download free tools',
+                'Eagerness to learn and apply practically'
+            ],
+            curriculum: [
+                { title: 'Setup & Your First Program', lectures: 8, hours: '3', items: [
+                    { type: 'video', title: 'Course Introduction & Roadmap', duration: '12:30', free: true },
+                    { type: 'video', title: 'Install Python & VSCode Step by Step', duration: '18:45', free: true },
+                    { type: 'video', title: 'First Program: Hello World!', duration: '10:20', free: false },
+                    { type: 'quiz', title: 'Section 1 Quiz', duration: '10 questions', free: false }
+                ]},
+                { title: 'Variables & Data Types', lectures: 15, hours: '5.5', items: [
+                    { type: 'video', title: 'What are Variables and Why Use Them?', duration: '15:00', free: false },
+                    { type: 'video', title: 'Numbers, Strings and Lists', duration: '22:10', free: false },
+                    { type: 'file', title: 'Variables Exercise File', duration: 'PDF', free: false }
+                ]},
+                { title: 'Conditions & Loops', lectures: 18, hours: '6', items: [
+                    { type: 'video', title: 'if, else and elif statements', duration: '20:00', free: false },
+                    { type: 'live', title: 'Live Session: Solving Loop Exercises', duration: '1:15:00', free: false }
+                ]},
+                { title: 'Functions & Modules', lectures: 20, hours: '7', items: [] },
+                { title: 'Object-Oriented Programming (OOP)', lectures: 22, hours: '8', items: [] },
+                { title: 'External Libraries (NumPy, Pandas)', lectures: 25, hours: '9', items: [] },
+                { title: 'Full Applied Project', lectures: 30, hours: '10', items: [] },
+                { title: 'Final Exam & Certificate', lectures: 18, hours: '3', items: [] }
+            ],
+            reviews: [
+                { name: 'Sara Ahmed', date: 'March 2026', stars: 5, text: 'Best Python course I\'ve ever taken! The explanation is crystal clear and Sparky was with me every step of the way. I built my first project within two months!', avatar: 'https://randomuser.me/api/portraits/women/33.jpg' },
+                { name: 'Mohamed Khaled', date: 'February 2026', stars: 5, text: 'I was afraid programming would be too hard, but the instructor explains in a fun way. The practical exercises made all the difference for me.', avatar: 'https://randomuser.me/api/portraits/men/22.jpg' },
+                { name: 'Nour Hussein', date: 'January 2026', stars: 5, text: 'My son is 12 years old and completed the course in 6 weeks! The curriculum suits both kids and adults at the same time. Thank you EVOLVE!', avatar: 'https://randomuser.me/api/portraits/women/55.jpg' },
+                { name: 'Omar Yousef', date: 'December 2025', stars: 4, text: 'Excellent and comprehensive content. I wished for more detail on OOP in the last section, but overall this course is the best.', avatar: 'https://randomuser.me/api/portraits/men/67.jpg' }
+            ]
+        },
+        'math-comprehensive': {
+            learn: [
+                'Master algebra, geometry and calculus',
+                'Develop strong mathematical intuition',
+                'Solve complex problems systematically',
+                'Apply statistics to real-world data',
+                'Understand trigonometry and functions',
+                'Prepare for university-level mathematics',
+                'Use mathematical proofs and logic',
+                'Excel in national and international exams'
+            ],
+            requirements: [
+                'Basic arithmetic knowledge (addition, subtraction, multiplication)',
+                'A scientific calculator (physical or app)',
+                'Notebook and pen for practice problems',
+                'Commitment to daily practice (30 min/day)'
+            ],
+            curriculum: [
+                { title: 'Algebra Foundations', lectures: 3, hours: '2', items: [
+                    { type: 'video', title: 'Course Overview & Math Mindset', duration: '14:00', free: true },
+                    { type: 'video', title: 'Equations and Inequalities', duration: '28:20', free: true },
+                    { type: 'quiz', title: 'Algebra Placement Test', duration: '15 questions', free: false }
+                ]},
+                { title: 'Geometry & Trigonometry', lectures: 3, hours: '3', items: [
+                    { type: 'video', title: 'Shapes, Angles and Proofs', duration: '30:00', free: false },
+                    { type: 'file', title: 'Geometry Problem Sets', duration: 'PDF', free: false }
+                ]},
+                { title: 'Functions & Calculus', lectures: 3, hours: '5', items: [] },
+                { title: 'Statistics & Probability', lectures: 3, hours: '4', items: [] },
+                { title: 'Exam Preparation', lectures: 3, hours: '4', items: [] }
+            ],
+            reviews: [
+                { name: 'Layla Mansour', date: 'March 2026', stars: 5, text: 'I used to hate math but Mr. Nour made it genuinely enjoyable. His real-world examples make every concept click. My grades jumped from C to A!', avatar: 'https://randomuser.me/api/portraits/women/37.jpg' },
+                { name: 'Kareem Sami', date: 'February 2026', stars: 5, text: 'The most structured math course I\'ve seen. Every topic builds on the previous one perfectly. Highly recommend for university prep.', avatar: 'https://randomuser.me/api/portraits/men/34.jpg' },
+                { name: 'Fatima Al-Rashid', date: 'January 2026', stars: 4, text: 'Great course overall! The statistics section is particularly well done. Would love more worked exam examples in the calculus section.', avatar: 'https://randomuser.me/api/portraits/women/48.jpg' },
+                { name: 'Hassan Ibrahim', date: 'December 2025', stars: 5, text: 'Worth every penny. I passed my engineering entrance exam with a top score after completing this course. Cannot recommend it enough!', avatar: 'https://randomuser.me/api/portraits/men/62.jpg' }
+            ]
+        }
+    };
+
+    // =============================================
+    //   LOAD & INJECT COURSE DATA
+    // =============================================
+    function loadCourse() {
+        // 1) Try sessionStorage first
+        let course = null;
+        try {
+            const raw = sessionStorage.getItem('selectedCourse');
+            if (raw) course = JSON.parse(raw);
+        } catch(e) {}
+
+        // 2) Fallback: read id from URL param
+        if (!course) {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            if (id) {
+                console.warn('No sessionStorage data, falling back to URL id:', id);
+            }
+        }
+
+        if (!course) {
+            document.getElementById('heroTitle').textContent = 'Course not found';
+            document.getElementById('heroDescription').textContent = 'Please go back to courses and select a course.';
+            return;
+        }
+
+        // ---- Inject Hero ----
+        document.title = 'EVOLVE - ' + course.title;
+        document.getElementById('heroCategoryIcon').className = course.categoryIcon || 'fas fa-book';
+        document.getElementById('heroCategoryText').textContent = course.category;
+        document.getElementById('heroTitle').textContent = course.title;
+        document.getElementById('heroDescription').textContent = course.description;
+        document.getElementById('heroRating').textContent = course.rating;
+        document.getElementById('heroRatingCount').textContent = '(' + course.reviewsCount + ' reviews) · ' + course.students + ' Students';
+        document.getElementById('metaHours').textContent = course.hours + ' Hours Content';
+        document.getElementById('metaLectures').textContent = course.lectures + ' Lectures';
+        document.getElementById('metaLevel').textContent = course.level;
+        document.getElementById('metaLanguage').textContent = course.language;
+        document.getElementById('metaUpdated').textContent = 'Updated ' + course.updated;
+        document.getElementById('heroInstructorImg').src = course.instructorImg;
+        document.getElementById('heroInstructorName').textContent = course.instructor;
+
+        // ---- Inject Enroll Card ----
+        document.getElementById('enrollCardImage').src = course.image;
+        document.getElementById('priceNew').textContent = course.price + ' EGP';
+        document.getElementById('priceOld').textContent = course.oldPrice + ' EGP';
+        document.getElementById('priceDiscount').textContent = course.discount + '% OFF';
+        document.getElementById('stickyPrice').textContent = course.price + ' EGP';
+        document.getElementById('stickyOldPrice').textContent = course.oldPrice + ' EGP';
+
+        // ---- Inject Breadcrumb ----
+        document.getElementById('breadcrumbCategory').textContent = course.category;
+        document.getElementById('breadcrumbTitle').textContent = course.title;
+
+        // ---- Inject Sidebar Stats ----
+        const levelEl = document.getElementById('levelBadge');
+        levelEl.textContent = course.level;
+        levelEl.className = 'level-badge ' + (course.level === 'Beginner' ? 'level-beginner' : course.level === 'Advanced' ? 'level-advanced' : 'level-intermediate');
+        document.getElementById('sidebarHours').textContent = course.hours + ' Hours';
+        document.getElementById('sidebarLectures').textContent = course.lectures + ' Lectures';
+        document.getElementById('sidebarStudents').textContent = course.students + '+';
+        document.getElementById('sidebarLanguage').textContent = course.language;
+        document.getElementById('sidebarUpdated').textContent = course.updated;
+
+        // ---- Inject per-course content ----
+        const content = COURSE_CONTENT[course.id];
+        if (content) {
+            // Learn grid
+            const learnGrid = document.getElementById('learnGrid');
+            learnGrid.innerHTML = content.learn.map(item =>
+                `<div class="learn-item"><i class="fas fa-check-circle"></i> ${item}</div>`
+            ).join('');
+
+            // Requirements
+            const reqList = document.getElementById('requirementsList');
+            reqList.innerHTML = content.requirements.map(r => `<li>${r}</li>`).join('');
+
+            // Description
+            document.getElementById('courseFullDescription').innerHTML =
+                `${course.description}<br><br>This course follows a <strong>"learn by doing"</strong> approach — every new concept is accompanied by a practical example and interactive exercise. With AI assistance from Sparky, you'll get instant answers to any question while learning.<br><br>By the end of the course, you'll be able to build real projects and add them to your portfolio. Join over <strong>${course.students} students</strong> who have successfully completed this journey!`;
+
+            // Curriculum
+            const curriculumSummary = document.getElementById('curriculumSummary');
+            const totalLectures = content.curriculum.reduce((s, c) => s + c.lectures, 0);
+            const totalHours = content.curriculum.reduce((s, c) => s + parseFloat(c.hours), 0);
+            curriculumSummary.textContent = `${content.curriculum.length} sections · ${totalLectures} lectures · ${totalHours} hours`;
+
+            const accordions = document.getElementById('curriculumAccordions');
+            accordions.innerHTML = content.curriculum.map((sec, idx) => {
+                const itemsHTML = sec.items.length > 0 ? sec.items.map(item => {
+                    const iconClass = { video:'video', quiz:'quiz', file:'file', live:'live' }[item.type] || 'video';
+                    const iconFA = { video:'fas fa-play', quiz:'fas fa-question-circle', file:'fas fa-file-code', live:'fas fa-broadcast-tower' }[item.type] || 'fas fa-play';
+                    const freeBadge = item.free ? '<span class="free-badge">Free</span>' : '';
+                    return `<div class="lecture-item">
+                        <div class="lecture-icon ${iconClass}"><i class="${iconFA}"></i></div>
+                        <div class="lecture-info">
+                            <div class="lecture-title">${item.title}</div>
+                            <div class="lecture-type">${item.type.charAt(0).toUpperCase() + item.type.slice(1)}</div>
+                        </div>
+                        ${freeBadge}
+                        <span class="lecture-duration"><i class="fas fa-clock"></i> ${item.duration}</span>
+                    </div>`;
+                }).join('') : '<div style="padding:16px 22px; color:var(--text-muted); font-size:14px;"><i class="fas fa-lock" style="margin-right:8px;"></i>Enroll to access this section</div>';
+
+                return `<div class="section-accordion ${idx === 0 ? 'open' : ''}">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <div class="accordion-title">
+                            <span class="section-number">${idx + 1}</span>
+                            ${sec.title}
+                        </div>
+                        <div class="accordion-meta">
+                            <span>${sec.lectures} lectures</span>
+                            <span>${sec.hours} hours</span>
+                            <div class="accordion-toggle"><i class="fas fa-chevron-down"></i></div>
+                        </div>
+                    </div>
+                    <div class="accordion-body">${itemsHTML}</div>
+                </div>`;
+            }).join('');
+
+            // Instructor
+            document.getElementById('instructorPhoto').src = course.instructorImg;
+            document.getElementById('instructorName').textContent = course.instructor;
+            document.getElementById('instructorRole').textContent = course.instructorRole;
+            document.getElementById('instructorBio').textContent = course.instructorBio;
+            const [iRating, iStudents, iCourses, iYears] = (course.instructorStats || '4.8|1000|5|5').split('|');
+            document.getElementById('instructorStats').innerHTML = `
+                <div class="inst-stat"><i class="fas fa-star"></i> ${iRating} Rating</div>
+                <div class="inst-stat"><i class="fas fa-users"></i> ${parseInt(iStudents).toLocaleString()} Students</div>
+                <div class="inst-stat"><i class="fas fa-book"></i> ${iCourses} Courses</div>
+                <div class="inst-stat"><i class="fas fa-briefcase"></i> ${iYears} Yrs Experience</div>
+            `;
+
+            // Reviews
+            document.getElementById('reviewRatingBig').textContent = course.rating;
+            const reviewsGrid = document.getElementById('reviewsGrid');
+            reviewsGrid.innerHTML = content.reviews.map(r => `
+                <div class="review-card">
+                    <div class="review-header">
+                        <img class="reviewer-avatar" src="${r.avatar}" alt="${r.name}">
+                        <div>
+                            <div class="reviewer-name">${r.name}</div>
+                            <div class="review-date">${r.date}</div>
+                        </div>
+                    </div>
+                    <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div>
+                    <p class="review-text">${r.text}</p>
+                </div>
+            `).join('');
+        }
+    }
+
+    // =============================================
+    //   UI FUNCTIONS
+    // =============================================
+    function toggleTheme() {
+        const html = document.documentElement;
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+        document.querySelectorAll('.theme-toggle i').forEach(i => i.className = isDark ? 'fas fa-moon' : 'fas fa-sun');
+    }
+
+    function openDrawer() {
+        document.getElementById('navDrawer').classList.add('open');
+        document.getElementById('navOverlay').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+        document.getElementById('navDrawer').classList.remove('open');
+        document.getElementById('navOverlay').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+    function switchTab(tabName, btn) {
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('tab-' + tabName).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    function toggleAccordion(header) { header.parentElement.classList.toggle('open'); }
+
+    function expandAll() {
+        const btn = document.querySelector('.expand-all-btn');
+        const all = document.querySelectorAll('.section-accordion');
+        const allOpen = [...all].every(a => a.classList.contains('open'));
+        all.forEach(a => allOpen ? a.classList.remove('open') : a.classList.add('open'));
+        btn.textContent = allOpen ? 'Expand All' : 'Collapse All';
+    }
+
+    // =============================================
+    //   ENROLL — redirects to payment page
+    // =============================================
+    function enrollNow() {
+        window.location.href = 'pay.html';
+    }
+
+    function toggleWishlist(btn) {
+        const icon = btn.querySelector('i');
+        const wished = icon.classList.contains('fas');
+        icon.className = wished ? 'far fa-heart' : 'fas fa-heart';
+        icon.style.color = wished ? '' : '#e53e3e';
+        btn.childNodes[1].textContent = wished ? ' Add to Wishlist' : ' Added to Wishlist';
+    }
+
+    // Sticky bar hide when enroll card visible
+    const stickyBar = document.getElementById('stickyBar');
+    const enrollCard = document.querySelector('.enroll-card');
+    if (enrollCard && stickyBar) {
+        stickyBar.style.transition = 'opacity 0.3s';
+        new IntersectionObserver(entries => {
+            stickyBar.style.opacity = entries[0].isIntersecting ? '0' : '1';
+            stickyBar.style.pointerEvents = entries[0].isIntersecting ? 'none' : 'all';
+        }, { threshold: 0.1 }).observe(enrollCard);
+    }
+
+    // =============================================
+    //   INIT
+    // =============================================
+    document.addEventListener('DOMContentLoaded', loadCourse);
+    </script>
+</body>
+</html>

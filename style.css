@@ -44,13 +44,18 @@
     padding: 0;
     box-sizing: border-box;
 }
-
+body{
+direction: rtl;
+text-align: right;
+}
 body {
     background-color: var(--bg-main);
     color: var(--text-main); /* تعديل: ليكون النص واضحاً حسب الثيم */
     overflow-x: hidden;
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     line-height: 1.6;
+    direction: rtl;
+
 }
 
 /* --- Navbar --- */

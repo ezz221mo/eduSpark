@@ -1,332 +1,1130 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EduSpark – Checkout</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-:root {
-  --primary-green: #89b084;
-  --primary-green-dark: #6e9b73;
-  --bg-main: #f9f8f3;
-  --bg-card: #ffffff;
-  --bg-soft: #eef3ee;
-  --text-main: #333333;
-  --text-muted: #6b7280;
-  --text-invert: #ffffff;
-  --border-color: #e5e7eb;
-  --shadow-soft: 0 10px 30px rgba(0,0,0,0.08);
-  --radius: 20px;
-  --radius-sm: 12px;
-}
-[data-theme="dark"] {
-  --primary-green: #8fd3a5;
-  --primary-green-dark: #5fa37a;
-  --bg-main: #0f172a;
-  --bg-card: #111827;
-  --bg-soft: #1f2933;
-  --text-main: #e5e7eb;
-  --text-muted: #9ca3af;
-  --text-invert: #020617;
-  --border-color: #1f2937;
-  --shadow-soft: 0 20px 50px rgba(0,0,0,0.6);
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:'Inter',sans-serif;background:var(--bg-main);color:var(--text-main);min-height:100vh;line-height:1.6;transition:background .3s,color .3s;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVOLVE — إتمام الدفع</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+    :root {
+        --green:        #89b084;
+        --green-dark:   #6e9b73;
+        --green-light:  #eef3ee;
+        --green-glow:   rgba(137,176,132,.22);
+        --bg:           #f9f8f3;
+        --surface:      #ffffff;
+        --soft:         #f3f4f0;
+        --text:         #1e2a1e;
+        --muted:        #6b7280;
+        --border:       #e5e7eb;
+        --danger:       #ef4444;
+        --gold:         #d4a373;
+        --radius:       16px;
+        --ease:         cubic-bezier(.4,0,.2,1);
+        --shadow:       0 4px 24px rgba(0,0,0,.07);
+        --shadow-lg:    0 16px 56px rgba(0,0,0,.13);
+    }
+    [data-theme="dark"] {
+        --bg:#0d1117; --surface:#161b22; --soft:#1c2128;
+        --text:#e6edf3; --muted:#8b949e; --border:#21262d;
+        --shadow:0 4px 24px rgba(0,0,0,.4); --shadow-lg:0 16px 56px rgba(0,0,0,.6);
+    }
 
-/* NAV */
-nav{display:flex;justify-content:space-between;align-items:center;padding:12px 5%;background:var(--bg-card);position:sticky;top:0;z-index:1000;border-bottom:1px solid var(--border-color);box-shadow:0 2px 12px rgba(0,0,0,0.04);transition:background .3s;}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-.logo-box{background:var(--primary-green);color:#fff;width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;}
-.logo-text{font-size:20px;font-weight:700;color:var(--text-main);}
-.nav-links{display:flex;gap:6px;align-items:center;list-style:none;}
-.nav-links a{text-decoration:none;color:var(--text-muted);font-size:14px;font-weight:500;padding:8px 14px;border-radius:var(--radius-sm);transition:all .2s;}
-.nav-links a:hover{color:var(--primary-green);background:var(--bg-soft);}
-.nav-right{display:flex;align-items:center;gap:8px;}
-.role-tag{font-size:12px;padding:4px 10px;border-radius:20px;border:1px solid var(--border-color);color:var(--text-muted);cursor:pointer;transition:all .2s;}
-.role-tag:hover{border-color:var(--primary-green);color:var(--primary-green);}
-.btn-login{background:var(--primary-green);color:#fff;border:none;padding:9px 22px;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all .3s;}
-.btn-login:hover{background:var(--primary-green-dark);transform:translateY(-2px);}
-.theme-btn{background:var(--bg-soft);border:1px solid var(--border-color);color:var(--text-muted);width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-.theme-btn:hover{background:var(--border-color);}
-.menu-toggle{display:none;background:none;border:1px solid var(--border-color);color:var(--text-muted);padding:8px 12px;border-radius:var(--radius-sm);cursor:pointer;font-size:18px;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;direction:rtl;-webkit-font-smoothing:antialiased;}
 
-/* MAIN */
-main{max-width:1000px;margin:0 auto;padding:40px 5% 60px;}
+    @keyframes fadeUp   {from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn   {from{opacity:0}to{opacity:1}}
+    @keyframes scaleIn  {from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+    @keyframes shimmer  {0%{background-position:200% center}100%{background-position:-200% center}}
+    @keyframes spin     {to{transform:rotate(360deg)}}
+    @keyframes popIn    {0%{transform:scale(.82);opacity:0}65%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
+    @keyframes float    {0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes pulse    {0%,100%{box-shadow:0 0 0 0 var(--green-glow)}70%{box-shadow:0 0 0 12px transparent}}
+    @keyframes checkDraw{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+    @keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:translateY(0)}}
 
-.breadcrumb{font-size:13px;color:var(--primary-green);margin-bottom:16px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font-weight:500;transition:opacity .2s;}
-.breadcrumb:hover{opacity:.75;}
+    /* ══ NAV ══ */
+    nav {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 0 5%;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 1px 0 var(--border);
+    }
+    .nav-logo {
+        display: flex; align-items: center; gap: 10px;
+        text-decoration: none; font-size: 20px; font-weight: 900; color: var(--green);
+    }
+    .nav-logo-box {
+        background: var(--green); color: white;
+        padding: 4px 10px; border-radius: 8px; font-weight: 900;
+    }
+    .nav-secure {
+        display: flex; align-items: center; gap: 7px;
+        font-size: 13px; color: var(--muted); font-weight: 600;
+    }
+    .nav-secure i { color: var(--green); font-size: 15px; }
+    .nav-back {
+        display: flex; align-items: center; gap: 6px;
+        font-size: 13px; color: var(--muted); cursor: pointer;
+        background: var(--soft); border: 1px solid var(--border);
+        padding: 7px 14px; border-radius: 20px; text-decoration: none;
+        transition: all .2s var(--ease); font-weight: 600;
+    }
+    .nav-back:hover { background: var(--green-light); color: var(--green); border-color: var(--green); }
+    .theme-btn {
+        background: var(--soft); border: 1px solid var(--border);
+        width: 36px; height: 36px; border-radius: 50%; font-size: 16px;
+        cursor: pointer; display: flex; align-items: center; justify-content: center;
+        transition: all .2s; color: var(--text);
+    }
+    .theme-btn:hover { background: var(--green-light); }
 
-main h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:32px;color:var(--text-main);}
+    /* ══ PROGRESS BAR ══ */
+    .progress-bar-wrap {
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 0 5%;
+    }
+    .checkout-steps {
+        display: flex; align-items: center; gap: 0;
+        max-width: 700px; margin: 0 auto;
+        padding: 14px 0;
+        overflow-x: auto; scrollbar-width: none;
+    }
+    .checkout-steps::-webkit-scrollbar { display: none; }
+    .cstep {
+        display: flex; align-items: center; gap: 8px;
+        font-size: 12.5px; font-weight: 700; white-space: nowrap; flex-shrink: 0;
+    }
+    .cstep-num {
+        width: 28px; height: 28px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 12px; font-weight: 800; flex-shrink: 0;
+        transition: all .3s var(--ease);
+    }
+    .cstep.done .cstep-num   { background: var(--green); color: white; }
+    .cstep.active .cstep-num { background: var(--green); color: white; box-shadow: 0 0 0 4px var(--green-light); }
+    .cstep.idle .cstep-num   { background: var(--soft); color: var(--muted); border: 2px solid var(--border); }
+    .cstep.active .cstep-label { color: var(--green); }
+    .cstep.idle .cstep-label   { color: var(--muted); }
+    .cstep-line {
+        flex: 1; min-width: 20px; height: 2px;
+        background: var(--border); margin: 0 6px; border-radius: 2px;
+    }
+    .cstep-line.done { background: var(--green); }
 
-.checkout-grid{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;}
+    /* ══ LAYOUT ══ */
+    .checkout-wrapper {
+        max-width: 1060px; margin: 0 auto;
+        padding: 36px 5% 60px;
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 28px;
+        align-items: start;
+    }
+    .checkout-left  { display: flex; flex-direction: column; gap: 20px; animation: fadeUp .55s var(--ease); }
+    .checkout-right { display: flex; flex-direction: column; gap: 18px; animation: fadeUp .7s var(--ease); }
 
-/* CARD */
-.card{background:var(--bg-card);border-radius:var(--radius);padding:32px;box-shadow:var(--shadow-soft);border:1px solid var(--border-color);animation:fadeInUp .45s ease both;}
-.card:nth-child(2){animation-delay:.1s;}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+    /* ══ SECTION CARD ══ */
+    .section-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: box-shadow .3s;
+    }
+    .section-card:focus-within { box-shadow: 0 0 0 3px var(--green-glow), var(--shadow); }
+    .section-head {
+        display: flex; align-items: center; gap: 12px;
+        padding: 20px 24px 0; margin-bottom: 18px;
+    }
+    .section-head-icon {
+        width: 38px; height: 38px; border-radius: 10px;
+        background: var(--green-light);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px; flex-shrink: 0;
+    }
+    .section-head h3 { font-size: 16px; font-weight: 800; }
+    .section-head p  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .section-body { padding: 0 24px 24px; }
 
-.card h2{font-size:16px;font-weight:600;margin-bottom:22px;color:var(--text-main);}
+    /* ══ FORM ══ */
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+    label {
+        display: block; font-size: 11.5px; font-weight: 700;
+        text-transform: uppercase; letter-spacing: .6px;
+        color: var(--muted); margin-bottom: 7px;
+    }
+    label .req { color: var(--danger); margin-right: 2px; }
+    .input-wrap { position: relative; }
+    .input-wrap i.field-icon {
+        position: absolute; right: 14px; top: 50%;
+        transform: translateY(-50%); color: var(--muted); font-size: 14px;
+        pointer-events: none; transition: color .2s;
+    }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="number"], select {
+        width: 100%; padding: 12px 40px 12px 14px;
+        border: 1.5px solid var(--border); border-radius: 11px;
+        background: var(--bg); color: var(--text);
+        font-family: inherit; font-size: 14px; outline: none;
+        transition: all .2s var(--ease);
+    }
+    input:focus, select:focus {
+        border-color: var(--green); background: var(--surface);
+        box-shadow: 0 0 0 3px var(--green-glow);
+    }
+    input:focus ~ i.field-icon { color: var(--green); }
+    input::placeholder { color: var(--muted); font-size: 13px; }
+    select { -webkit-appearance: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%236b7280' d='M6 8L0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: left 14px center; padding-left: 34px; cursor: pointer; }
+    .field-row   { display: grid; grid-template-columns: 1fr 1fr;   gap: 14px; }
+    .field-row-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; }
 
-.card-icons{display:flex;gap:8px;margin-bottom:22px;}
-.card-badge{width:46px;height:30px;border:1.5px solid var(--border-color);border-radius:8px;display:grid;place-items:center;font-size:10px;font-weight:700;background:var(--bg-soft);color:#1434CB;}
-.card-badge.mc{color:#EB001B;}
+    /* ══ CARD NUMBER VISUAL ══ */
+    .card-number-wrap {
+        position: relative;
+    }
+    .card-brand-icons {
+        position: absolute; left: 12px; top: 50%;
+        transform: translateY(-50%);
+        display: flex; gap: 4px; align-items: center;
+    }
+    .card-brand-icons img { height: 20px; border-radius: 3px; opacity: .7; transition: opacity .2s; }
+    .card-brand-icons img.active { opacity: 1; transform: scale(1.1); }
+    #cardNumberInput { padding-left: 80px; letter-spacing: 2px; font-weight: 700; font-size: 15px; }
 
-/* FORM */
-.form-group{margin-bottom:18px;}
-label{display:block;font-size:11px;font-weight:600;color:var(--text-muted);margin-bottom:7px;text-transform:uppercase;letter-spacing:.05em;}
-input[type="text"]{width:100%;padding:13px 16px;border:1.5px solid var(--border-color);border-radius:var(--radius-sm);font-family:'Inter',sans-serif;font-size:14px;color:var(--text-main);background:var(--bg-main);outline:none;transition:border-color .2s,box-shadow .2s;}
-input[type="text"]:focus{border-color:var(--primary-green);box-shadow:0 0 0 3px rgba(137,176,132,.15);}
-input::placeholder{color:var(--border-color);}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+    /* ══ PAYMENT METHODS ══ */
+    .pay-methods {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px; margin-bottom: 20px;
+    }
+    .pay-method {
+        border: 2px solid var(--border); border-radius: 12px;
+        padding: 12px 8px; text-align: center; cursor: pointer;
+        transition: all .22s var(--ease);
+        display: flex; flex-direction: column; align-items: center; gap: 6px;
+    }
+    .pay-method:hover { border-color: var(--green); background: var(--green-light); }
+    .pay-method.selected {
+        border-color: var(--green); background: var(--green-light);
+        box-shadow: 0 0 0 3px var(--green-glow);
+    }
+    .pay-method-icon { font-size: 22px; }
+    .pay-method-label { font-size: 11px; font-weight: 700; color: var(--muted); }
+    .pay-method.selected .pay-method-label { color: var(--green-dark); }
+    .pay-panel { display: none; animation: slideDown .28s var(--ease); }
+    .pay-panel.active { display: block; }
 
-.secure-note{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-muted);margin:16px 0 22px;background:var(--bg-soft);padding:10px 14px;border-radius:var(--radius-sm);}
-.secure-note i{color:var(--primary-green);}
+    /* Installments */
+    .install-grid { display: flex; flex-direction: column; gap: 10px; }
+    .install-option {
+        display: flex; align-items: center; gap: 14px;
+        padding: 14px 16px; border: 2px solid var(--border);
+        border-radius: 12px; cursor: pointer; transition: all .22s var(--ease);
+    }
+    .install-option:hover { border-color: var(--green); background: var(--green-light); }
+    .install-option.selected { border-color: var(--green); background: var(--green-light); }
+    .install-radio {
+        width: 20px; height: 20px; border-radius: 50%;
+        border: 2px solid var(--border); flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+        transition: all .2s;
+    }
+    .install-option.selected .install-radio { border-color: var(--green); background: var(--green); }
+    .install-option.selected .install-radio::after { content: ''; width: 8px; height: 8px; background: white; border-radius: 50%; }
+    .install-info { flex: 1; }
+    .install-title { font-size: 14px; font-weight: 700; }
+    .install-sub   { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .install-price { font-size: 16px; font-weight: 900; color: var(--green-dark); }
 
-.btn-complete{width:100%;background:var(--primary-green);color:#fff;border:none;padding:16px;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all .3s;letter-spacing:.01em;position:relative;overflow:hidden;}
-.btn-complete:hover{background:var(--primary-green-dark);transform:translateY(-3px);box-shadow:0 10px 25px rgba(137,176,132,.35);}
-.btn-complete:active{transform:scale(.99);}
+    /* Vodafone Cash */
+    .vodafone-wrap {
+        display: flex; align-items: center; gap: 14px;
+        padding: 16px; background: var(--soft); border-radius: 12px;
+        border: 1px solid var(--border); margin-bottom: 14px;
+    }
+    .vodafone-logo {
+        width: 48px; height: 48px; background: #e2001a;
+        border-radius: 12px; display: flex; align-items: center;
+        justify-content: center; font-size: 22px; flex-shrink: 0;
+    }
+    .vodafone-info h4 { font-size: 14px; font-weight: 800; }
+    .vodafone-info p  { font-size: 12px; color: var(--muted); margin-top: 3px; }
 
-/* ORDER SUMMARY */
-.order-item{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px;}
-.order-thumb{width:64px;height:64px;border-radius:var(--radius-sm);flex-shrink:0;background:linear-gradient(135deg,#1a1a2e,#2d4a7a);display:grid;place-items:center;color:var(--primary-green);font-size:10px;font-weight:700;text-align:center;padding:8px;line-height:1.3;}
-.order-info h3{font-size:14px;font-weight:600;line-height:1.4;margin-bottom:4px;color:var(--text-main);}
-.order-info p{font-size:12px;color:var(--text-muted);}
+    /* ══ PROMO CODE ══ */
+    .promo-wrap {
+        display: flex; gap: 10px;
+    }
+    .promo-wrap input {
+        flex: 1; padding: 11px 14px; border: 1.5px solid var(--border);
+        border-radius: 11px; background: var(--bg); color: var(--text);
+        font-family: inherit; font-size: 13.5px; outline: none; transition: all .2s;
+        letter-spacing: 1px; font-weight: 700;
+    }
+    .promo-wrap input:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-glow); }
+    .promo-btn {
+        padding: 11px 20px; background: var(--green); color: white;
+        border: none; border-radius: 11px; font-size: 13px; font-weight: 800;
+        cursor: pointer; transition: all .22s; white-space: nowrap; font-family: inherit;
+    }
+    .promo-btn:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .promo-success {
+        display: none; margin-top: 10px;
+        padding: 10px 14px; background: #dcfce7; border-radius: 10px;
+        border: 1px solid #86efac; font-size: 13px; font-weight: 600; color: #166534;
+        animation: slideDown .25s var(--ease);
+    }
+    .promo-error {
+        display: none; margin-top: 10px;
+        padding: 10px 14px; background: #fee2e2; border-radius: 10px;
+        border: 1px solid #fca5a5; font-size: 13px; font-weight: 600; color: #991b1b;
+        animation: slideDown .25s var(--ease);
+    }
 
-.divider{border:none;border-top:1px solid var(--border-color);margin:16px 0;}
+    /* ══ ORDER SUMMARY ══ */
+    .order-summary-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 80px;
+    }
+    .order-summary-head {
+        background: linear-gradient(135deg, var(--green), var(--green-dark));
+        padding: 20px 22px; color: white;
+        display: flex; align-items: center; gap: 12px;
+    }
+    .order-summary-head h3 { font-size: 16px; font-weight: 900; }
+    .order-summary-head p  { font-size: 12px; opacity: .85; margin-top: 2px; }
+    .course-thumb-mini {
+        width: 80px; height: 60px; border-radius: 10px;
+        object-fit: cover; flex-shrink: 0;
+        border: 2px solid rgba(255,255,255,.3);
+    }
 
-.price-row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:10px;color:var(--text-muted);}
-.price-row.discount{color:var(--primary-green);font-weight:500;}
-.price-row.total{font-weight:700;font-size:16px;color:var(--text-main);margin-bottom:0;}
+    .order-summary-body { padding: 20px 22px; }
+    .course-title-mini {
+        font-size: 15px; font-weight: 800; line-height: 1.4;
+        margin-bottom: 5px;
+    }
+    .course-meta-mini {
+        display: flex; gap: 10px; flex-wrap: wrap;
+        font-size: 12px; color: var(--muted); margin-bottom: 16px;
+    }
+    .course-meta-mini span { display: flex; align-items: center; gap: 4px; }
+    .course-meta-mini i   { color: var(--green); }
 
-/* TRUST BADGES */
-.trust-badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
-.trust-badge{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-muted);background:var(--bg-soft);padding:6px 12px;border-radius:20px;}
-.trust-badge i{color:var(--primary-green);font-size:12px;}
+    .price-breakdown { border-top: 1px solid var(--border); padding-top: 16px; }
+    .price-row-item {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 7px 0; font-size: 14px;
+    }
+    .price-row-item .label { color: var(--muted); }
+    .price-row-item .value { font-weight: 700; }
+    .price-row-item.discount .value { color: #16a34a; }
+    .price-row-item.promo-applied .value { color: #16a34a; }
+    .price-divider { height: 1px; background: var(--border); margin: 10px 0; }
+    .price-total {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 0;
+    }
+    .price-total .label { font-size: 15px; font-weight: 800; }
+    .price-total .value { font-size: 26px; font-weight: 900; color: var(--green-dark); }
 
-/* FOOTER */
-footer{background:var(--bg-card);border-top:1px solid var(--border-color);padding:50px 5% 25px;margin-top:20px;}
-.footer-grid{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:35px;}
-.footer-brand p{font-size:14px;color:var(--text-muted);line-height:1.7;margin-top:12px;max-width:240px;}
-.footer-logo{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
-.footer-col h4{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;color:var(--text-main);}
-.footer-col ul{list-style:none;}
-.footer-col ul li{margin-bottom:10px;}
-.footer-col ul li a{font-size:14px;color:var(--text-muted);text-decoration:none;transition:color .2s;}
-.footer-col ul li a:hover{color:var(--primary-green);}
-.footer-bottom{max-width:1000px;margin:0 auto;padding-top:20px;border-top:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text-muted);flex-wrap:wrap;gap:12px;}
-.footer-legal{display:flex;gap:18px;flex-wrap:wrap;}
-.footer-legal a{color:var(--text-muted);text-decoration:none;transition:color .2s;}
-.footer-legal a:hover{color:var(--primary-green);}
+    /* Course features */
+    .course-features {
+        border-top: 1px solid var(--border);
+        padding-top: 16px; margin-top: 4px;
+        display: flex; flex-direction: column; gap: 8px;
+    }
+    .feat-item {
+        display: flex; align-items: center; gap: 8px;
+        font-size: 12.5px; color: var(--muted);
+    }
+    .feat-item i { color: var(--green); width: 14px; font-size: 12px; }
 
-/* RIPPLE */
-button{position:relative;overflow:hidden;}
-.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.35);transform:scale(0);animation:ripple-anim .55s ease-out forwards;pointer-events:none;}
-@keyframes ripple-anim{to{transform:scale(4);opacity:0;}}
+    /* ══ GUARANTEE ══ */
+    .guarantee-badge {
+        display: flex; align-items: center; gap: 12px;
+        padding: 14px 16px; background: var(--soft);
+        border-radius: 12px; border: 1px solid var(--border);
+        font-size: 12.5px; color: var(--muted);
+    }
+    .guarantee-badge i { font-size: 22px; color: var(--green); flex-shrink: 0; }
+    .guarantee-badge strong { display: block; color: var(--text); font-size: 13px; margin-bottom: 2px; }
 
-/* RESPONSIVE */
-@media(max-width:900px){
-  .checkout-grid{grid-template-columns:1fr;}
-  .footer-grid{grid-template-columns:1fr 1fr;}
-}
-@media(max-width:768px){
-  nav{padding:12px 4%;}
-  .nav-links,.nav-right .role-tag{display:none;}
-  .menu-toggle{display:block;}
-  main{padding:28px 4% 50px;}
-  footer{padding:35px 4% 20px;}
-  .footer-bottom{flex-direction:column;align-items:flex-start;}
-}
-@media(max-width:480px){
-  .footer-grid{grid-template-columns:1fr;}
-  .form-row{grid-template-columns:1fr;}
-  .card{padding:22px;}
-  main h1{font-size:1.4rem;}
-}
-</style>
+    /* ══ SUBMIT BUTTON ══ */
+    .submit-btn {
+        width: 100%; padding: 17px; border: none;
+        background: linear-gradient(135deg, var(--green), var(--green-dark));
+        color: white; border-radius: 14px; font-size: 17px; font-weight: 900;
+        cursor: pointer; transition: all .3s var(--ease);
+        font-family: inherit;
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        box-shadow: 0 6px 24px var(--green-glow);
+        animation: pulse 2.5s infinite;
+        margin-bottom: 12px;
+        position: relative; overflow: hidden;
+    }
+    .submit-btn::before {
+        content: ''; position: absolute; top: 0; left: -100%;
+        width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
+        transition: left .6s;
+    }
+    .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 36px var(--green-glow); }
+    .submit-btn:hover::before { left: 100%; }
+    .submit-btn:active { transform: scale(.97); }
+    .submit-btn .btn-spinner {
+        display: none; width: 18px; height: 18px;
+        border: 2.5px solid rgba(255,255,255,.35);
+        border-top-color: white; border-radius: 50%;
+        animation: spin .7s linear infinite;
+    }
+
+    /* ══ SECURITY LOGOS ══ */
+    .security-row {
+        display: flex; align-items: center; justify-content: center;
+        gap: 14px; margin-top: 4px; flex-wrap: wrap;
+    }
+    .security-badge {
+        display: flex; align-items: center; gap: 5px;
+        font-size: 11px; color: var(--muted); font-weight: 600;
+    }
+    .security-badge i { color: var(--green); }
+
+    /* ══ SUCCESS OVERLAY ══ */
+    .success-overlay {
+        display: none; position: fixed; inset: 0;
+        background: rgba(0,0,0,.6); z-index: 1000;
+        align-items: center; justify-content: center;
+        padding: 20px; backdrop-filter: blur(8px);
+        animation: fadeIn .3s var(--ease);
+    }
+    .success-overlay.show { display: flex; }
+    .success-card {
+        background: var(--surface); border-radius: 24px;
+        padding: 48px 40px; text-align: center;
+        max-width: 460px; width: 100%;
+        box-shadow: var(--shadow-lg);
+        animation: popIn .45s var(--ease);
+    }
+    .success-circle {
+        width: 90px; height: 90px; border-radius: 50%;
+        background: linear-gradient(135deg, var(--green), var(--green-dark));
+        display: flex; align-items: center; justify-content: center;
+        margin: 0 auto 24px;
+        box-shadow: 0 12px 36px var(--green-glow);
+        animation: float 3s ease-in-out infinite;
+    }
+    .success-circle svg { width: 44px; height: 44px; }
+    .success-circle svg path {
+        stroke: white; stroke-width: 3;
+        stroke-dasharray: 100; stroke-dashoffset: 100;
+        fill: none; stroke-linecap: round;
+        animation: checkDraw .6s .3s var(--ease) forwards;
+    }
+    .success-card h2 { font-size: 26px; font-weight: 900; margin-bottom: 10px; }
+    .success-card p  { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
+    .success-order {
+        background: var(--soft); border-radius: 12px;
+        padding: 14px 18px; margin-bottom: 24px;
+        display: flex; justify-content: space-between;
+        font-size: 13px; border: 1px solid var(--border);
+    }
+    .success-order .label { color: var(--muted); }
+    .success-order .val   { font-weight: 800; color: var(--green-dark); }
+    .success-btns { display: flex; flex-direction: column; gap: 10px; }
+    .success-btn-main {
+        padding: 14px; background: linear-gradient(135deg, var(--green), var(--green-dark));
+        color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 800;
+        cursor: pointer; font-family: inherit; transition: all .2s;
+    }
+    .success-btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--green-glow); }
+    .success-btn-sec {
+        padding: 13px; background: var(--soft); color: var(--text);
+        border: 1.5px solid var(--border); border-radius: 12px; font-size: 14px; font-weight: 700;
+        cursor: pointer; font-family: inherit; transition: all .2s;
+    }
+    .success-btn-sec:hover { background: var(--green-light); border-color: var(--green); }
+    .confetti-emoji { font-size: 36px; animation: popIn .5s .1s var(--ease) backwards; }
+
+    /* ══ TRUST STRIP ══ */
+    .trust-strip {
+        background: var(--soft); border-top: 1px solid var(--border);
+        padding: 16px 5%;
+        display: flex; align-items: center; justify-content: center;
+        gap: 32px; flex-wrap: wrap;
+    }
+    .trust-item {
+        display: flex; align-items: center; gap: 7px;
+        font-size: 12.5px; color: var(--muted); font-weight: 600;
+    }
+    .trust-item i { color: var(--green); font-size: 15px; }
+
+    /* ══ TIMER ══ */
+    .offer-timer {
+        display: flex; align-items: center; gap: 10px;
+        padding: 12px 16px; background: linear-gradient(135deg, #fef3c7, #fffbeb);
+        border: 1px solid #fcd34d; border-radius: 12px; margin-bottom: 16px;
+        font-size: 13px; font-weight: 600; color: #92400e;
+    }
+    .offer-timer i { color: #d97706; font-size: 16px; }
+    #countdown { font-weight: 900; color: #b45309; font-size: 15px; }
+
+    /* ══ TOOLTIP ══ */
+    .tooltip-wrap { position: relative; display: inline-flex; align-items: center; gap: 5px; }
+    .tooltip-icon { color: var(--muted); cursor: help; font-size: 13px; }
+    .tooltip-box {
+        display: none; position: absolute; bottom: 125%; right: 0;
+        background: var(--text); color: var(--bg); padding: 7px 12px;
+        border-radius: 8px; font-size: 11.5px; white-space: nowrap;
+        box-shadow: var(--shadow); z-index: 10; pointer-events: none;
+        animation: slideDown .2s var(--ease);
+    }
+    .tooltip-wrap:hover .tooltip-box { display: block; }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 900px) {
+        .checkout-wrapper { grid-template-columns: 1fr; padding: 20px 4% 40px; gap: 20px; }
+        .checkout-right { order: -1; }
+        .order-summary-card { position: static; }
+        .pay-methods { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+        nav { padding: 0 4%; }
+        .nav-secure span { display: none; }
+        .checkout-wrapper { padding: 16px 4% 32px; gap: 16px; }
+        .section-head  { padding: 16px 16px 0; margin-bottom: 14px; }
+        .section-body  { padding: 0 16px 18px; }
+        .order-summary-body { padding: 16px 18px; }
+        .field-row, .field-row-3 { grid-template-columns: 1fr; gap: 0; }
+        .field-row .field, .field-row-3 .field { margin-bottom: 16px; }
+        .success-card { padding: 32px 22px; }
+        .trust-strip  { gap: 16px; }
+        .checkout-steps { padding: 12px 0; }
+        .cstep-label { font-size: 11px; }
+    }
+    @media (max-width: 420px) {
+        .pay-methods { grid-template-columns: repeat(2, 1fr); }
+        .submit-btn  { font-size: 15px; padding: 15px; }
+        .success-card h2 { font-size: 22px; }
+        .price-total .value { font-size: 22px; }
+    }
+    </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ══ NAV ══ -->
 <nav>
-  <a href="#" class="logo">
-    <div class="logo-box"><i class="fas fa-book-open"></i></div>
-    <span class="logo-text">EVOLVE</span>
-  </a>
-  <button class="menu-toggle" id="menuToggle">&#9776;</button>
-  <ul class="nav-links" id="mainNav">
-    <li><a href="#">Home</a></li>
-    <li><a href="#">Courses</a></li>
-    <li><a href="#">AI</a></li>
-    <li><a href="#">Voice</a></li>
-  </ul>
- 
-    <button class="theme-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
-  </div>
+    <a href="course-detail.html" class="nav-back">
+        <i class="fas fa-arrow-right"></i> العودة للكورس
+    </a>
+    <a href="index.html" class="nav-logo">
+        <span class="nav-logo-box">E</span> EVOLVE
+    </a>
+    <div style="display:flex;align-items:center;gap:10px">
+        <div class="nav-secure">
+            <i class="fas fa-lock"></i>
+            <span>دفع آمن ومشفّر</span>
+        </div>
+        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+    </div>
 </nav>
 
-<!-- MAIN -->
-<main>
-  <div class="breadcrumb"><i class="fas fa-arrow-left"></i> Back to Course</div>
-  <h1>Checkout</h1>
+<!-- ══ PROGRESS STEPS ══ -->
+<div class="progress-bar-wrap">
+    <div class="checkout-steps">
+        <div class="cstep done"   id="cs1"><div class="cstep-num">✓</div><div class="cstep-label">الكورس</div></div>
+        <div class="cstep-line done"></div>
+        <div class="cstep active" id="cs2"><div class="cstep-num">2</div><div class="cstep-label">معلومات الدفع</div></div>
+        <div class="cstep-line"  id="cl2"></div>
+        <div class="cstep idle"   id="cs3"><div class="cstep-num">3</div><div class="cstep-label">التأكيد</div></div>
+    </div>
+</div>
 
-  <div class="checkout-grid">
+<!-- ══ MAIN ══ -->
+<div class="checkout-wrapper">
 
-    <!-- Payment Form -->
-    <div class="card">
-      <h2>Payment Method</h2>
-      <div class="card-icons">
-        <div class="card-badge">VISA</div>
-        <div class="card-badge mc">MC</div>
-      </div>
+    <!-- ══ LEFT: FORM ══ -->
+    <div class="checkout-left">
 
-      <div class="form-group">
-        <label>Name on Card</label>
-        <input type="text" placeholder="John Doe">
-      </div>
-      <div class="form-group">
-        <label>Card Number</label>
-        <input type="text" placeholder="0000 - 0000 - 0000 - 0000" maxlength="19">
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Expiry Date</label>
-          <input type="text" placeholder="MM / YY">
+        <!-- Offer Timer -->
+        <div class="offer-timer">
+            <i class="fas fa-fire"></i>
+            ينتهي العرض خلال: <span id="countdown">00:00</span>
+            — سعر خاص لهذه الجلسة فقط!
         </div>
-        <div class="form-group">
-          <label>CVC / CVV</label>
-          <input type="text" placeholder="123" maxlength="3">
+
+        <!-- 1. بيانات الطالب -->
+        <div class="section-card">
+            <div class="section-head">
+                <div class="section-head-icon">👤</div>
+                <div>
+                    <h3>بيانات الطالب</h3>
+                    <p>معلومات الحساب والتواصل</p>
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="field-row">
+                    <div class="field">
+                        <label>الاسم الأول <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <input type="text" id="firstName" placeholder="محمد" oninput="validateField(this)">
+                            <i class="fas fa-user field-icon"></i>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>الاسم الأخير <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <input type="text" id="lastName" placeholder="أحمد" oninput="validateField(this)">
+                            <i class="fas fa-user field-icon"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>البريد الإلكتروني <span class="req">*</span></label>
+                    <div class="input-wrap">
+                        <input type="email" id="email" placeholder="example@email.com" oninput="validateField(this)">
+                        <i class="fas fa-envelope field-icon"></i>
+                    </div>
+                    <div style="font-size:11px;color:var(--muted);margin-top:5px">
+                        <i class="fas fa-info-circle" style="color:var(--green)"></i>
+                        ستصلك تفاصيل الكورس على هذا البريد
+                    </div>
+                </div>
+                <div class="field">
+                    <label>رقم الهاتف <span class="req">*</span></label>
+                    <div class="input-wrap">
+                        <input type="tel" id="phone" placeholder="01xxxxxxxxx" oninput="validateField(this)">
+                        <i class="fas fa-phone field-icon"></i>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>الدولة</label>
+                    <div class="input-wrap">
+                        <select id="country">
+                            <option value="EG" selected>🇪🇬 مصر</option>
+                            <option value="SA">🇸🇦 السعودية</option>
+                            <option value="AE">🇦🇪 الإمارات</option>
+                            <option value="KW">🇰🇼 الكويت</option>
+                            <option value="QA">🇶🇦 قطر</option>
+                            <option value="BH">🇧🇭 البحرين</option>
+                            <option value="JO">🇯🇴 الأردن</option>
+                            <option value="LB">🇱🇧 لبنان</option>
+                            <option value="MA">🇲🇦 المغرب</option>
+                            <option value="DZ">🇩🇿 الجزائر</option>
+                            <option value="TN">🇹🇳 تونس</option>
+                        </select>
+                        <i class="fas fa-globe field-icon"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <div class="secure-note">
-        <i class="fas fa-lock"></i>
-        Your payment information is encrypted and secure.
-      </div>
+        <!-- 2. طريقة الدفع -->
+        <div class="section-card">
+            <div class="section-head">
+                <div class="section-head-icon">💳</div>
+                <div>
+                    <h3>طريقة الدفع</h3>
+                    <p>اختر الطريقة الأنسب لك</p>
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="pay-methods">
+                    <div class="pay-method selected" onclick="selectPayMethod(this,'card')" data-method="card">
+                        <div class="pay-method-icon">💳</div>
+                        <div class="pay-method-label">بطاقة بنكية</div>
+                    </div>
+                    <div class="pay-method" onclick="selectPayMethod(this,'vodafone')" data-method="vodafone">
+                        <div class="pay-method-icon">📱</div>
+                        <div class="pay-method-label">فودافون كاش</div>
+                    </div>
+                    <div class="pay-method" onclick="selectPayMethod(this,'instapay')" data-method="instapay">
+                        <div class="pay-method-icon">⚡</div>
+                        <div class="pay-method-label">إنستاباي</div>
+                    </div>
+                    <div class="pay-method" onclick="selectPayMethod(this,'installment')" data-method="installment">
+                        <div class="pay-method-icon">🗓️</div>
+                        <div class="pay-method-label">تقسيط</div>
+                    </div>
+                </div>
 
-      <button class="btn-complete">Complete Purchase — $49.99</button>
+                <!-- Panel: بطاقة بنكية -->
+                <div class="pay-panel active" id="panel-card">
+                    <div class="field">
+                        <label>
+                            <div class="tooltip-wrap">
+                                رقم البطاقة <span class="req">*</span>
+                                <i class="fas fa-question-circle tooltip-icon"></i>
+                                <div class="tooltip-box">الرقم المكوّن من 16 رقماً على وجه البطاقة</div>
+                            </div>
+                        </label>
+                        <div class="card-number-wrap">
+                            <div class="card-brand-icons">
+                                <img id="visaImg"  src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa">
+                                <img id="mcImg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="MC">
+                            </div>
+                            <input type="text" id="cardNumberInput" placeholder="0000  0000  0000  0000"
+                                   maxlength="19" oninput="formatCardNumber(this)" autocomplete="cc-number">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>اسم حامل البطاقة <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <input type="text" id="cardName" placeholder="كما هو مكتوب على البطاقة"
+                                   style="text-transform:uppercase" autocomplete="cc-name">
+                            <i class="fas fa-id-card field-icon"></i>
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field">
+                            <label>
+                                <div class="tooltip-wrap">
+                                    تاريخ الانتهاء <span class="req">*</span>
+                                    <i class="fas fa-question-circle tooltip-icon"></i>
+                                    <div class="tooltip-box">شهر/سنة — مثال: 08/28</div>
+                                </div>
+                            </label>
+                            <div class="input-wrap">
+                                <input type="text" id="cardExpiry" placeholder="شش/سس"
+                                       maxlength="5" oninput="formatExpiry(this)" autocomplete="cc-exp">
+                                <i class="fas fa-calendar field-icon"></i>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label>
+                                <div class="tooltip-wrap">
+                                    CVV <span class="req">*</span>
+                                    <i class="fas fa-question-circle tooltip-icon"></i>
+                                    <div class="tooltip-box">3 أرقام خلف البطاقة (Visa/MC)</div>
+                                </div>
+                            </label>
+                            <div class="input-wrap">
+                                <input type="text" id="cardCvv" placeholder="***"
+                                       maxlength="4" oninput="this.value=this.value.replace(/\D/g,'')"
+                                       autocomplete="cc-csc">
+                                <i class="fas fa-lock field-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--soft);border-radius:10px;font-size:12px;color:var(--muted)">
+                        <i class="fas fa-shield-halved" style="color:var(--green)"></i>
+                        بياناتك محمية بتشفير SSL 256-bit — لا نحتفظ ببيانات بطاقتك
+                    </div>
+                </div>
 
-      <div class="trust-badges">
-        <div class="trust-badge"><i class="fas fa-shield-halved"></i> SSL Secured</div>
-        <div class="trust-badge"><i class="fas fa-rotate-left"></i> 30-Day Refund</div>
-        <div class="trust-badge"><i class="fas fa-infinity"></i> Lifetime Access</div>
-      </div>
-    </div>
+                <!-- Panel: فودافون كاش -->
+                <div class="pay-panel" id="panel-vodafone">
+                    <div class="vodafone-wrap">
+                        <div class="vodafone-logo">📱</div>
+                        <div class="vodafone-info">
+                            <h4>ادفع عبر فودافون كاش</h4>
+                            <p>أدخل رقم محفظتك وسنرسل لك كود التأكيد</p>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>رقم فودافون كاش <span class="req">*</span></label>
+                        <div class="input-wrap">
+                            <input type="tel" id="vodafoneNum" placeholder="01xxxxxxxxx">
+                            <i class="fas fa-mobile-alt field-icon"></i>
+                        </div>
+                    </div>
+                    <div style="padding:12px 14px;background:#fff8f8;border:1px solid #fecaca;border-radius:10px;font-size:12.5px;color:#b91c1c">
+                        <i class="fas fa-info-circle"></i>
+                        ستصلك رسالة تأكيد على رقمك فور الضغط على "إتمام الدفع"
+                    </div>
+                </div>
 
-    <!-- Order Summary -->
-    <div class="card">
-      <h2>Order Summary</h2>
+                <!-- Panel: إنستاباي -->
+                <div class="pay-panel" id="panel-instapay">
+                    <div style="text-align:center;padding:20px 0">
+                        <div style="font-size:52px;margin-bottom:12px">⚡</div>
+                        <h4 style="font-size:16px;font-weight:800;margin-bottom:6px">الدفع عبر إنستاباي</h4>
+                        <p style="font-size:13px;color:var(--muted);margin-bottom:18px">اضغط على الزر لفتح تطبيق إنستاباي وإتمام الدفع</p>
+                        <div style="display:inline-flex;align-items:center;gap:10px;padding:14px 24px;background:linear-gradient(135deg,#6c2bd9,#4f46e5);color:white;border-radius:14px;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 6px 20px rgba(79,70,229,.3)" onclick="showToast('⚡ جاري فتح إنستاباي...')">
+                            <i class="fas fa-bolt"></i> فتح تطبيق إنستاباي
+                        </div>
+                        <p style="font-size:11px;color:var(--muted);margin-top:12px">أو تحويل للرقم: <strong>01234567890</strong></p>
+                    </div>
+                </div>
 
-      <div class="order-item">
-        <div class="order-thumb"><i class="fas fa-rocket" style="font-size:22px;"></i></div>
-        <div class="order-info">
-          <h3>Space Science: The Solar System</h3>
-          <p>Full Course Access</p>
+                <!-- Panel: تقسيط -->
+                <div class="pay-panel" id="panel-installment">
+                    <div class="install-grid">
+                        <div class="install-option selected" onclick="selectInstall(this,'1','299')">
+                            <div class="install-radio"></div>
+                            <div class="install-info">
+                                <div class="install-title">دفعة واحدة</div>
+                                <div class="install-sub">ادفع الآن وابدأ فوراً</div>
+                            </div>
+                            <div class="install-price">299 ج.م</div>
+                        </div>
+                        <div class="install-option" onclick="selectInstall(this,'3','105')">
+                            <div class="install-radio"></div>
+                            <div class="install-info">
+                                <div class="install-title">3 أقساط</div>
+                                <div class="install-sub">كل شهر لمدة 3 أشهر — الإجمالي 315 ج.م</div>
+                            </div>
+                            <div class="install-price">105 ج.م/شهر</div>
+                        </div>
+                        <div class="install-option" onclick="selectInstall(this,'6','55')">
+                            <div class="install-radio"></div>
+                            <div class="install-info">
+                                <div class="install-title">6 أقساط</div>
+                                <div class="install-sub">كل شهر لمدة 6 أشهر — الإجمالي 330 ج.م</div>
+                            </div>
+                            <div class="install-price">55 ج.م/شهر</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:14px">
+                        <div class="field">
+                            <label>رقم البطاقة (للتقسيط) <span class="req">*</span></label>
+                            <div class="card-number-wrap">
+                                <div class="card-brand-icons">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png" alt="Visa">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="MC">
+                                </div>
+                                <input type="text" placeholder="0000  0000  0000  0000" maxlength="19" oninput="formatCardNumber(this)" style="padding-left:80px;letter-spacing:2px;font-weight:700;font-size:15px">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <hr class="divider">
+        <!-- 3. كود الخصم -->
+        <div class="section-card">
+            <div class="section-head">
+                <div class="section-head-icon">🎁</div>
+                <div>
+                    <h3>كود الخصم</h3>
+                    <p>هل لديك كود؟ أدخله هنا</p>
+                </div>
+            </div>
+            <div class="section-body">
+                <div class="promo-wrap">
+                    <input type="text" id="promoInput" placeholder="مثال: EVOLVE20" style="text-transform:uppercase">
+                    <button class="promo-btn" onclick="applyPromo()">تطبيق</button>
+                </div>
+                <div class="promo-success" id="promoSuccess">
+                    <i class="fas fa-check-circle"></i> تم تطبيق كود الخصم! وفّرت <strong id="promoSaved">0 ج.م</strong>
+                </div>
+                <div class="promo-error" id="promoError">
+                    <i class="fas fa-times-circle"></i> الكود غير صحيح أو منتهي الصلاحية
+                </div>
+            </div>
+        </div>
 
-      <div class="price-row">
-        <span>Original Price</span>
-        <span style="text-decoration:line-through;">$89.99</span>
-      </div>
-      <div class="price-row discount">
-        <span><i class="fas fa-tag"></i> Discount</span>
-        <span>-$40.00</span>
-      </div>
-      <hr class="divider">
-      <div class="price-row total">
-        <span>Total</span>
-        <span>$49.99</span>
-      </div>
     </div>
 
-  </div>
-</main>
+    <!-- ══ RIGHT: ORDER SUMMARY ══ -->
+    <div class="checkout-right">
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <div class="footer-logo">
-        <div class="logo-box"><i class="fas fa-book-open"></i></div>
-        <span class="logo-text">EduSpark</span>
-      </div>
-      <p>Making learning magical for the next generation of creators, scientists, and leaders through the power of AI.</p>
+        <div class="order-summary-card">
+            <div class="order-summary-head">
+                <img class="course-thumb-mini"
+                     src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=300&q=80"
+                     alt="الكورس">
+                <div>
+                    <h3>ملخص طلبك</h3>
+                    <p>كورس واحد · دفع آمن</p>
+                </div>
+            </div>
+
+            <div class="order-summary-body">
+                <div class="course-title-mini">Python للمبتدئين: من الصفر للاحتراف</div>
+                <div class="course-meta-mini">
+                    <span><i class="fas fa-star" style="color:#fbbf24"></i> 4.9 (3,241)</span>
+                    <span><i class="fas fa-clock"></i> 42 ساعة</span>
+                    <span><i class="fas fa-play-circle"></i> 156 محاضرة</span>
+                    <span><i class="fas fa-user"></i> د. أحمد السيد</span>
+                </div>
+
+                <div class="price-breakdown">
+                    <div class="price-row-item">
+                        <span class="label">سعر الكورس</span>
+                        <span class="value">599 ج.م</span>
+                    </div>
+                    <div class="price-row-item discount">
+                        <span class="label">خصم 50%</span>
+                        <span class="value">− 300 ج.م</span>
+                    </div>
+                    <div class="price-row-item promo-applied" id="promoRow" style="display:none">
+                        <span class="label">كود خصم (<span id="promoCodeDisplay"></span>)</span>
+                        <span class="value" id="promoDiscountDisplay">− 0 ج.م</span>
+                    </div>
+                    <div class="price-divider"></div>
+                    <div class="price-total">
+                        <span class="label">المجموع الكلي</span>
+                        <span class="value" id="totalPrice">299 ج.م</span>
+                    </div>
+                </div>
+
+                <div class="course-features">
+                    <div class="feat-item"><i class="fas fa-infinity"></i> وصول مدى الحياة</div>
+                    <div class="feat-item"><i class="fas fa-mobile-alt"></i> متاح على الجوال والكمبيوتر</div>
+                    <div class="feat-item"><i class="fas fa-certificate"></i> شهادة معتمدة عند الإتمام</div>
+                    <div class="feat-item"><i class="fas fa-robot"></i> دعم سباركي AI</div>
+                    <div class="feat-item"><i class="fas fa-code"></i> مشاريع عملية قابلة للتحميل</div>
+                    <div class="feat-item"><i class="fas fa-users"></i> مجتمع خاص بالطلاب</div>
+                </div>
+
+                <div style="margin-top:18px">
+                    <button class="submit-btn" id="submitBtn" onclick="processPayment()">
+                        <span class="btn-spinner" id="btnSpinner"></span>
+                        <i class="fas fa-lock"></i>
+                        <span id="submitBtnText">إتمام الدفع — 299 ج.م</span>
+                    </button>
+                    <div class="security-row">
+                        <div class="security-badge"><i class="fas fa-shield-alt"></i> SSL آمن</div>
+                        <div class="security-badge"><i class="fas fa-lock"></i> مشفّر 256-bit</div>
+                        <div class="security-badge"><i class="fas fa-undo"></i> ضمان 30 يوم</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="guarantee-badge">
+            <i class="fas fa-shield-halved"></i>
+            <div>
+                <strong>ضمان استرداد المال خلال 30 يوم</strong>
+                إذا لم تكن راضياً عن الكورس لأي سبب، نعيد لك أموالك بالكامل بدون أسئلة.
+            </div>
+        </div>
+
     </div>
-    <div class="footer-col">
-      <h4>Platform</h4>
-      <ul>
-        <li><a href="#">Courses</a></li>
-        <li><a href="#">Teachers</a></li>
-        <li><a href="#">AI Assistant</a></li>
-        <li><a href="#">Learning Path</a></li>
-      </ul>
+</div>
+
+<!-- ══ TRUST STRIP ══ -->
+<div class="trust-strip">
+    <div class="trust-item"><i class="fas fa-lock"></i> دفع آمن ومشفّر</div>
+    <div class="trust-item"><i class="fas fa-shield-alt"></i> بيانات محمية</div>
+    <div class="trust-item"><i class="fas fa-undo-alt"></i> ضمان 30 يوم</div>
+    <div class="trust-item"><i class="fas fa-headset"></i> دعم فني 24/7</div>
+    <div class="trust-item"><i class="fas fa-certificate"></i> شهادة معتمدة</div>
+</div>
+
+<!-- ══ SUCCESS OVERLAY ══ -->
+<div class="success-overlay" id="successOverlay">
+    <div class="success-card">
+        <div class="confetti-emoji">🎉</div>
+        <div class="success-circle" style="margin-top:16px">
+            <svg viewBox="0 0 52 52">
+                <path d="M14 27 L22 35 L38 18"/>
+            </svg>
+        </div>
+        <h2>تم الدفع بنجاح! 🚀</h2>
+        <p>مبروك! أنت الآن مسجّل في كورس <strong>Python للمبتدئين</strong>.<br>
+           تفاصيل التسجيل أُرسلت لبريدك الإلكتروني.</p>
+        <div class="success-order">
+            <div><div class="label">رقم الطلب</div><div class="val" id="orderNum">#EVL-00000</div></div>
+            <div><div class="label">المبلغ</div><div class="val" id="paidAmount">299 ج.م</div></div>
+        </div>
+        <div class="success-btns">
+            <button class="success-btn-main" onclick="location.href='dashboard.html'">
+                <i class="fas fa-play"></i> ابدأ التعلم الآن
+            </button>
+            <button class="success-btn-sec" onclick="closeSuccess()">
+                <i class="fas fa-receipt"></i> عرض الإيصال
+            </button>
+        </div>
     </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="#">Articles</a></li>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Success Stories</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4>Support</h4>
-      <ul>
-        <li><a href="#">hello@eduspark.com</a></li>
-        <li><a href="#">+1 (555) 000-1234</a></li>
-        <li><a href="#">Silicon Valley, CA</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2026 EduSpark Platform. All rights reserved.</span>
-    <div class="footer-legal">
-      <a href="#">Privacy Policy</a>
-      <a href="#">Terms of Service</a>
-      <a href="#">Cookie Policy</a>
-    </div>
-  </div>
-</footer>
+</div>
+
+<!-- ══ TOAST ══ -->
+<div id="toast" style="display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:13px 22px;border-radius:12px;font-size:14px;font-weight:700;z-index:9999;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.2)"></div>
 
 <script>
-// Theme
-const themeBtn = document.getElementById('themeToggle');
-themeBtn.addEventListener('click', () => {
-  const dark = document.body.getAttribute('data-theme') === 'dark';
-  document.body.setAttribute('data-theme', dark ? '' : 'dark');
-  themeBtn.innerHTML = dark ? '<i class="fas fa-moon"></i>' : '<i class="fas fa-sun"></i>';
+/* ══ THEME ══ */
+function toggleTheme(){
+    const d=document.documentElement;
+    const dark=d.getAttribute('data-theme')==='dark';
+    d.setAttribute('data-theme',dark?'':'dark');
+    document.getElementById('themeBtn').textContent=dark?'🌙':'☀️';
+}
+
+/* ══ TOAST ══ */
+let toastTimer;
+function showToast(msg, dur=2800){
+    const t=document.getElementById('toast');
+    t.textContent=msg; t.style.display='block';
+    t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)';
+    clearTimeout(toastTimer);
+    toastTimer=setTimeout(()=>{
+        t.style.opacity='0';
+        setTimeout(()=>t.style.display='none',300);
+    },dur);
+}
+
+/* ══ PAYMENT METHOD ══ */
+function selectPayMethod(el, method){
+    document.querySelectorAll('.pay-method').forEach(m=>m.classList.remove('selected'));
+    document.querySelectorAll('.pay-panel').forEach(p=>p.classList.remove('active'));
+    el.classList.add('selected');
+    document.getElementById('panel-'+method).classList.add('active');
+}
+
+/* ══ INSTALLMENT ══ */
+function selectInstall(el, months, price){
+    document.querySelectorAll('.install-option').forEach(o=>o.classList.remove('selected'));
+    el.classList.add('selected');
+    const txt = months==='1' ? `إتمام الدفع — ${price} ج.م` : `إتمام الدفع — ${price} ج.م/شهر`;
+    document.getElementById('submitBtnText').textContent = txt;
+}
+
+/* ══ CARD NUMBER FORMAT ══ */
+function formatCardNumber(inp){
+    let v = inp.value.replace(/\D/g,'').slice(0,16);
+    v = v.replace(/(.{4})/g,'$1  ').trim();
+    inp.value = v;
+    // Detect brand
+    const raw = v.replace(/\s/g,'');
+    const visa = document.getElementById('visaImg');
+    const mc   = document.getElementById('mcImg');
+    if(visa && mc){
+        visa.classList.toggle('active', raw.startsWith('4'));
+        mc.classList.toggle('active',   raw.startsWith('5') || raw.startsWith('2'));
+    }
+}
+
+/* ══ EXPIRY FORMAT ══ */
+function formatExpiry(inp){
+    let v = inp.value.replace(/\D/g,'');
+    if(v.length>=2) v = v.slice(0,2)+'/'+v.slice(2,4);
+    inp.value = v;
+}
+
+/* ══ VALIDATION ══ */
+function validateField(inp){
+    const ok = inp.value.trim().length > 0;
+    inp.style.borderColor = ok ? 'var(--green)' : 'var(--border)';
+}
+
+/* ══ PROMO CODES ══ */
+const PROMOS = { 'EVOLVE20':20, 'SPARKY10':10, 'FIRST50':50 };
+let appliedDiscount = 0;
+let basePrice = 299;
+
+function applyPromo(){
+    const code = document.getElementById('promoInput').value.trim().toUpperCase();
+    const succ  = document.getElementById('promoSuccess');
+    const err   = document.getElementById('promoError');
+    succ.style.display='none'; err.style.display='none';
+
+    if(PROMOS[code]){
+        appliedDiscount = PROMOS[code];
+        const saved  = Math.round(basePrice * appliedDiscount / 100);
+        const newTotal = basePrice - saved;
+        document.getElementById('promoSaved').textContent = saved+' ج.م';
+        document.getElementById('promoRow').style.display='flex';
+        document.getElementById('promoCodeDisplay').textContent = code;
+        document.getElementById('promoDiscountDisplay').textContent = '− '+saved+' ج.م';
+        document.getElementById('totalPrice').textContent = newTotal+' ج.م';
+        document.getElementById('submitBtnText').textContent = 'إتمام الدفع — '+newTotal+' ج.م';
+        document.getElementById('paidAmount').textContent = newTotal+' ج.م';
+        succ.style.display='block';
+        showToast('🎉 كود الخصم مفعّل! وفّرت '+saved+' ج.م');
+    } else {
+        err.style.display='block';
+        document.getElementById('promoInput').style.borderColor='var(--danger)';
+        setTimeout(()=>document.getElementById('promoInput').style.borderColor='',2000);
+        showToast('❌ الكود غير صحيح');
+    }
+}
+
+document.getElementById('promoInput').addEventListener('keydown',e=>{
+    if(e.key==='Enter') applyPromo();
 });
 
-// Mobile menu
-document.getElementById('menuToggle').addEventListener('click', () => {
-  document.getElementById('mainNav').classList.toggle('open');
-});
+/* ══ COUNTDOWN TIMER ══ */
+let secs = 10 * 60; // 10 minutes
+function updateTimer(){
+    const m = String(Math.floor(secs/60)).padStart(2,'0');
+    const s = String(secs%60).padStart(2,'0');
+    const el = document.getElementById('countdown');
+    if(el) el.textContent = m+':'+s;
+    if(secs > 0) { secs--; setTimeout(updateTimer, 1000); }
+    else { if(el) el.closest('.offer-timer').style.background='#fee2e2'; }
+}
+updateTimer();
 
-// Ripple
-document.querySelectorAll('button').forEach(btn => {
-  btn.addEventListener('click', function(e) {
-    const r = document.createElement('span');
-    r.className = 'ripple';
-    const rect = this.getBoundingClientRect();
-    const size = Math.max(rect.width, rect.height);
-    r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
-    this.appendChild(r);
-    setTimeout(() => r.remove(), 600);
-  });
-});
+/* ══ PROCESS PAYMENT ══ */
+function processPayment(){
+    // Validate required fields
+    const fields = ['firstName','lastName','email','phone'];
+    let valid = true;
+    fields.forEach(id=>{
+        const el = document.getElementById(id);
+        if(!el||!el.value.trim()){
+            el && (el.style.borderColor='var(--danger)');
+            valid = false;
+        }
+    });
 
-// Card number formatting
-document.querySelector('input[placeholder*="0000"]').addEventListener('input', function() {
-  let v = this.value.replace(/\D/g,'').substring(0,16);
-  this.value = v.replace(/(.{4})/g,'$1 - ').trim().replace(/ - $/,'');
+    // Card panel validation
+    const activeMethod = document.querySelector('.pay-method.selected')?.dataset.method;
+    if(activeMethod==='card'){
+        const cn = document.getElementById('cardNumberInput');
+        const ce = document.getElementById('cardExpiry');
+        const cv = document.getElementById('cardCvv');
+        const ca = document.getElementById('cardName');
+        [cn,ce,cv,ca].forEach(el=>{
+            if(!el||!el.value.trim()){ el&&(el.style.borderColor='var(--danger)'); valid=false; }
+        });
+    }
+
+    if(!valid){ showToast('⚠️ يرجى ملء جميع الحقول المطلوبة'); return; }
+
+    // Simulate loading
+    const btn     = document.getElementById('submitBtn');
+    const spinner = document.getElementById('btnSpinner');
+    const btnTxt  = document.getElementById('submitBtnText');
+    btn.disabled  = true;
+    spinner.style.display = 'block';
+    btnTxt.textContent    = 'جاري معالجة الدفع...';
+
+    // Stepper to step 3
+    document.getElementById('cs2').className='cstep done';
+    document.getElementById('cs2').querySelector('.cstep-num').textContent='✓';
+    document.getElementById('cl2').className='cstep-line done';
+    document.getElementById('cs3').className='cstep active';
+
+    setTimeout(()=>{
+        spinner.style.display='none';
+        btn.disabled=false;
+        btnTxt.textContent='إتمام الدفع — '+document.getElementById('totalPrice').textContent;
+
+        // Generate order number
+        const orderNum='#EVL-'+Math.floor(100000+Math.random()*900000);
+        document.getElementById('orderNum').textContent=orderNum;
+
+        // Show success
+        document.getElementById('successOverlay').classList.add('show');
+    }, 2800);
+}
+
+/* ══ SUCCESS ══ */
+function closeSuccess(){ document.getElementById('successOverlay').classList.remove('show'); }
+document.getElementById('successOverlay').addEventListener('click',function(e){
+    if(e.target===this) closeSuccess();
 });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSuccess(); });
 </script>
 </body>
 </html>

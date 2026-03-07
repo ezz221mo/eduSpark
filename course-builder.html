@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EVOLVE — منهج الكورس</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --green:       #89b084;
+  --green-dk:    #6e9b73;
+  --green-lt:    #eef3ee;
+  --green-glow:  rgba(137,176,132,.2);
+  --accent:      #d4a373;
+  --bg:          #f9f8f3;
+  --surface:     #ffffff;
+  --soft:        #f3f4f0;
+  --text:        #1e2a1e;
+  --muted:       #6b7280;
+  --border:      #e5e7eb;
+  --danger:      #ef4444;
+  --warn:        #f59e0b;
+  --info:        #3b82f6;
+  --radius:      14px;
+  --ease:        cubic-bezier(.4,0,.2,1);
+  --shadow:      0 2px 16px rgba(0,0,0,.07);
+  --shadow-lg:   0 12px 48px rgba(0,0,0,.13);
+  --sidebar-w:   240px;
+  --topbar-h:    64px;
+}
+[data-theme="dark"] {
+  --bg:#0d1117; --surface:#161b22; --soft:#1c2128;
+  --text:#e6edf3; --muted:#8b949e; --border:#30363d;
+  --shadow:0 2px 16px rgba(0,0,0,.4); --shadow-lg:0 12px 48px rgba(0,0,0,.6);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;direction:rtl;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+
+@keyframes fadeUp  {from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn {from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
+@keyframes popIn   {0%{opacity:0;transform:scale(.88)}65%{transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
+@keyframes shimmer {0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes spin    {to{transform:rotate(360deg)}}
+@keyframes pulse   {0%,100%{opacity:1}50%{opacity:.45}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ripple  {to{transform:scale(3);opacity:0}}
+
+/* ══ SIDEBAR ══ */
+.sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;right:0;z-index:300;transition:transform .32s var(--ease);overflow-y:auto;overflow-x:hidden;}
+.sidebar::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--green),var(--accent),var(--green));animation:shimmer 3s infinite;}
+.sidebar-logo{display:flex;align-items:center;gap:10px;padding:20px 18px 18px;border-bottom:1px solid var(--border);text-decoration:none;}
+.logo-box{width:36px;height:36px;background:linear-gradient(135deg,var(--green),var(--green-dk));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:900;color:#fff;flex-shrink:0;}
+.logo-name{font-size:19px;font-weight:900;color:var(--text);}
+.logo-name span{color:var(--green);}
+.sidebar-section{padding:14px 10px 2px;}
+.sidebar-label{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:1.3px;color:var(--muted);padding:0 8px;margin-bottom:5px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;color:var(--muted);font-size:13px;font-weight:600;text-decoration:none;margin-bottom:1px;transition:all .2s var(--ease);position:relative;}
+.nav-item:hover{background:var(--soft);color:var(--green);transform:translateX(-3px);}
+.nav-item.active{background:var(--green-lt);color:var(--green);font-weight:700;}
+.nav-item.active::before{content:'';position:absolute;right:0;top:22%;bottom:22%;width:3px;border-radius:3px 0 0 3px;background:var(--green);}
+.nav-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0;}
+.nav-badge{margin-right:auto;background:var(--green);color:#fff;font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:20px;}
+.sidebar-profile{margin-top:auto;padding:12px 10px;border-top:1px solid var(--border);}
+.profile-card{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;background:var(--soft);text-decoration:none;transition:all .22s var(--ease);border:1px solid transparent;}
+.profile-card:hover{background:var(--green-lt);border-color:var(--green);}
+.p-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--green),var(--green-dk));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:12px;flex-shrink:0;}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:299;backdrop-filter:blur(3px);}
+.sidebar-overlay.open{display:block;}
+
+/* ══ MAIN ══ */
+.main{margin-right:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;}
+
+/* ══ TOPBAR ══ */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);height:var(--topbar-h);display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;z-index:200;gap:12px;}
+.topbar-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:7px;border-radius:9px;transition:background .2s;}
+.hamburger:hover{background:var(--soft);}
+.hamburger span{display:block;width:20px;height:2px;background:var(--text);border-radius:2px;transition:all .28s var(--ease);}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.icon-btn{width:36px;height:36px;border-radius:9px;background:var(--soft);border:1px solid var(--border);color:var(--muted);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s var(--ease);position:relative;}
+.icon-btn:hover{background:var(--green-lt);color:var(--green);border-color:var(--green);}
+.notif-dot{position:absolute;top:6px;right:6px;width:6px;height:6px;background:#ef4444;border-radius:50%;}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:25px;font-size:13px;font-weight:700;cursor:pointer;border:none;transition:all .22s var(--ease);font-family:inherit;white-space:nowrap;}
+.btn-ghost{background:var(--soft);color:var(--text);border:1.5px solid var(--border);}
+.btn-ghost:hover{background:var(--border);}
+.btn-primary{background:linear-gradient(135deg,var(--green),var(--green-dk));color:#fff;box-shadow:0 3px 14px var(--green-glow);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--green-glow);}
+.btn-spinner{display:none;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+
+/* ══ CONTENT ══ */
+.content{padding:24px 26px 40px;flex:1;animation:fadeUp .55s var(--ease);}
+.breadcrumb{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);flex-wrap:wrap;margin-bottom:10px;}
+.breadcrumb a{color:var(--green);text-decoration:none;font-weight:600;}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;margin-bottom:22px;}
+.page-header h1{font-size:22px;font-weight:900;}
+.page-header p{font-size:13px;color:var(--muted);margin-top:3px;}
+.header-actions{display:flex;gap:8px;flex-wrap:wrap;}
+
+/* ══ STATS BAR ══ */
+.stats-bar{display:flex;gap:14px;margin-bottom:22px;flex-wrap:wrap;}
+.stat-chip{display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;font-size:13px;box-shadow:var(--shadow);transition:all .2s;}
+.stat-chip:hover{border-color:var(--green);box-shadow:0 0 0 3px var(--green-glow);}
+.stat-chip i{color:var(--green);font-size:16px;}
+.stat-chip .val{font-weight:900;font-size:16px;color:var(--text);}
+.stat-chip .lbl{color:var(--muted);font-size:11.5px;}
+
+/* ══ MAIN GRID ══ */
+.builder-grid{display:grid;grid-template-columns:1fr 300px;gap:22px;align-items:start;}
+.builder-left{display:flex;flex-direction:column;gap:16px;}
+
+/* ══ SECTION BLOCK ══ */
+.section-block{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:border-color .2s,box-shadow .2s;animation:fadeUp .45s var(--ease) backwards;}
+.section-block.drag-over{border-color:var(--green);box-shadow:0 0 0 3px var(--green-glow);}
+.section-block.dragging{opacity:.5;transform:scale(.98);}
+
+.section-header{display:flex;align-items:center;gap:10px;padding:14px 18px;cursor:pointer;user-select:none;transition:background .2s;border-bottom:1px solid var(--border);}
+.section-header:hover{background:var(--soft);}
+.section-drag-handle{color:var(--muted);cursor:grab;font-size:14px;padding:2px 4px;border-radius:4px;transition:color .2s;}
+.section-drag-handle:hover{color:var(--green);}
+.section-drag-handle:active{cursor:grabbing;}
+.section-icon{width:32px;height:32px;border-radius:8px;background:var(--green-lt);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.section-title-wrap{flex:1;min-width:0;}
+.section-title-input{background:transparent;border:none;outline:none;font-size:14.5px;font-weight:800;color:var(--text);font-family:inherit;width:100%;cursor:text;}
+.section-title-input:focus{color:var(--green);}
+.section-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+.section-actions{display:flex;align-items:center;gap:6px;}
+.section-toggle{width:28px;height:28px;border-radius:7px;background:none;border:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;}
+.section-toggle:hover{background:var(--soft);color:var(--green);}
+.section-toggle.rotated{transform:rotate(180deg);}
+.section-delete{width:28px;height:28px;border-radius:7px;background:none;border:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .2s;}
+.section-delete:hover{background:#fee2e2;color:var(--danger);}
+.section-num-badge{background:var(--green);color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:12px;flex-shrink:0;}
+
+.section-lessons{padding:10px 14px 14px;}
+.section-lessons.collapsed{display:none;}
+
+/* ══ LESSON ROW ══ */
+.lesson-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:11px;margin-bottom:8px;background:var(--bg);transition:all .22s var(--ease);cursor:default;position:relative;animation:popIn .3s var(--ease) backwards;}
+.lesson-row:last-child{margin-bottom:0;}
+.lesson-row:hover{border-color:var(--green);background:var(--surface);box-shadow:0 2px 12px var(--green-glow);}
+.lesson-row.dragging{opacity:.45;transform:scale(.97);}
+.lesson-drag{color:var(--muted);cursor:grab;font-size:13px;flex-shrink:0;padding:2px;}
+.lesson-drag:active{cursor:grabbing;}
+.lesson-type-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.ltype-video  {background:#e0f2fe;color:#0284c7;}
+.ltype-text   {background:#f0fdf4;color:#16a34a;}
+.ltype-quiz   {background:#fef9c3;color:#ca8a04;}
+.ltype-task   {background:#fce7f3;color:#be185d;}
+.ltype-live   {background:#fee2e2;color:#dc2626;}
+.ltype-file   {background:#f3e8ff;color:#7c3aed;}
+.lesson-info{flex:1;min-width:0;}
+.lesson-title-input{background:transparent;border:none;outline:none;font-size:13.5px;font-weight:700;color:var(--text);font-family:inherit;width:100%;}
+.lesson-title-input:focus{color:var(--green);}
+.lesson-meta-row{display:flex;align-items:center;gap:10px;margin-top:3px;flex-wrap:wrap;}
+.lesson-dur{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);}
+.lesson-dur i{font-size:10px;color:var(--green);}
+.lesson-dur input{width:38px;background:transparent;border:none;outline:none;font-size:11px;color:var(--muted);font-family:inherit;}
+.lesson-badges{display:flex;gap:4px;}
+.lesson-badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;}
+.badge-free   {background:#dcfce7;color:#166534;}
+.badge-preview{background:#dbeafe;color:#1d4ed8;}
+.badge-new    {background:var(--green-lt);color:var(--green-dk);}
+.lesson-actions{display:flex;gap:4px;flex-shrink:0;}
+.lesson-act-btn{width:26px;height:26px;border-radius:7px;background:none;border:none;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all .2s;}
+.lesson-act-btn:hover{background:var(--soft);color:var(--green);}
+.lesson-act-btn.del:hover{background:#fee2e2;color:var(--danger);}
+.lesson-type-select{background:transparent;border:none;outline:none;font-size:10.5px;color:var(--muted);font-family:inherit;cursor:pointer;padding:2px 0;}
+
+/* ══ ADD LESSON ROW ══ */
+.add-lesson-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.add-lesson-input{flex:1;min-width:140px;padding:9px 13px;border:1.5px dashed var(--border);border-radius:10px;background:transparent;color:var(--text);font-family:inherit;font-size:13px;outline:none;transition:all .2s;}
+.add-lesson-input:focus{border-color:var(--green);border-style:solid;background:var(--surface);}
+.add-lesson-input::placeholder{color:var(--muted);}
+.add-lesson-btn{padding:9px 14px;background:var(--green-lt);color:var(--green-dk);border:1.5px solid var(--green);border-radius:10px;font-size:12.5px;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+.add-lesson-btn:hover{background:var(--green);color:#fff;}
+.lesson-type-picker{display:flex;gap:5px;flex-wrap:wrap;}
+.ltype-btn{padding:6px 10px;border:1.5px solid var(--border);border-radius:8px;background:transparent;font-size:11.5px;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--muted);display:flex;align-items:center;gap:4px;}
+.ltype-btn:hover,.ltype-btn.selected{border-color:var(--green);background:var(--green-lt);color:var(--green-dk);}
+
+/* ══ ADD SECTION ══ */
+.add-section-card{background:var(--surface);border:2px dashed var(--border);border-radius:var(--radius);padding:20px;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:all .25s var(--ease);color:var(--muted);font-size:14px;font-weight:700;}
+.add-section-card:hover{border-color:var(--green);color:var(--green);background:var(--green-lt);transform:translateY(-2px);}
+
+/* ══ EMPTY STATE ══ */
+.empty-lessons{text-align:center;padding:20px;color:var(--muted);font-size:13px;}
+.empty-lessons i{font-size:28px;margin-bottom:8px;display:block;opacity:.4;}
+
+/* ══ RIGHT PANEL ══ */
+.right-panel{display:flex;flex-direction:column;gap:16px;position:sticky;top:calc(var(--topbar-h) + 20px);}
+
+/* ══ TIPS CARD ══ */
+.tip-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+.tip-card-head{padding:16px 18px;background:linear-gradient(135deg,var(--green),var(--green-dk));color:#fff;display:flex;align-items:center;gap:10px;}
+.tip-card-head h3{font-size:14px;font-weight:800;}
+.tip-card-body{padding:16px 18px;display:flex;flex-direction:column;gap:10px;}
+.tip-item{display:flex;align-items:flex-start;gap:9px;font-size:12.5px;color:var(--muted);line-height:1.5;}
+.tip-item i{color:var(--green);font-size:13px;margin-top:2px;flex-shrink:0;}
+
+/* ══ LEGEND ══ */
+.legend-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);}
+.legend-card h4{font-size:13px;font-weight:800;margin-bottom:12px;color:var(--text);}
+.legend-row{display:flex;align-items:center;gap:9px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12.5px;color:var(--muted);}
+.legend-row:last-child{border-bottom:none;padding-bottom:0;}
+.legend-icon{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+
+/* ══ PROGRESS CARD ══ */
+.progress-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);}
+.progress-card h4{font-size:13px;font-weight:800;margin-bottom:12px;}
+.progress-item{margin-bottom:12px;}
+.progress-item:last-child{margin-bottom:0;}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;color:var(--muted);}
+.progress-label span:last-child{font-weight:700;color:var(--text);}
+.progress-bar{height:7px;background:var(--soft);border-radius:10px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--green-dk));border-radius:10px;transition:width .6s var(--ease);}
+
+/* ══ LESSON EDIT MODAL ══ */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(6px);}
+.modal-overlay.open{display:flex;animation:fadeUp .3s var(--ease);}
+.modal{background:var(--surface);border-radius:20px;border:1px solid var(--border);box-shadow:var(--shadow-lg);width:100%;max-width:540px;max-height:90vh;overflow-y:auto;animation:popIn .35s var(--ease);}
+.modal-head{display:flex;align-items:center;gap:12px;padding:20px 22px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:1;}
+.modal-head-icon{width:40px;height:40px;border-radius:10px;background:var(--green-lt);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.modal-head h3{font-size:16px;font-weight:800;flex:1;}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--muted);font-size:20px;width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.modal-close:hover{background:var(--soft);color:var(--text);}
+.modal-body{padding:22px;}
+.modal-foot{padding:16px 22px;border-top:1px solid var(--border);display:flex;gap:9px;justify-content:flex-end;}
+.field{margin-bottom:16px;}
+.field:last-child{margin-bottom:0;}
+label.field-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:6px;}
+.field input[type="text"],.field input[type="number"],.field input[type="url"],.field textarea,.field select{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font-family:inherit;font-size:13.5px;outline:none;transition:all .2s;}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--green);background:var(--surface);box-shadow:0 0 0 3px var(--green-glow);}
+.field textarea{resize:vertical;min-height:80px;}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-row .label{font-size:13px;font-weight:600;}
+.toggle-row .sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.toggle{position:relative;width:38px;height:21px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:var(--border);border-radius:21px;cursor:pointer;transition:background .28s;}
+.toggle-slider::before{content:'';position:absolute;width:15px;height:15px;border-radius:50%;background:#fff;top:3px;right:3px;transition:transform .28s;box-shadow:0 1px 4px rgba(0,0,0,.15);}
+.toggle input:checked+.toggle-slider{background:var(--green);}
+.toggle input:checked+.toggle-slider::before{transform:translateX(-17px);}
+.type-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.type-option{border:1.5px solid var(--border);border-radius:10px;padding:10px 8px;text-align:center;cursor:pointer;transition:all .2s;font-size:12px;font-weight:700;color:var(--muted);}
+.type-option:hover{border-color:var(--green);background:var(--green-lt);}
+.type-option.selected{border-color:var(--green);background:var(--green-lt);color:var(--green-dk);}
+.type-option .type-icon{font-size:22px;display:block;margin-bottom:5px;}
+
+/* ══ TOAST ══ */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:12px 22px;border-radius:12px;font-size:13.5px;font-weight:700;z-index:9999;box-shadow:var(--shadow-lg);animation:popIn .35s var(--ease);display:none;white-space:nowrap;}
+
+/* ══ DRAG GHOST ══ */
+.drag-ghost{position:fixed;pointer-events:none;z-index:9998;opacity:.85;transform:rotate(2deg);box-shadow:var(--shadow-lg);}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:1024px){
+  :root{--sidebar-w:0px;}
+  .sidebar{transform:translateX(100%);width:240px;}
+  .sidebar.open{transform:translateX(0);box-shadow:var(--shadow-lg);}
+  .main{margin-right:0;}
+  .hamburger{display:flex;}
+  .builder-grid{grid-template-columns:1fr;}
+  .right-panel{position:static;}
+}
+@media(max-width:768px){
+  :root{--topbar-h:56px;}
+  .content{padding:14px 14px 32px;}
+  .page-header{flex-direction:column;gap:10px;}
+  .header-actions{width:100%;}
+  .header-actions .btn{flex:1;justify-content:center;}
+  .stats-bar{gap:8px;}
+  .stat-chip{padding:8px 12px;}
+  .section-header{padding:12px 14px;}
+  .section-lessons{padding:8px 10px 12px;}
+  .add-lesson-row{flex-direction:column;}
+  .add-lesson-input{min-width:unset;}
+  .type-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(max-width:480px){
+  .content{padding:10px 10px 28px;}
+  .stat-chip .val{font-size:14px;}
+  .lesson-meta-row{gap:6px;}
+  .modal{border-radius:14px;}
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <div class="logo-box">E</div>
+    <span class="logo-name">EVO<span>LVE</span></span>
+  </a>
+  <div class="sidebar-section">
+    <div class="sidebar-label">الرئيسية</div>
+    <a href="teacher_dashboard.html" class="nav-item"><span class="nav-icon">🏠</span> لوحة التحكم</a>
+    <a href="courses.html"           class="nav-item"><span class="nav-icon">📚</span> الكورسات</a>
+    <a href="students.html"          class="nav-item"><span class="nav-icon">👥</span> الطلاب</a>
+    <a href="schedule.html"          class="nav-item"><span class="nav-icon">📅</span> الجدول</a>
+    <a href="sparky.html"            class="nav-item"><span class="nav-icon">🤖</span> المساعد الذكي</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">الأدوات</div>
+    <a href="messages.html" class="nav-item"><span class="nav-icon">💬</span> الرسائل<span class="nav-badge">5</span></a>
+    <a href="library.html"  class="nav-item"><span class="nav-icon">📖</span> المكتبة</a>
+    <a href="create-lesson.html" class="nav-item"><span class="nav-icon">✏️</span> إنشاء كورس</a>
+    <a href="#" class="nav-item active"><span class="nav-icon">📐</span> منهج الكورس</a>
+    <a href="settings.html" class="nav-item"><span class="nav-icon">⚙️</span> الإعدادات</a>
+  </div>
+  <div class="sidebar-profile">
+    <a href="profile_teacher.html" class="profile-card">
+      <div class="p-avatar">م أ</div>
+      <div><div style="font-size:12.5px;font-weight:700;color:var(--text)">د. أحمد السيد</div><div style="font-size:10.5px;color:var(--muted)">معلم</div></div>
+    </a>
+  </div>
+</aside>
+
+<!-- ══ MAIN ══ -->
+<div class="main">
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger" id="hamburger" onclick="toggleSidebar()">
+        <span></span><span></span><span></span>
+      </button>
+      <nav style="display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)">
+        <a href="create-lesson.html" style="color:var(--green);text-decoration:none;font-weight:700">إنشاء كورس</a>
+        <i class="fas fa-chevron-left" style="font-size:10px"></i>
+        <span style="color:var(--text);font-weight:700">منهج الكورس</span>
+      </nav>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">🌙</button>
+      <button class="icon-btn" title="الإشعارات">🔔<span class="notif-dot"></span></button>
+      <button class="btn btn-ghost" onclick="saveDraft()">💾 حفظ</button>
+      <button class="btn btn-primary" onclick="publishCurriculum()">
+        <span class="btn-spinner" id="pubSpinner"></span>
+        🚀 نشر الكورس
+      </button>
+    </div>
+  </header>
+
+  <div class="content">
+    <div class="breadcrumb">
+      <a href="teacher_dashboard.html">لوحة التحكم</a>
+      <i class="fas fa-chevron-left" style="font-size:9px"></i>
+      <a href="create-lesson.html">إنشاء كورس</a>
+      <i class="fas fa-chevron-left" style="font-size:9px"></i>
+      <span style="color:var(--text);font-weight:600">منهج الكورس</span>
+    </div>
+
+    <div class="page-header">
+      <div>
+        <h1>📐 منهج الكورس</h1>
+        <p>رتّب أقسامك ودروسك — اسحب وأفلت لتغيير الترتيب</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-ghost" onclick="location.href='create-lesson.html'">← رجوع</button>
+        <button class="btn btn-ghost" onclick="expandAll()"><i class="fas fa-expand-alt"></i> توسيع الكل</button>
+        <button class="btn btn-primary" onclick="publishCurriculum()">🚀 نشر الكورس</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar" id="statsBar">
+      <div class="stat-chip"><i class="fas fa-layer-group"></i><div><div class="val" id="statSections">0</div><div class="lbl">قسم</div></div></div>
+      <div class="stat-chip"><i class="fas fa-play-circle"></i><div><div class="val" id="statLessons">0</div><div class="lbl">درس</div></div></div>
+      <div class="stat-chip"><i class="fas fa-clock"></i><div><div class="val" id="statHours">0</div><div class="lbl">دقيقة</div></div></div>
+      <div class="stat-chip"><i class="fas fa-video"></i><div><div class="val" id="statVideos">0</div><div class="lbl">فيديو</div></div></div>
+      <div class="stat-chip"><i class="fas fa-question-circle"></i><div><div class="val" id="statQuizzes">0</div><div class="lbl">اختبار</div></div></div>
+    </div>
+
+    <div class="builder-grid">
+
+      <!-- ══ SECTIONS LIST ══ -->
+      <div class="builder-left">
+        <div id="sectionsList"></div>
+
+        <!-- Add Section -->
+        <div class="add-section-card" id="addSectionBtn" onclick="addSection()">
+          <i class="fas fa-plus-circle" style="font-size:20px;color:var(--green)"></i>
+          <span>إضافة قسم جديد</span>
+        </div>
+      </div>
+
+      <!-- ══ RIGHT PANEL ══ -->
+      <div class="right-panel">
+
+        <!-- Progress -->
+        <div class="progress-card">
+          <h4>📊 اكتمال المنهج</h4>
+          <div class="progress-item">
+            <div class="progress-label"><span>الدروس المكتملة</span><span id="pctLessons">0%</span></div>
+            <div class="progress-bar"><div class="progress-fill" id="fillLessons" style="width:0%"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-label"><span>الأقسام</span><span id="pctSections">0%</span></div>
+            <div class="progress-bar"><div class="progress-fill" id="fillSections" style="width:0%;background:linear-gradient(90deg,var(--accent),#c98a55)"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-label"><span>المحتوى المجاني</span><span id="pctFree">0%</span></div>
+            <div class="progress-bar"><div class="progress-fill" id="fillFree" style="width:0%;background:linear-gradient(90deg,var(--info),#2563eb)"></div></div>
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend-card">
+          <h4>🗂️ أنواع الدروس</h4>
+          <div class="legend-row"><div class="legend-icon ltype-video"><i class="fas fa-play"></i></div> فيديو مسجّل</div>
+          <div class="legend-row"><div class="legend-icon ltype-live"><i class="fas fa-broadcast-tower"></i></div> جلسة مباشرة</div>
+          <div class="legend-row"><div class="legend-icon ltype-text"><i class="fas fa-file-alt"></i></div> نص / مقالة</div>
+          <div class="legend-row"><div class="legend-icon ltype-quiz"><i class="fas fa-question-circle"></i></div> اختبار / كويز</div>
+          <div class="legend-row"><div class="legend-icon ltype-task"><i class="fas fa-tasks"></i></div> مهمة / مشروع</div>
+          <div class="legend-row"><div class="legend-icon ltype-file"><i class="fas fa-paperclip"></i></div> ملف / مرفق</div>
+        </div>
+
+        <!-- Tips -->
+        <div class="tip-card">
+          <div class="tip-card-head">
+            <span style="font-size:20px">💡</span>
+            <div><h3>نصائح المنهج</h3></div>
+          </div>
+          <div class="tip-card-body">
+            <div class="tip-item"><i class="fas fa-check-circle"></i> ابدأ بقسم تمهيدي مجاني لجذب الطلاب</div>
+            <div class="tip-item"><i class="fas fa-check-circle"></i> كل قسم يُفضّل أن يحتوي 4–8 دروس</div>
+            <div class="tip-item"><i class="fas fa-check-circle"></i> ضع اختباراً بعد كل قسم لتثبيت المعلومة</div>
+            <div class="tip-item"><i class="fas fa-check-circle"></i> الدروس القصيرة (5–15 دق) أفضل للتفاعل</div>
+            <div class="tip-item"><i class="fas fa-check-circle"></i> اسحب الأقسام والدروس لإعادة ترتيبها</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LESSON EDIT MODAL ══ -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-head-icon" id="modalIcon">📝</div>
+      <h3 id="modalTitle">تعديل الدرس</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label class="field-label">نوع الدرس</label>
+        <div class="type-grid" id="typeGrid">
+          <div class="type-option selected" data-type="video" onclick="selectType(this)"><span class="type-icon">🎬</span>فيديو</div>
+          <div class="type-option" data-type="live"  onclick="selectType(this)"><span class="type-icon">📡</span>مباشر</div>
+          <div class="type-option" data-type="text"  onclick="selectType(this)"><span class="type-icon">📄</span>نص</div>
+          <div class="type-option" data-type="quiz"  onclick="selectType(this)"><span class="type-icon">❓</span>اختبار</div>
+          <div class="type-option" data-type="task"  onclick="selectType(this)"><span class="type-icon">✅</span>مهمة</div>
+          <div class="type-option" data-type="file"  onclick="selectType(this)"><span class="type-icon">📎</span>ملف</div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="field-label">عنوان الدرس <span style="color:var(--danger)">*</span></label>
+        <input type="text" id="modalLessonTitle" placeholder="مثال: مقدمة في البرمجة الكائنية">
+      </div>
+      <div class="field">
+        <label class="field-label">وصف مختصر</label>
+        <textarea id="modalLessonDesc" placeholder="ما الذي سيتعلمه الطالب في هذا الدرس؟"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="field">
+          <label class="field-label">المدة (دقيقة)</label>
+          <input type="number" id="modalDuration" value="15" min="1" max="300">
+        </div>
+        <div class="field">
+          <label class="field-label">رابط الفيديو / الملف</label>
+          <input type="url" id="modalUrl" placeholder="https://...">
+        </div>
+      </div>
+      <div>
+        <div class="toggle-row">
+          <div><div class="label">معاينة مجانية</div><div class="sub">يمكن للزوار مشاهدة هذا الدرس قبل التسجيل</div></div>
+          <label class="toggle"><input type="checkbox" id="modalFree"><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="label">إلزامي للإتمام</div><div class="sub">يجب إكماله للانتقال للدرس التالي</div></div>
+          <label class="toggle"><input type="checkbox" id="modalRequired" checked><span class="toggle-slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="label">تمكين الملاحظات</div><div class="sub">يمكن للطالب كتابة ملاحظات أثناء الدرس</div></div>
+          <label class="toggle"><input type="checkbox" id="modalNotes" checked><span class="toggle-slider"></span></label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal()">إلغاء</button>
+      <button class="btn btn-primary" onclick="saveLesson()">💾 حفظ الدرس</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════
+   STATE
+══════════════════════════════════════ */
+let sections = [];
+let sectionCounter = 0;
+let lessonCounter  = 0;
+let editingLesson  = null; // { sId, lId }
+
+const TYPES = {
+  video : { icon:'🎬', cls:'ltype-video', label:'فيديو',   fa:'fa-play' },
+  live  : { icon:'📡', cls:'ltype-live',  label:'مباشر',   fa:'fa-broadcast-tower' },
+  text  : { icon:'📄', cls:'ltype-text',  label:'نص',      fa:'fa-file-alt' },
+  quiz  : { icon:'❓', cls:'ltype-quiz',  label:'اختبار',  fa:'fa-question-circle' },
+  task  : { icon:'✅', cls:'ltype-task',  label:'مهمة',    fa:'fa-tasks' },
+  file  : { icon:'📎', cls:'ltype-file',  label:'ملف',     fa:'fa-paperclip' },
+};
+
+/* ══════════════════════════════════════
+   INIT — default sections
+══════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  addSection('مقدمة الكورس', [
+    { title:'مرحباً بك في الكورس 👋', type:'video', dur:5,  free:true  },
+    { title:'ما ستتعلمه في هذا الكورس',type:'video', dur:8,  free:true  },
+    { title:'تثبيت البيئة والأدوات',   type:'video', dur:12, free:false },
+  ]);
+  addSection('الأساسيات', [
+    { title:'المتغيرات وأنواع البيانات', type:'video', dur:18, free:false },
+    { title:'الجمل الشرطية if/else',    type:'video', dur:15, free:false },
+    { title:'الحلقات التكرارية',        type:'video', dur:20, free:false },
+    { title:'اختبار الأساسيات',        type:'quiz',  dur:10, free:false },
+  ]);
+  addSection('الدوال والبرمجة الكائنية', [
+    { title:'تعريف الدوال',            type:'video', dur:16, free:false },
+    { title:'المعاملات والإرجاع',      type:'video', dur:14, free:false },
+    { title:'مبادئ OOP',               type:'video', dur:22, free:false },
+    { title:'مشروع تطبيقي',           type:'task',  dur:30, free:false },
+  ]);
+});
+
+/* ══════════════════════════════════════
+   ADD SECTION
+══════════════════════════════════════ */
+function addSection(title = '', lessons = []) {
+  sectionCounter++;
+  const sId = 'sec_' + sectionCounter;
+  const sec = { id: sId, title: title || `القسم ${sectionCounter}`, lessons: [], collapsed: false };
+  sections.push(sec);
+  lessons.forEach(l => addLessonToSection(sId, l, false));
+  renderSection(sId);
+  updateStats();
+  if (!title) { // new empty section — focus title
+    setTimeout(() => {
+      const el = document.querySelector(`#${sId} .section-title-input`);
+      if (el) { el.focus(); el.select(); }
+    }, 100);
+  }
+}
+
+/* ══════════════════════════════════════
+   ADD LESSON
+══════════════════════════════════════ */
+function addLessonToSection(sId, data = {}, rerender = true) {
+  lessonCounter++;
+  const sec = sections.find(s => s.id === sId);
+  if (!sec) return;
+  sec.lessons.push({
+    id    : 'les_' + lessonCounter,
+    title : data.title || `الدرس ${sec.lessons.length + 1}`,
+    type  : data.type  || 'video',
+    dur   : data.dur   || 10,
+    free  : data.free  || false,
+    desc  : data.desc  || '',
+    url   : data.url   || '',
+    required: data.required !== false,
+    notes: data.notes !== false,
+  });
+  if (rerender) { renderSection(sId); updateStats(); }
+}
+
+/* ══════════════════════════════════════
+   RENDER SECTION
+══════════════════════════════════════ */
+function renderSection(sId) {
+  const sec = sections.find(s => s.id === sId);
+  if (!sec) return;
+  const list = document.getElementById('sectionsList');
+
+  // Remove old if exists
+  const old = document.getElementById(sId);
+  if (old) old.remove();
+
+  const block = document.createElement('div');
+  block.className = 'section-block';
+  block.id = sId;
+  block.setAttribute('draggable', true);
+  block.style.animationDelay = '0s';
+
+  const totalDur = sec.lessons.reduce((a, l) => a + (+l.dur || 0), 0);
+  const lesCount = sec.lessons.length;
+  const secIdx   = sections.findIndex(s => s.id === sId) + 1;
+
+  block.innerHTML = `
+    <div class="section-header" onclick="toggleSection('${sId}', event)">
+      <span class="section-drag-handle" title="اسحب لإعادة الترتيب" onclick="event.stopPropagation()">
+        <i class="fas fa-grip-vertical"></i>
+      </span>
+      <div class="section-icon">📦</div>
+      <div class="section-title-wrap">
+        <input class="section-title-input" value="${esc(sec.title)}"
+          oninput="updateSectionTitle('${sId}', this.value)"
+          onclick="event.stopPropagation()"
+          placeholder="عنوان القسم...">
+        <div class="section-meta">${lesCount} درس · ${totalDur} دقيقة</div>
+      </div>
+      <span class="section-num-badge">القسم ${secIdx}</span>
+      <div class="section-actions" onclick="event.stopPropagation()">
+        <button class="section-toggle ${sec.collapsed ? '' : 'rotated'}" title="طيّ/بسط"
+          onclick="toggleSection('${sId}', event)">
+          <i class="fas fa-chevron-up"></i>
+        </button>
+        <button class="section-delete" title="حذف القسم" onclick="deleteSection('${sId}', event)">
+          <i class="fas fa-trash-alt"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="section-lessons ${sec.collapsed ? 'collapsed' : ''}" id="lessons_${sId}">
+      ${lesCount === 0 ? `<div class="empty-lessons"><i class="fas fa-inbox"></i>لا توجد دروس بعد — أضف أول درس!</div>` : ''}
+      ${sec.lessons.map((l, i) => renderLessonHTML(sId, l, i)).join('')}
+
+      <div class="add-lesson-row">
+        <input class="add-lesson-input" id="addInp_${sId}" placeholder="عنوان الدرس الجديد..." 
+          onkeydown="if(event.key==='Enter') quickAddLesson('${sId}')">
+        <div class="lesson-type-picker" id="typePicker_${sId}">
+          ${Object.entries(TYPES).map(([k, v]) =>
+            `<button class="ltype-btn ${k === 'video' ? 'selected' : ''}" data-type="${k}" 
+              onclick="selectQuickType('${sId}', '${k}', this)" title="${v.label}">${v.icon}</button>`
+          ).join('')}
+        </div>
+        <button class="add-lesson-btn" onclick="quickAddLesson('${sId}')">
+          <i class="fas fa-plus"></i> إضافة
+        </button>
+      </div>
+    </div>
+  `;
+
+  // Insert before addSectionBtn
+  const addBtn = document.getElementById('addSectionBtn');
+  list.insertBefore(block, addBtn);
+
+  // Drag events for section
+  setupSectionDrag(block, sId);
+}
+
+function renderLessonHTML(sId, l, idx) {
+  const t = TYPES[l.type] || TYPES.video;
+  return `
+    <div class="lesson-row" id="${l.id}" draggable="true" data-sid="${sId}" data-lid="${l.id}">
+      <span class="lesson-drag" title="اسحب"><i class="fas fa-grip-vertical"></i></span>
+      <div class="lesson-type-icon ${t.cls}"><i class="fas ${t.fa}"></i></div>
+      <div class="lesson-info">
+        <input class="lesson-title-input" value="${esc(l.title)}"
+          placeholder="عنوان الدرس..."
+          oninput="updateLessonTitle('${sId}','${l.id}',this.value)">
+        <div class="lesson-meta-row">
+          <div class="lesson-dur">
+            <i class="fas fa-clock"></i>
+            <input value="${l.dur}" min="1" max="300" type="number"
+              style="width:36px"
+              oninput="updateLessonDur('${sId}','${l.id}',this.value)">
+            <span>دق</span>
+          </div>
+          <div class="lesson-badges">
+            ${l.free ? '<span class="lesson-badge badge-free">مجاني</span>' : ''}
+            ${idx === 0 ? '<span class="lesson-badge badge-preview">معاينة</span>' : ''}
+          </div>
+          <select class="lesson-type-select" onchange="updateLessonType('${sId}','${l.id}',this.value)" title="نوع الدرس">
+            ${Object.entries(TYPES).map(([k,v]) =>
+              `<option value="${k}" ${l.type===k?'selected':''}>${v.icon} ${v.label}</option>`
+            ).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="lesson-actions">
+        <button class="lesson-act-btn" title="تعديل" onclick="openEditModal('${sId}','${l.id}')">
+          <i class="fas fa-pen"></i>
+        </button>
+        <button class="lesson-act-btn" title="${l.free?'إلغاء المجاني':'جعله مجانياً'}" 
+          onclick="toggleFree('${sId}','${l.id}')">
+          <i class="fas fa-gift" style="color:${l.free?'var(--green)':'var(--muted)'}"></i>
+        </button>
+        <button class="lesson-act-btn del" title="حذف" onclick="deleteLesson('${sId}','${l.id}')">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+/* ══════════════════════════════════════
+   SECTION ACTIONS
+══════════════════════════════════════ */
+function toggleSection(sId, e) {
+  if (e) e.stopPropagation();
+  const sec = sections.find(s => s.id === sId);
+  if (!sec) return;
+  sec.collapsed = !sec.collapsed;
+  const lessonsDiv = document.getElementById('lessons_' + sId);
+  const btn = document.querySelector(`#${sId} .section-toggle`);
+  if (lessonsDiv) lessonsDiv.classList.toggle('collapsed', sec.collapsed);
+  if (btn) btn.classList.toggle('rotated', !sec.collapsed);
+}
+
+function expandAll() {
+  sections.forEach(s => { s.collapsed = false; });
+  sections.forEach(s => {
+    const d = document.getElementById('lessons_' + s.id);
+    const b = document.querySelector(`#${s.id} .section-toggle`);
+    if (d) d.classList.remove('collapsed');
+    if (b) b.classList.add('rotated');
+  });
+}
+
+function deleteSection(sId, e) {
+  if (e) e.stopPropagation();
+  const sec = sections.find(s => s.id === sId);
+  if (!sec) return;
+  if (sec.lessons.length > 0 && !confirm(`حذف قسم "${sec.title}" وجميع دروسه؟`)) return;
+  sections = sections.filter(s => s.id !== sId);
+  document.getElementById(sId)?.remove();
+  updateStats();
+  rerenderAllBadges();
+  showToast('🗑️ تم حذف القسم');
+}
+
+function updateSectionTitle(sId, val) {
+  const sec = sections.find(s => s.id === sId);
+  if (sec) sec.title = val;
+}
+
+/* ══════════════════════════════════════
+   LESSON ACTIONS
+══════════════════════════════════════ */
+function quickAddLesson(sId) {
+  const inp  = document.getElementById('addInp_' + sId);
+  const title = inp?.value.trim();
+  if (!title) { inp?.focus(); return; }
+  const picker = document.getElementById('typePicker_' + sId);
+  const type   = picker?.querySelector('.ltype-btn.selected')?.dataset.type || 'video';
+  addLessonToSection(sId, { title, type }, true);
+  inp.value = '';
+  inp.focus();
+  showToast('✅ تمت إضافة الدرس!');
+}
+
+function selectQuickType(sId, type, btn) {
+  const picker = document.getElementById('typePicker_' + sId);
+  picker?.querySelectorAll('.ltype-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function updateLessonTitle(sId, lId, val) {
+  const sec = sections.find(s => s.id === sId);
+  const les = sec?.lessons.find(l => l.id === lId);
+  if (les) les.title = val;
+  updateStats();
+}
+
+function updateLessonDur(sId, lId, val) {
+  const sec = sections.find(s => s.id === sId);
+  const les = sec?.lessons.find(l => l.id === lId);
+  if (les) les.dur = parseInt(val) || 0;
+  updateSectionMeta(sId);
+  updateStats();
+}
+
+function updateLessonType(sId, lId, type) {
+  const sec = sections.find(s => s.id === sId);
+  const les = sec?.lessons.find(l => l.id === lId);
+  if (!les) return;
+  les.type = type;
+  renderSection(sId);
+  updateStats();
+}
+
+function toggleFree(sId, lId) {
+  const sec = sections.find(s => s.id === sId);
+  const les = sec?.lessons.find(l => l.id === lId);
+  if (!les) return;
+  les.free = !les.free;
+  renderSection(sId);
+  updateStats();
+  showToast(les.free ? '🎁 أصبح الدرس مجانياً' : '🔒 أصبح الدرس مدفوعاً');
+}
+
+function deleteLesson(sId, lId) {
+  const sec = sections.find(s => s.id === sId);
+  if (!sec) return;
+  sec.lessons = sec.lessons.filter(l => l.id !== lId);
+  renderSection(sId);
+  updateStats();
+  showToast('🗑️ تم حذف الدرس');
+}
+
+function updateSectionMeta(sId) {
+  const sec = sections.find(s => s.id === sId);
+  if (!sec) return;
+  const total = sec.lessons.reduce((a, l) => a + (+l.dur || 0), 0);
+  const metaEl = document.querySelector(`#${sId} .section-meta`);
+  if (metaEl) metaEl.textContent = `${sec.lessons.length} درس · ${total} دقيقة`;
+}
+
+/* ══════════════════════════════════════
+   EDIT MODAL
+══════════════════════════════════════ */
+function openEditModal(sId, lId) {
+  const sec = sections.find(s => s.id === sId);
+  const les = sec?.lessons.find(l => l.id === lId);
+  if (!les) return;
+  editingLesson = { sId, lId };
+
+  document.getElementById('modalLessonTitle').value = les.title;
+  document.getElementById('modalLessonDesc').value  = les.desc || '';
+  document.getElementById('modalDuration').value    = les.dur;
+  document.getElementById('modalUrl').value         = les.url || '';
+  document.getElementById('modalFree').checked      = les.free;
+  document.getElementById('modalRequired').checked  = les.required !== false;
+  document.getElementById('modalNotes').checked     = les.notes !== false;
+
+  document.querySelectorAll('#typeGrid .type-option').forEach(o => {
+    o.classList.toggle('selected', o.dataset.type === les.type);
+  });
+
+  const t = TYPES[les.type] || TYPES.video;
+  document.getElementById('modalIcon').textContent  = t.icon;
+  document.getElementById('modalTitle').textContent = 'تعديل: ' + les.title;
+
+  document.getElementById('editModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('editModal').classList.remove('open');
+  editingLesson = null;
+}
+
+function selectType(el) {
+  document.querySelectorAll('#typeGrid .type-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  const t = TYPES[el.dataset.type] || TYPES.video;
+  document.getElementById('modalIcon').textContent = t.icon;
+}
+
+function saveLesson() {
+  if (!editingLesson) return;
+  const { sId, lId } = editingLesson;
+  const sec = sections.find(s => s.id === sId);
+  const les = sec?.lessons.find(l => l.id === lId);
+  if (!les) return;
+
+  const title = document.getElementById('modalLessonTitle').value.trim();
+  if (!title) { document.getElementById('modalLessonTitle').style.borderColor = 'var(--danger)'; return; }
+
+  les.title    = title;
+  les.desc     = document.getElementById('modalLessonDesc').value;
+  les.dur      = parseInt(document.getElementById('modalDuration').value) || 10;
+  les.url      = document.getElementById('modalUrl').value;
+  les.free     = document.getElementById('modalFree').checked;
+  les.required = document.getElementById('modalRequired').checked;
+  les.notes    = document.getElementById('modalNotes').checked;
+  les.type     = document.querySelector('#typeGrid .type-option.selected')?.dataset.type || les.type;
+
+  closeModal();
+  renderSection(sId);
+  updateStats();
+  showToast('💾 تم حفظ الدرس!');
+}
+
+document.getElementById('editModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+/* ══════════════════════════════════════
+   STATS
+══════════════════════════════════════ */
+function updateStats() {
+  const totalSec = sections.length;
+  const allLessons = sections.flatMap(s => s.lessons);
+  const totalLes = allLessons.length;
+  const totalDur = allLessons.reduce((a, l) => a + (+l.dur || 0), 0);
+  const totalVid = allLessons.filter(l => l.type === 'video').length;
+  const totalQz  = allLessons.filter(l => l.type === 'quiz').length;
+  const totalFree= allLessons.filter(l => l.free).length;
+
+  document.getElementById('statSections').textContent = totalSec;
+  document.getElementById('statLessons').textContent  = totalLes;
+  document.getElementById('statHours').textContent    = totalDur;
+  document.getElementById('statVideos').textContent   = totalVid;
+  document.getElementById('statQuizzes').textContent  = totalQz;
+
+  // Progress bars
+  const targetLes = Math.max(totalLes, 10);
+  const pL = Math.min(100, Math.round(totalLes / targetLes * 100));
+  const pS = Math.min(100, Math.round(totalSec / 5 * 100));
+  const pF = totalLes > 0 ? Math.round(totalFree / totalLes * 100) : 0;
+
+  setProgress('pctLessons', 'fillLessons', pL);
+  setProgress('pctSections', 'fillSections', pS);
+  setProgress('pctFree', 'fillFree', pF);
+}
+
+function setProgress(lblId, fillId, pct) {
+  const l = document.getElementById(lblId);
+  const f = document.getElementById(fillId);
+  if (l) l.textContent = pct + '%';
+  if (f) f.style.width = pct + '%';
+}
+
+/* ══════════════════════════════════════
+   RE-RENDER SECTION BADGES
+══════════════════════════════════════ */
+function rerenderAllBadges() {
+  sections.forEach((sec, i) => {
+    const badge = document.querySelector(`#${sec.id} .section-num-badge`);
+    if (badge) badge.textContent = `القسم ${i + 1}`;
+  });
+}
+
+/* ══════════════════════════════════════
+   DRAG & DROP — SECTIONS
+══════════════════════════════════════ */
+let dragSId = null;
+
+function setupSectionDrag(block, sId) {
+  block.addEventListener('dragstart', e => {
+    if (e.target.closest('.lesson-row') || e.target.closest('.add-lesson-row')) { e.preventDefault(); return; }
+    dragSId = sId;
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => block.classList.add('dragging'), 10);
+  });
+  block.addEventListener('dragend', () => {
+    block.classList.remove('dragging');
+    document.querySelectorAll('.section-block').forEach(b => b.classList.remove('drag-over'));
+    dragSId = null;
+  });
+  block.addEventListener('dragover', e => {
+    e.preventDefault();
+    if (!dragSId || dragSId === sId) return;
+    e.dataTransfer.dropEffect = 'move';
+    block.classList.add('drag-over');
+  });
+  block.addEventListener('dragleave', () => block.classList.remove('drag-over'));
+  block.addEventListener('drop', e => {
+    e.preventDefault();
+    block.classList.remove('drag-over');
+    if (!dragSId || dragSId === sId) return;
+    const fromIdx = sections.findIndex(s => s.id === dragSId);
+    const toIdx   = sections.findIndex(s => s.id === sId);
+    if (fromIdx < 0 || toIdx < 0) return;
+    const [moved] = sections.splice(fromIdx, 1);
+    sections.splice(toIdx, 0, moved);
+    // Re-render all
+    document.getElementById('sectionsList').innerHTML = '';
+    sections.forEach(s => renderSection(s.id));
+    rerenderAllBadges();
+    updateStats();
+    showToast('↕️ تم إعادة ترتيب الأقسام');
+  });
+
+  // Lesson drag within section
+  setupLessonDrag(sId);
+}
+
+/* ══════════════════════════════════════
+   DRAG & DROP — LESSONS
+══════════════════════════════════════ */
+let dragLId = null, dragLSId = null;
+
+function setupLessonDrag(sId) {
+  const lessonsDiv = document.getElementById('lessons_' + sId);
+  if (!lessonsDiv) return;
+
+  lessonsDiv.querySelectorAll('.lesson-row').forEach(row => {
+    row.addEventListener('dragstart', e => {
+      dragLId  = row.dataset.lid;
+      dragLSId = row.dataset.sid;
+      e.dataTransfer.effectAllowed = 'move';
+      e.stopPropagation();
+      setTimeout(() => row.classList.add('dragging'), 10);
+    });
+    row.addEventListener('dragend', () => {
+      row.classList.remove('dragging');
+      lessonsDiv.querySelectorAll('.lesson-row').forEach(r => r.classList.remove('drag-over'));
+    });
+    row.addEventListener('dragover', e => {
+      e.preventDefault(); e.stopPropagation();
+      if (!dragLId || dragLId === row.dataset.lid) return;
+      row.classList.add('drag-over');
+    });
+    row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
+    row.addEventListener('drop', e => {
+      e.preventDefault(); e.stopPropagation();
+      row.classList.remove('drag-over');
+      if (!dragLId) return;
+
+      const fromSec = sections.find(s => s.id === dragLSId);
+      const toSec   = sections.find(s => s.id === sId);
+      if (!fromSec || !toSec) return;
+
+      const fromIdx = fromSec.lessons.findIndex(l => l.id === dragLId);
+      const toIdx   = toSec.lessons.findIndex(l => l.id === row.dataset.lid);
+      if (fromIdx < 0 || toIdx < 0) return;
+
+      const [moved] = fromSec.lessons.splice(fromIdx, 1);
+      toSec.lessons.splice(toIdx, 0, moved);
+
+      if (dragLSId !== sId) {
+        renderSection(dragLSId);
+        setupLessonDrag(dragLSId);
+      }
+      renderSection(sId);
+      setupLessonDrag(sId);
+      updateStats();
+      dragLId = null; dragLSId = null;
+      showToast('↕️ تم إعادة ترتيب الدروس');
+    });
+  });
+}
+
+/* ══════════════════════════════════════
+   SAVE / PUBLISH
+══════════════════════════════════════ */
+function saveDraft() {
+  const data = sections.map(s => ({ ...s, lessons: [...s.lessons] }));
+  try { localStorage.setItem('evolve_curriculum', JSON.stringify(data)); } catch(e){}
+  showToast('💾 تم حفظ المنهج كمسودة!');
+}
+
+function publishCurriculum() {
+  if (sections.length === 0) { showToast('⚠️ أضف قسماً واحداً على الأقل!'); return; }
+  const allLessons = sections.flatMap(s => s.lessons);
+  if (allLessons.length === 0) { showToast('⚠️ أضف درساً واحداً على الأقل!'); return; }
+
+  const btn = document.getElementById('pubSpinner');
+  if (btn) btn.style.display = 'block';
+
+  setTimeout(() => {
+    if (btn) btn.style.display = 'none';
+    showToast('🎉 تم نشر الكورس بنجاح! ' + sections.length + ' أقسام · ' + allLessons.length + ' درس');
+  }, 2000);
+}
+
+/* ══════════════════════════════════════
+   SIDEBAR / THEME
+══════════════════════════════════════ */
+function toggleSidebar() {
+  ['sidebar','overlay','hamburger'].forEach(id => document.getElementById(id)?.classList.toggle('open'));
+}
+function closeSidebar() {
+  ['sidebar','overlay','hamburger'].forEach(id => document.getElementById(id)?.classList.remove('open'));
+}
+window.addEventListener('resize', () => { if (window.innerWidth > 1024) closeSidebar(); });
+
+function toggleTheme() {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', dark ? '' : 'dark');
+  document.getElementById('themeBtn').textContent = dark ? '🌙' : '☀️';
+}
+
+/* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
+let toastTimer;
+function showToast(msg, dur = 2800) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  t.style.opacity = '1';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    t.style.opacity = '0';
+    setTimeout(() => t.style.display = 'none', 300);
+  }, dur);
+}
+
+/* ══════════════════════════════════════
+   HELPERS
+══════════════════════════════════════ */
+function esc(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
